@@ -4,7 +4,7 @@ __Assistant to create AI capabilities__
 
 ## "La IA no decide; ayuda a comprender."
 
-- Formato sencillo para avanzar rápido
+### Formato sencillo para avanzar rápido
     - Contexto:
     - Objetivo:
     - Decisión que necesito:
@@ -30,42 +30,42 @@ Demo en una semana.
 Resultado esperado:
 Una recomendación justificada en menos de 10 líneas.
 
+```
 
-## Organización de los chats
-Proyecto 
 
-│
-├── Chat 1
-│   Architecture
-│
-├── Chat 2
-│   Product Backlog
-│
-├── Chat 3
-│   Spring Boot
-│
-├── Chat 4
-│   RAG
-│
-├── Chat 5
-│   Demo
-│
-├── Chat 6
-│   Governance
-│
-└── Chat 7
-    Medium Articles
-
+## Chats sugeridos para empezar
+    
 
 ```    
+1. 00 - Project Coordination ⭐ (el principal)
 
-Chats sugeridos
-    
-    00 - Project Brief (solo para actualizar el estado del proyecto)
-    01 - Product & MVP
-    02 - Architecture
-    03 - Implementation
-    04 - Demo & Feedback
-    05 - Career & Roadmap
+Aquí hablamos de:
+- prioridades,
+- roadmap,
+- decisiones,
+- planificación,
+- siguiente paso.
 
+Este será el chat que más usarás.
+
+
+2. 01 - Product & MVP
+
+Aquí diseñamos:
+- Demo Script,
+- flujo,
+- backlog,
+- UX,
+- funcionalidades.
+
+3. 02 - Architecture
+
+Aquí dejamos:
+- Vision,
+- ADRs,
+- diagramas,
+- APIs,
+- decisiones arquitectónicas.
+
+```
 Cada uno con conversaciones más cortas y enfocadas.
