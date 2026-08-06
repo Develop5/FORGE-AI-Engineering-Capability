@@ -35,3 +35,4 @@ Cada conversación debe terminar con una única siguiente acción claramente def
     - Diseñar el User Flow definitivo del MVP.
     Mañana podría ser:
     - Definir la interfaz de entrada del Requirements Discovery Assistant.
+

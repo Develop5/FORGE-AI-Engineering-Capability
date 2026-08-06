@@ -69,3 +69,15 @@ Aquí dejamos:
 
 ```
 Cada uno con conversaciones más cortas y enfocadas.
+
+
+## Riesgo principal
+
+El mayor riesgo no es la tecnología, sino intentar generar demasiados artefactos con calidad mediocre.
+
+Para una demo es preferible que tres artefactos sean excelentes (requisitos, arquitectura y backlog) antes que generar diez documentos superficiales.
+
+
+## Siguiente acción
+
+Diseñar el flujo detallado de la interacción del usuario en el Requirements Discovery Assistant (preguntas, respuestas y salida estructurada).
