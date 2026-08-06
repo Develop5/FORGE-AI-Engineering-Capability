@@ -45,7 +45,6 @@ Aquí hablamos de:
 - decisiones,
 - planificación,
 - siguiente paso.
-
 Este será el chat que más usarás.
 
 
@@ -58,6 +57,7 @@ Aquí diseñamos:
 - UX,
 - funcionalidades.
 
+
 3. 02 - Architecture
 
 Aquí dejamos:
@@ -67,8 +67,41 @@ Aquí dejamos:
 - APIs,
 - decisiones arquitectónicas.
 
+
+03 - Engineering
+
+Todo lo técnico.
+Ejemplos:
+Spring Boot;
+RAG;
+ChromaDB;
+prompts;
+REST;
+Docker.
+
+
+04 - Career
+
+Este me parece muy importante.
+Aquí trabajaremos:
+Medium;
+portfolio;
+entrevistas;
+roadmap;
+evolución hacia AI Engineering Solutions Architect.
+
 ```
-Cada uno con conversaciones más cortas y enfocadas.
+Cada uno con conversaciones cortas y enfocadas.
+
+
+---
+## Weekly
+
+¿Qué construimos esta semana? <br>
+¿Qué aprendimos? <br>
+¿Qué decisión arquitectónica tomamos? <br>
+¿Cuál es el siguiente paso con mayor impacto?
+
 
 
 ## Riesgo principal
