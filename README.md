@@ -78,6 +78,13 @@ El mayor riesgo no es la tecnología, sino intentar generar demasiados artefacto
 Para una demo es preferible que tres artefactos sean excelentes (requisitos, arquitectura y backlog) antes que generar diez documentos superficiales.
 
 
+## Primer paso
+
+Definir el flujo end-to-end definitivo del MVP (desde la entrada del usuario hasta el resultado final de la demo). A partir de ese flujo podremos decidir diariamente qué implementación tiene el mayor impacto para llegar a una demo funcional en menos de una semana.
+
+
 ## Siguiente acción
 
 Diseñar el flujo detallado de la interacción del usuario en el Requirements Discovery Assistant (preguntas, respuestas y salida estructurada).
+
+
