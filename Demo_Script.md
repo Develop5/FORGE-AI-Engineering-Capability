@@ -1,0 +1,1 @@
+Qué verá el manager?
