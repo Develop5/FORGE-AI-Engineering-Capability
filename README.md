@@ -11,7 +11,7 @@ Resultado esperado:
 -------
 Ejemplo
 Contexto:
-Estamos definiendo el MVP de AURA.
+Estamos definiendo el MVP de FORGE.
 
 Objetivo:
 Cerrar el flujo funcional.
