@@ -38,7 +38,7 @@ Una recomendación justificada en menos de 10 líneas.
     
 
 ```    
-1. 00 - Project Coordination ⭐ (el principal)
+00 - Project Coordination ⭐ (el principal)
 
 Aquí hablamos de:
 - prioridades,
@@ -49,7 +49,7 @@ Aquí hablamos de:
 Este será el chat que más usarás.
 
 
-2. 01 - Product & MVP
+01 - Product & MVP
 
 Aquí diseñamos:
 - Demo Script,
@@ -59,7 +59,7 @@ Aquí diseñamos:
 - funcionalidades.
 
 
-3. 02 - Architecture
+02 - Architecture
 
 Aquí dejamos:
 - Vision,
@@ -95,25 +95,24 @@ Cada uno con conversaciones cortas y enfocadas.
 
 Cada chat responde a una pregunta.
 
-00 - Coordination
-¿Qué hacemos ahora?
-
-01 - Product
-¿Qué construimos?
-
-02 - Architecture
-¿Cómo debe estar diseñado?
-
-03 - Engineering
-¿Cómo lo implementamos?
-
-04 - Career
-¿Cómo me convierto en el arquitecto que quiero ser?
 
 Si una conversación empieza a responder otra pregunta, probablemente pertenece a otro chat.
 Cada vez que tengas una duda, pregúntate:
 
 "¿Estoy hablando del producto, de la arquitectura, de la implementación o de mi carrera?"
+
+
+---
+
+| Chat                  | Pregunta principal                                      | Responsabilidad                                                                  |
+| --------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **00 – Coordination** | **¿Qué hacemos ahora?**                                 | Prioridad, secuencia de trabajo, dependencias, riesgos, coordinación entre áreas |
+| **01 – Product**      | **¿Qué construimos?**                                   | Usuario, problema, propuesta de valor, MVP, User Flow, alcance, demo             |
+| **02 – Architecture** | **¿Cómo debe estar diseñado?**                          | Arquitectura, componentes, interfaces, datos, decisiones técnicas de alto nivel  |
+| **03 – Engineering**  | **¿Cómo lo implementamos?**                             | Código, implementación, debugging, tests, configuración, CI/CD                   |
+| **04 – Career**       | **¿Cómo me convierto en el arquitecto que quiero ser?** | Aprendizaje, decisiones profesionales, habilidades, evolución como arquitecto    |
+
+
 
 ---
 ## Weekly
