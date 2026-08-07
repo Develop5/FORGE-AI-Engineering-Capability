@@ -6,27 +6,28 @@ Demonstrate that FORGE can calculate Business Requirement Coverage from disperse
 
 ## Evidence Sources
 
-Included
-• Existing Test Cases
-• Business Requirements documentation (Confluence)
+Included <br>
+• Existing Test Cases <br>
+• Business Requirements documentation (Confluence) <br>
 
-Future
-• Technical documentation
-• Jira Issues
-• Use Cases
-• Notes
-• Bugs
-• XRay Test Cases
-• UI Mockups
+
+Future <br>
+• Technical documentation <br>
+• Jira Issues <br>
+• Use Cases <br>
+• Notes <br>
+• Bugs <br>
+• XRay Test Cases <br>
+• UI Mockups <br>
 
 ## Out of Scope
-• Authentication
-• User Management
-• Real-time Collaboration
-• Comments
-• Approval Workflows
-• Project Management
-• Advanced Editing
-• Multiple Export Formats
+• Authentication <br>
+• User Management <br>
+• Real-time Collaboration <br>
+• Comments <br>
+• Approval Workflows <br>
+• Project Management <br>
+• Advanced Editing <br>
+• Multiple Export Formats <br>
 
 

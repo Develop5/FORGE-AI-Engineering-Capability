@@ -2,15 +2,15 @@
 
 ## Target User
 
-Primary User
-• Product Manager
+Primary User:<br>
+• Product Manager<br>
 The Product Manager is the primary consumer of the capability because they need visibility of functional risk and Business Requirement coverage before a release.
 
-Secondary stakeholders include:
-• QA Analysts
-• QA Managers
-• Business Analysts
-• Technical Leads
+Secondary stakeholders include:<br>
+• QA Analysts<br>
+• QA Managers<br>
+• Business Analysts<br>
+• Technical Leads<br>
 FORGE supports collaboration between these roles without changing their responsibilities.
 
 
@@ -19,10 +19,10 @@ FORGE provides the capability to calculate Business Requirement Coverage from he
 
 
 ## Product Principles
-• FORGE does not replace Business Analysts.
-• FORGE does not invent Business Requirements.
-• FORGE consolidates existing evidence.
-• FORGE performs Requirements Discovery where information is incomplete.
-• FORGE generates traceable specifications.
-• FORGE calculates Business Requirement Coverage.
-• FORGE exposes inconsistencies and functional risk.
+• FORGE does not replace Business Analysts.<br>
+• FORGE does not invent Business Requirements.<br>
+• FORGE consolidates existing evidence.<br>
+• FORGE performs Requirements Discovery where information is incomplete.<br>
+• FORGE generates traceable specifications.<br>
+• FORGE calculates Business Requirement Coverage.<br>
+• FORGE exposes inconsistencies and functional risk.<br>
