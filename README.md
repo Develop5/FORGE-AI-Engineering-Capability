@@ -1,8 +1,9 @@
 # FORGE-AI-Engineering-Capability
 
-__Assistant to create AI capabilities__
+_Assistant to create AI capabilities_
 
 ## "La IA no decide; ayuda a comprender."
+FORGE no reemplaza las responsabilidades de los distintos roles, sino que facilita la colaboración entre ellos generando especificaciones trazables y reutilizables.
 
 ### Formato sencillo para avanzar rápido
     - Contexto:
@@ -82,7 +83,6 @@ Docker.
 
 04 - Career
 
-Este me parece muy importante.
 Aquí trabajaremos:
 Medium;
 portfolio;
@@ -93,6 +93,27 @@ evolución hacia AI Engineering Solutions Architect.
 ```
 Cada uno con conversaciones cortas y enfocadas.
 
+Cada chat responde a una pregunta.
+
+00 - Coordination
+¿Qué hacemos ahora?
+
+01 - Product
+¿Qué construimos?
+
+02 - Architecture
+¿Cómo debe estar diseñado?
+
+03 - Engineering
+¿Cómo lo implementamos?
+
+04 - Career
+¿Cómo me convierto en el arquitecto que quiero ser?
+
+Si una conversación empieza a responder otra pregunta, probablemente pertenece a otro chat.
+Cada vez que tengas una duda, pregúntate:
+
+"¿Estoy hablando del producto, de la arquitectura, de la implementación o de mi carrera?"
 
 ---
 ## Weekly
