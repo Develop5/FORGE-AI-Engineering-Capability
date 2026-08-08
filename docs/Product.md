@@ -18,6 +18,21 @@ FORGE supports collaboration between these roles without changing their responsi
 FORGE provides the capability to calculate Business Requirement Coverage from heterogeneous evidence sources using AI-assisted Requirements Discovery.
 
 
+## Requirements Discovery Output
+
+1. Business Requirements
+   - Requisitos identificados a partir de las fuentes proporcionadas.
+
+2. Conflicts
+   - Contradicciones detectadas entre requisitos/evidencias.
+
+3. Unresolved Dependencies
+   - Dependencias circulares o relaciones que impiden determinar una definición final del requisito.
+
+4. Clarification Questions
+   - Preguntas que requieren respuesta de stakeholders.
+
+
 ## Product Principles
 • FORGE does not replace Business Analysts.<br>
 • FORGE does not invent Business Requirements.<br>

@@ -9,6 +9,11 @@ Requirements Discovery
 
 ↓
 
+[Requirements + Conflicts + Unresolved Dependencies
+ + Clarification Questions]
+
+↓
+
 Clarification
 
 ↓
@@ -17,7 +22,11 @@ Specification Synthesis
 
 ↓
 
-Validation
+Human checkpoint
+
+↓
+
+Accepted Specification
 
 ↓
 
@@ -28,6 +37,26 @@ Coverage Analysis
 Coverage Report
 
 
+### Human Checkpoint — Specification Validation
+
+FORGE presents the generated specifications to the user.
+
+The user reviews each specification and can:
+- Accept it
+- Reject it
+
+Only accepted specifications proceed to Coverage Analysis.
+
+Rejected specifications do not contribute to the coverage calculation.
+
+### Clarification
+- Questions are asked to stakeholders in a human interview
+- Answer to questions are introduced to FORGE by the user
+- If answers are not provided, FORGE will ask whether continue or not
+- Answers modify Business Requirements
+- The flow continues after this step. Pending questions will be listed.
+  
+
 ## First Valuable Outcome
 The first valuable outcome delivered by the MVP is a Coverage Report showing:
 
@@ -35,7 +64,7 @@ The first valuable outcome delivered by the MVP is a Coverage Report showing:
 
 • Matching Test Cases
 
-• Coverage percentage
+• Coverage 
 
 • Missing validation
 
@@ -45,14 +74,18 @@ The first valuable outcome delivered by the MVP is a Coverage Report showing:
 
 
 ## MVP User Flow
-Input — qué introduce el usuario: un listado de XRay tests en Jira y 1 ó 2 páginas de Confluence consideradas como "business requirements"
+Input — qué introduce el usuario: Jira/XRay + Confluence
 
-Step 1 — qué hace FORGE: lee los steps de los tests
-Human checkpoint — dónde decide/valida el usuario.
+Step 1 — Analiza las fuentes proporcionadas y realiza
+Requirements Discovery:
+- Business Requirements identificados
+- conflictos
+- dependencias no resueltas
+- preguntas de clarificación
 
 Step 2 — qué genera FORGE: specifications to be analyzed accepted or rejected by a human
 
-Final output — qué artefactos vemos en pantalla: 1 or more test cases related to every business requirements
+Final output — qué artefactos vemos en pantalla: a table is shown with every business requirement and its accepted specifications, each of which is linked to 1 or 2 test cases
 
-Definition of Done — cuándo podemos decir "la demo funciona": when all artifacts are shown.
+Definition of Done — cuándo podemos decir "la demo funciona": the value of calculated coverage is shown
 
