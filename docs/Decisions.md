@@ -7,7 +7,8 @@
 | D-002 | 2026-08-07 | The primary deliverable of the MVP is the Coverage Report.                                                | It represents the highest-value outcome for the target user.                                                      |
 | D-003 | 2026-08-07 | Requirements Discovery is an internal capability, not the product itself.                                 | The product exists to calculate Business Requirement Coverage.                                                   |
 | D-004 | 2026-08-07 | The MVP initially supports two Evidence Sources: tickets from Jira (existing test cases, bugs and User Stories), and Business Requirements documentation | These are sufficient to demonstrate the end-to-end value proposition.                                             |
-| D-005 | 2026-08-07 | FORGE supports collaboration between roles but does not modify existing organizational responsibilities | Collaboration among different roles provides high value and a smooth process.   
+| D-005 | 2026-08-07 | FORGE supports collaboration between roles but does not modify existing organizational responsibilities | Collaboration among different roles provides high value and a smooth process.    |
+| D-006 | 2026-08-08 | Glossary definitions are added progressively when discussions or identified ambiguities require them. | Avoid defining universally understood terms prematurely and keep the glossary focused on terms that require explicit clarification. |
 
 
 
