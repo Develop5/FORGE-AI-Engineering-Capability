@@ -85,13 +85,16 @@ Input:
 FORGE:
 - Analyze the input and provides a list of requirements
 Output:
-- List of requirements
+- Requirements
+- Conflicts
+- Unresolved Dependencies
+- Clarification Questions
 
 #### 3. Clarification
 FORGE:
 - Detects: ambiguities, conflicts and circular dependencies
 User:
-- Questions for a human to clarify: Ambiguities, conflicts and circular dependencies
+- Ask questions for a human to clarify: Ambiguities, conflicts and circular dependencies. If not all questions are clarified, the flow continues.
 
 #### 4. Specification Synthesis
 FORGE:
@@ -109,6 +112,6 @@ FORGE:
 
 #### 7. Coverage Report
 Displays:
-- First Value Outcome
+- As defined in "First Value Outcome"
 
 
