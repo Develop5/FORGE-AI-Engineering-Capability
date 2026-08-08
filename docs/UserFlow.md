@@ -92,15 +92,16 @@ Output:
 
 #### 3. Clarification
 FORGE:
-- Detects: ambiguities, conflicts and circular dependencies
+- Presents the clarification questions
+
 User:
-- Ask questions for a human to clarify: Ambiguities, conflicts and circular dependencies. If not all questions are clarified, the flow continues.
+- Provides the answers obtained from stakeholders
 
 #### 4. Specification Synthesis
 FORGE:
 - Generates specifications 
 Output:
-- List of specifications to analyzed by humans
+- List of specifications
 
 #### 5. Validation
 Human:
