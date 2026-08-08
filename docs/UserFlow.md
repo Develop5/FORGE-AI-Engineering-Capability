@@ -73,19 +73,42 @@ The first valuable outcome delivered by the MVP is a Coverage Report showing:
 • Remaining implementation risk
 
 
-## MVP User Flow
-Input — qué introduce el usuario: Jira/XRay + Confluence
+### MVP User Flow
 
-Step 1 — Analiza las fuentes proporcionadas y realiza
-Requirements Discovery:
-- Business Requirements identificados
-- conflictos
-- dependencias no resueltas
-- preguntas de clarificación
 
-Step 2 — qué genera FORGE: specifications to be analyzed accepted or rejected by a human
+#### 1. Evidence Sources
+Input:
+- XRay tests and bugs from Jira
+- 1–2 Confluence pages containing business requirements
 
-Final output — qué artefactos vemos en pantalla: Coverage Report.
+#### 2. Requirements Discovery
+FORGE:
+- Analyze the input and provides a list of requirements
+Output:
+- List of requirements
 
-Definition of Done — cuándo podemos decir "la demo funciona": the value of calculated coverage is shown
+#### 3. Clarification
+FORGE:
+- Detects: ambiguities, conflicts and circular dependencies
+User:
+- Questions for a human to clarify: Ambiguities, conflicts and circular dependencies
+
+#### 4. Specification Synthesis
+FORGE:
+- Generates specifications 
+Output:
+- List of specifications to analyzed by humans
+
+#### 5. Validation
+Human:
+- Accept / reject specifications
+
+#### 6. Coverage Analysis
+FORGE:
+- Calculates the coverage
+
+#### 7. Coverage Report
+Displays:
+- First Value Outcome
+
 
