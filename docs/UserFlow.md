@@ -111,7 +111,6 @@ FORGE:
 - Calculates the coverage
 
 #### 7. Coverage Report
-Displays:
-- As defined in "First Value Outcome"
+- The Coverage Report MUST provide the outcome defined in [First Valuable Outcome](#first-valuable-outcome).
 
 
