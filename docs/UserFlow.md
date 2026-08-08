@@ -85,7 +85,7 @@ Requirements Discovery:
 
 Step 2 — qué genera FORGE: specifications to be analyzed accepted or rejected by a human
 
-Final output — qué artefactos vemos en pantalla: Coverage Report containing Business Requirements, accepted Specifications, matching Test Cases, Coverage percentage, missing validation, functional inconsistencies and remaining implementation risk.
+Final output — qué artefactos vemos en pantalla: Coverage Report.
 
 Definition of Done — cuándo podemos decir "la demo funciona": the value of calculated coverage is shown
 
