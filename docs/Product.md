@@ -45,13 +45,16 @@ Potential Evidence Sources include:
 
 FORGE is intended to support different combinations of these Evidence Sources.
 
-The MVP deliberately starts with **existing Test Cases from Jira/XRay as the primary Evidence Source**.
+The MVP deliberately starts with **existing Test Cases from Jira/XRay as the primary Evidence Source**, optionally supplemented by **Jira Bugs** and/or user-provided contextual notes through a CSV file.
 
 Jira Test Cases may contain detailed steps or may provide only a title, summary, or other limited information.
 
-When the available Test Case information is insufficient, the MVP allows the user to provide additional contextual notes through a CSV input.
+Jira Bugs may provide additional evidence about implemented behaviour, known defects, or functional areas relevant to the coverage analysis.
+
+When the available Test Case and Bug information is insufficient, the user may provide additional contextual notes through a CSV input.
 
 Additional Evidence Sources and combinations of sources are future extensions of the FORGE capability and are not required for the MVP.
+
 
 ---
 

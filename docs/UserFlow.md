@@ -149,9 +149,13 @@ The MVP does not attempt to provide a generic project risk assessment. The risk 
 
 # MVP User Flow
 
+# MVP User Flow
+
 The MVP deliberately starts with **existing Test Cases from Jira/XRay** as its primary Evidence Source.
 
-The MVP does not require other Evidence Sources such as Confluence Business Requirement pages, User Stories, or Bugs.
+Jira Bugs and user-provided CSV notes may optionally supplement the Test Cases when additional evidence is available or required.
+
+The MVP does not require other Evidence Sources such as Confluence Business Requirement pages, User Stories, Use Cases, or Technical documentation.
 
 ## 1. Jira/XRay Test Cases
 
@@ -172,29 +176,46 @@ FORGE must use the information that is actually available and must not assume th
 
 ---
 
-## 2. Optional CSV Notes
+## 2. Optional Jira Bugs
 
-When the available information in the Jira/XRay Test Cases is insufficient, the user may provide additional contextual notes through a CSV file.
+The user may provide Jira Bugs as supplementary evidence.
 
-The CSV is supplementary evidence used to provide additional context for Requirements Discovery and traceability analysis.
+Bugs may provide additional information about:
 
-The CSV is optional and is not required when the Jira/XRay Test Cases provide sufficient information.
+* Implemented or observed behaviour
+* Functional areas
+* Known defects
+* Relationships between functionality and existing tests
+
+Jira Bugs are optional and are not required when the Test Cases provide sufficient evidence.
 
 ---
 
-## 3. Evidence Consolidation
+## 3. Optional CSV Notes
+
+When the available Jira evidence is insufficient, the user may provide additional contextual notes through a CSV file.
+
+The CSV is supplementary evidence used to provide additional context for Requirements Discovery and traceability analysis.
+
+The CSV is optional and is not required when the available Jira evidence provides sufficient information.
+
+---
+
+## 4. Evidence Consolidation
 
 ### FORGE
 
 * Ingests the available Jira/XRay Test Cases.
+* Ingests Jira Bugs when provided.
 * Ingests the optional CSV notes when provided.
 * Identifies the type and relevance of the available evidence.
 * Consolidates the available information.
 * Identifies missing or potentially insufficient evidence.
 
+
 ---
 
-## 4. Requirements Discovery
+## 5. Requirements Discovery
 
 ### FORGE
 
@@ -213,7 +234,7 @@ The CSV is optional and is not required when the Jira/XRay Test Cases provide su
 
 ---
 
-## 5. Clarification
+## 6. Clarification
 
 ### FORGE
 
@@ -234,7 +255,7 @@ Pending questions remain visible when they cannot be resolved.
 
 ---
 
-## 6. Traceability Analysis
+## 7. Traceability Analysis
 
 ### FORGE
 
@@ -251,7 +272,7 @@ It is not a required output of the MVP.
 
 ---
 
-## 7. Coverage Analysis
+## 8. Coverage Analysis
 
 ### FORGE
 
@@ -262,7 +283,7 @@ It is not a required output of the MVP.
 
 ---
 
-## 8. Coverage Result
+## 9. Coverage Result
 
 The MVP ends with a Coverage Result that provides the information defined in [First Valuable Outcome](#first-valuable-outcome).
 
