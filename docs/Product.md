@@ -29,24 +29,29 @@ The MVP is explicitly focused on calculating Business Requirement Coverage using
 
 ## Evidence Sources
 
-FORGE operates on heterogeneous evidence sources.
-
-The available evidence is not assumed to be complete or consistently available. Different executions may provide different combinations of evidence, and some sources may be missing entirely.
+FORGE is designed to operate on heterogeneous Evidence Sources. The available evidence may vary between executions and may be incomplete, inconsistent, or distributed across multiple sources.
 
 Potential Evidence Sources include:
 
+* Existing Test Cases from Jira/XRay
 * Business Requirement documentation
-* Existing Test Cases
+* User Stories
+* Bugs
 * Test Case steps
 * Test Case titles or summaries
-* Bugs
 * Use Cases
 * Technical documentation
 * Notes and other relevant product documentation
 
-The MVP initially focuses on **Business Requirement evidence and existing Test Cases**, while allowing those sources to be incomplete or partially informative.
+FORGE is intended to support different combinations of these Evidence Sources.
 
-FORGE must distinguish between available evidence and unavailable evidence and must not infer coverage without sufficient supporting evidence.
+The MVP deliberately starts with **existing Test Cases from Jira/XRay as the primary Evidence Source**.
+
+Jira Test Cases may contain detailed steps or may provide only a title, summary, or other limited information.
+
+When the available Test Case information is insufficient, the MVP allows the user to provide additional contextual notes through a CSV input.
+
+Additional Evidence Sources and combinations of sources are future extensions of the FORGE capability and are not required for the MVP.
 
 ---
 
@@ -73,6 +78,14 @@ Requirements Discovery may produce the following intermediate results:
    * Questions requiring input from relevant stakeholders.
 
 Requirements Discovery does not create or approve Business Requirements. Business Requirements remain the responsibility of the appropriate business stakeholders.
+
+---
+
+## Specification Synthesis
+
+FORGE structures the discovered Business Requirements and their supporting evidence into traceable specifications.
+
+Specifications provide a structured representation of the relationship between Business Requirements and test evidence. They support human validation and traceability but do not by themselves determine Business Requirement Coverage.
 
 ---
 

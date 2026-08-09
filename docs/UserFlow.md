@@ -24,7 +24,7 @@ Coverage Result
 Functional Risk
 ```
 
-The flow is evidence-driven. Not all Evidence Sources are expected to be available in every execution.
+The flow is evidence-driven. Different executions may provide different combinations of Evidence Sources, and the available evidence may be incomplete or insufficient.
 
 FORGE must adapt its analysis to the evidence provided and explicitly identify when the available evidence is insufficient to establish reliable coverage.
 
@@ -32,25 +32,23 @@ FORGE must adapt its analysis to the evidence provided and explicitly identify w
 
 ## Evidence Sources
 
-The flow may start with any relevant combination of available evidence.
+FORGE is designed to operate on heterogeneous Evidence Sources.
 
-Examples include:
+Potential Evidence Sources include:
 
 * Business Requirement documentation
 * Existing Test Cases
 * Test Case steps
 * Test Case titles or summaries
+* User Stories
 * Bugs
 * Use Cases
 * Technical documentation
 * Notes and other relevant product documentation
 
-For the MVP, the primary Evidence Sources are:
+Different executions may provide different combinations of these sources.
 
-* Existing Test Cases
-* Business Requirement evidence
-
-Neither source is required to be complete.
+The absence of an Evidence Source must not be interpreted as evidence that the corresponding information does not exist.
 
 ---
 
@@ -117,11 +115,11 @@ The coverage definition and formula are maintained in `Glossary.md`.
 
 FORGE must distinguish between:
 
-* Business Requirements covered by available tests
-* Business Requirements not covered by available tests
+* Business Requirements with identified Test Case coverage
+* Business Requirements without identified Test Case coverage in the available evidence
 * Business Requirements for which the available evidence is insufficient to determine coverage
 
-The absence of evidence must not be interpreted as proof that the corresponding requirement or test does not exist.
+The absence of an Evidence Source must not be interpreted as proof that the corresponding requirement or Test Case does not exist.
 
 ---
 
@@ -134,7 +132,7 @@ The result should provide:
 * Business Requirements identified
 * Matching Test Cases
 * Coverage percentage, when it can be reliably calculated
-* Business Requirements without identified test coverage
+* Business Requirements without identified Test Case coverage
 * Insufficient or missing evidence
 * Relevant inconsistencies
 * Remaining functional risk
@@ -151,34 +149,52 @@ The MVP does not attempt to provide a generic project risk assessment. The risk 
 
 # MVP User Flow
 
-## 1. Available Evidence
+The MVP deliberately starts with **existing Test Cases from Jira/XRay** as its primary Evidence Source.
+
+The MVP does not require other Evidence Sources such as Confluence Business Requirement pages, User Stories, or Bugs.
+
+## 1. Jira/XRay Test Cases
 
 ### Input
 
-A variable combination of available evidence, including:
+The user provides existing Test Cases from Jira/XRay.
 
-* Existing Test Cases from Jira/XRay
-* Business Requirement documentation from Confluence
-* Test Case titles or summaries
+Test Cases may contain:
+
+* Test Case title
+* Test Case description or summary
 * Test Case steps
-* Bugs or other supporting evidence
+* Other available Test Case information
 
-The MVP must not assume that all of these sources are available.
+The MVP must support Test Cases both with and without detailed steps.
+
+FORGE must use the information that is actually available and must not assume that Test Case steps exist.
 
 ---
 
-## 2. Evidence Consolidation
+## 2. Optional CSV Notes
+
+When the available information in the Jira/XRay Test Cases is insufficient, the user may provide additional contextual notes through a CSV file.
+
+The CSV is supplementary evidence used to provide additional context for Requirements Discovery and traceability analysis.
+
+The CSV is optional and is not required when the Jira/XRay Test Cases provide sufficient information.
+
+---
+
+## 3. Evidence Consolidation
 
 ### FORGE
 
-* Ingests the available evidence.
-* Identifies the type and relevance of each source.
+* Ingests the available Jira/XRay Test Cases.
+* Ingests the optional CSV notes when provided.
+* Identifies the type and relevance of the available evidence.
 * Consolidates the available information.
 * Identifies missing or potentially insufficient evidence.
 
 ---
 
-## 3. Requirements Discovery
+## 4. Requirements Discovery
 
 ### FORGE
 
@@ -197,7 +213,7 @@ The MVP must not assume that all of these sources are available.
 
 ---
 
-## 4. Clarification
+## 5. Clarification
 
 ### FORGE
 
@@ -218,13 +234,13 @@ Pending questions remain visible when they cannot be resolved.
 
 ---
 
-## 5. Traceability Analysis
+## 6. Traceability Analysis
 
 ### FORGE
 
 * Analyses the relationship between Business Requirements and existing Test Cases.
 * Uses available Test Case information, including titles, summaries and steps when available.
-* Uses other available evidence when relevant.
+* Uses supplementary CSV notes when provided.
 * Identifies potential coverage gaps and inconsistencies.
 
 ### Intermediate Artefact
@@ -235,18 +251,18 @@ It is not a required output of the MVP.
 
 ---
 
-## 6. Coverage Analysis
+## 7. Coverage Analysis
 
 ### FORGE
 
-* Determines which Business Requirements are covered by existing Test Cases.
-* Identifies Business Requirements without identified test coverage.
+* Determines which Business Requirements have identified coverage from existing Test Cases.
+* Identifies Business Requirements without identified Test Case coverage.
 * Identifies cases where the available evidence is insufficient to determine coverage.
 * Calculates Business Requirement Coverage when the available evidence supports a reliable calculation.
 
 ---
 
-## 7. Coverage Result
+## 8. Coverage Result
 
 The MVP ends with a Coverage Result that provides the information defined in [First Valuable Outcome](#first-valuable-outcome).
 
@@ -259,7 +275,7 @@ The first valuable outcome delivered by the MVP is a **Business Requirement Cove
 * Business Requirements
 * Matching Test Cases
 * Coverage percentage, when reliably calculable
-* Missing or unidentified validation
+* Business Requirements without identified Test Case coverage
 * Insufficient evidence
 * Functional inconsistencies
 * Remaining functional risk
