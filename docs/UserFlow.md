@@ -299,6 +299,7 @@ The first valuable outcome delivered by the MVP is a **Business Requirement Cove
 * Functional inconsistencies
 * Remaining functional risk
 * No more content is needed
-* In the future, other values will be added
-* 
+
+
+
   
