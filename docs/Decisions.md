@@ -9,7 +9,20 @@
 | D-004 | 2026-08-07 | The MVP initially supports two Evidence Sources: tickets from Jira (existing test cases, bugs and User Stories), and Business Requirements documentation | These are sufficient to demonstrate the end-to-end value proposition.                                             |
 | D-005 | 2026-08-07 | FORGE supports collaboration between roles but does not modify existing organizational responsibilities | Collaboration among different roles provides high value and a smooth process.    |
 | D-006 | 2026-08-08 | Glossary definitions are added progressively when discussions or identified ambiguities require them. | Avoid defining universally understood terms prematurely and keep the glossary focused on terms that require explicit clarification. |
+| D-007 | 2026-08-09 | MVP Evidence Sources: Confluence pages + Jira tickets of types Test Case, Bug, User Story and Epic. | Widening the source of Business Requirement candidates might provide more input information. |
 
 
-
+El usuario introduce en la plataforma:
+- Páginas de Confluence
+- Listado de tickets en Jira: Test cases, bugs, user stories, epics
+El sistema analiza y determina cuáles son posibles business requirements. Y entre ellos:
+- Busca conflictos 
+- Localiza dependencias circulares
+- Identifica ambigüedades.
+Le brinda al usuario el resultado de ese análisis y un listado de preguntas necesarias para aclarar esos problemas encontrados
+Al recibir el feedback del usuario, la plataforma comienza la síntesis de especificaciones. Si algunas preguntas no son contestadas (dudas no resueltas), el sistema sigue trabajando y las señalará en el reporte final de Coverage como riesgos asumidos.
+Con las aclaraciones dadas por el usuario, la plataforma genera especificaciones.
+Estas especificaciones las tomará el usuario para discusiones con stakeholders y su aprobación o rechazo.
+Con las especificaciones aprobadas, la plataforma hará un cálculo de coverage (definido en Glossary)
+Finalmente la plataforma suministra un Coverage Report
 
