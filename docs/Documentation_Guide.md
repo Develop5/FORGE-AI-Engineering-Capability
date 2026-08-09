@@ -20,3 +20,45 @@ Each topic has a single authoritative document. Information should not be duplic
 | `docs/ADR-*.md`               | Individual architectural decisions, their context, alternatives, and consequences                     | Product decisions, general architecture documentation, or implementation task lists                         |
 | `docs/Glossary.md`            | Authoritative definitions of project-specific terminology                                             | New product decisions, architectural decisions, or extensive explanations better suited to another document |
 | `docs/Documentation_Guide.md` | Documentation ownership, scope, hierarchy, and rules for maintaining project documentation            | Product, technical, or implementation content                                                               |
+
+---
+
+## Repository Access Rule
+
+When the user asks to review, verify, or inspect a document stored in the FORGE GitHub repository, the current version in the repository is the source of truth.
+
+The assistant must:
+
+1. Read the document directly from the current `main` branch.
+2. Prefer the raw GitHub URL using the `refs/heads/main` path.
+3. Not rely on previously retrieved, cached, quoted, or remembered content of the document.
+4. Treat the content retrieved from the repository as authoritative over any version previously discussed in the conversation.
+5. When the user explicitly provides a repository or raw-file URL, use that exact URL as the source.
+6. If the current repository version cannot be retrieved or verified, explicitly state this instead of reconstructing the document from previous conversation content.
+
+This rule applies to all project documentation, including but not limited to:
+
+* Product.md
+* MVP.md
+* UserFlow.md
+* Architecture.md
+* Decisions.md
+* Documentation_Guide.md
+* Prompting.md
+* Backlog.md
+* Capability_Map.md
+* Vision.md
+* Demo_Script.md
+
+---
+
+### Content Verification
+
+When the user asks a factual question about the current contents of a repository document, the assistant must inspect the current repository version before answering.
+
+Questions about exact text, headings, lines, table entries, counts, or the presence or absence of specific terms must never be answered from conversation history or previously retrieved versions.
+
+If the retrieved repository content differs from content previously discussed, the repository version takes precedence.
+
+---
+
