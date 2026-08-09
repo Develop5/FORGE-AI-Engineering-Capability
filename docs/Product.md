@@ -21,7 +21,7 @@ FORGE provides the capability to calculate Business Requirement Coverage from he
 ## Requirements Discovery Output
 
 1. Business Requirements
-   - Requisitos identificados a partir de las fuentes proporcionadas.
+   - Business Requirements identified from and consolidated across the provided evidence sources.
 
 2. Conflicts
    - Contradicciones detectadas entre requisitos/evidencias.
