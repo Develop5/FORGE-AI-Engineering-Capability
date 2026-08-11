@@ -1,8 +1,10 @@
 
+
+…
+
 Career: AI Engineering Solutions Architect
 
 Responsabilidades de las distintas etapas
-
 
 
 Evidence consolidation (para Forge).-
@@ -29,6 +31,79 @@ Bugs, tests o User stories que contengan frases similares son parte de la descri
 ¿Tiene que conservar el origen? ¿A qué te refieres aquí? El origen es sólo para lectura. Y no hay que almacenarlo en ningún otro lugar.
 
 A Business Discovery se le da información agrupada por business requirements, uno por cada tópico con la referencia a la fuente donde se encontró.
+
+
+-----
+
+
+Clarification.-
+
+Te doy 10 preguntas creadas por mí y sus respuestas.
+Necesito que evalúes con sentido crítico si realmente responden a lo que se me había pedido (responsablidades) o son más bien narrativas del flujo.
+También que me indiques si faltaron responsabilidades importantes por esclarecer.
+Y que evalúes de 0 a 10 cuán claras y directas son mis preguntas y respuestas, teniendo en cuenta que estoy en la transformación hacia arquitecto.
+
+Es un proceso iterativo.
+
+1. ¿Cuál es la entrada?
+La primera vez, un fichero CSV con los candidatos a Requirements con sus correspondientes referencias.
+Veces posteriores, un fichero CSV con toda la información anterior, las preguntas que generó la fase de Clarificación y y las respuestas del usuario en esa iteración.
+
+
+2. ¿Qué hay que procesar aquí?
+Recibida la entrada, se analizan problemas de acuerdo a la definición en  el Glossary.md y se generan preguntas.
+En la última iteración ya no se generan preguntas. Si hubo respuestas que no se ofrecieron o que crearon nuevos problemas, el tópico se deja como la última vez y aquí se registran riesgos.
+
+
+3. ¿Cuál es la salida?
+a) Primera salida y siguientes iteraciones: fichero CSV con los candidatos a Requirements, sus correspondientes referencias y una columna con preguntas que se han generado en esta fase de acuerdo a los problemas detectados.
+
+b) La salida final (no más iteraciones): fichero CSV con los candidatos a Requirements ampliados de acuerdo a las respuestas recibidas del usuario durante las iteraciones en la fase de Clarificación, sus referencias y riesgos en caso de preguntas no suficientemente esclarecidas.
+
+
+4. ¿Debe agrupar algo?
+No. La primera vez toda la información de cada requirement vino dada por la fase anterior.
+Las veces posteriores, las respuestas del usuario ya vienen en el fichero CSV relacionadas con cada pregunta.
+Por tanto, no hace falta ninguna agrupación extra, sólo mantener estas relaciones.
+
+
+5. ¿Qué ocurre cuando se recibe la respuesta del usuario?
+Cada vez que las preguntas sean respondidas por el usuario, se debe volver a hacer el análisis con esa  nueva información aportada para cada requirement. Y determinar si se generan nuevos problemas. Nuevos problemas pueden generar nuevas preguntas para la siguiente iteración en esta fase de Clarificación.
+
+
+6. ¿Qué hay que guardar/mantener?
+- Los Requirements de entrada enlazados con sus referencias.
+- Las respuestas aportadas a esta fase por el usuario. Consideraremos como válidas las que no generaron más preguntas y en ese caso se mergearán con el requirement en cuestión.
+- Las preguntas cuyas respuestas generaron más problemas y ya no fueron esclarecidas. Esas preguntas se guardarán como riesgos del requirement en cuestión.
+
+
+7. ¿qué marca la salida del ciclo?
+- No más de 2 iteraciones 
+
+
+8. ¿Debe clasificar los tipos de respuesta?
+Sí.
+a) Pregunta respondida con nueva información.
+b) Campo de respuesta vacío en el fichero CSV de retroalimentación
+c) Respuesta tipo: "dejar pendiente" o similar, semánticamente.
+
+
+9. ¿Debe tomar alguna decisión o decidir sobre el siguiente paso en el flujo?
+Sí. Las respuestas b) y c) implican "guardar como riesgo". Las respuestas tipo a) implica volver a analizar e iterar a menos que se haya alcanzado el límite.
+
+
+9. ¿Puede determinar que se terminen las iteraciones antes de alcanzar el límite de iteraciones?
+Sí, si la fase de Clarificación no encuentra problemas, puede saltar a la siguiente fase.
+También le dará al usuario la posibilidad de eludir el paso de responder a las preguntas. Continuará a la siguiente fase.
+
+
+10. ¿El estilo de las preguntas está definido en la plataforma o lo puede modificar el usuario? Por ejemplo: preguntas inductivas, creativas, etc.
+Absolutamente definidas por la plataforma, no elegible por el usuario.
+
+
+
+
+
 
 
 ---------------------
