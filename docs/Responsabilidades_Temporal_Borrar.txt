@@ -1,0 +1,34 @@
+
+Career: AI Engineering Solutions Architect
+
+Responsabilidades de las distintas etapas
+
+
+
+Evidence consolidation (para Forge).-
+
+Puede recibir una combinación de al menos uno de estos:
+Business Requirements en Confluence.
+Test cases de Jira. Con la sección de steps o sin ella.
+User Stories, siempre que tengan requerimientos como parte de la descripción.
+Bugs en Jira
+Use Cases en ficheros CSV 
+Documentación técnica en Confluence.
+Notas en ficheros de texto
+
+
+Tipos de evidencia: páginas de Confluence, notas en ficheros de texto, tickets de Jira, ficheros CSV.
+
+¿Tiene que normalizar cosas? Sí.
+Los bugs pueden tener de diferente manera la información que se necesita.
+Las user stories no siempre tienen el requirement como Acceptance Criteria. A veces es sólo un link dentro de la descripción
+
+Tiene que relacionar elementos? Sí.
+Bugs, tests o User stories que contengan frases similares son parte de la descripción de un mismo requirement. Y esto es precisamente lo que significa que dos evidencias pertenezcan a un mismo contexto.
+
+¿Tiene que conservar el origen? ¿A qué te refieres aquí? El origen es sólo para lectura. Y no hay que almacenarlo en ningún otro lugar.
+
+A Business Discovery se le da información agrupada por business requirements, uno por cada tópico con la referencia a la fuente donde se encontró.
+
+
+---------------------
