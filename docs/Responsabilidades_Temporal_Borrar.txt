@@ -38,10 +38,6 @@ A Business Discovery se le da información agrupada por business requirements, u
 
 Clarification.-
 
-Te doy 10 preguntas creadas por mí y sus respuestas.
-Necesito que evalúes con sentido crítico si realmente responden a lo que se me había pedido (responsablidades) o son más bien narrativas del flujo.
-También que me indiques si faltaron responsabilidades importantes por esclarecer.
-Y que evalúes de 0 a 10 cuán claras y directas son mis preguntas y respuestas, teniendo en cuenta que estoy en la transformación hacia arquitecto.
 
 Es un proceso iterativo.
 
@@ -100,6 +96,10 @@ También le dará al usuario la posibilidad de eludir el paso de responder a las
 10. ¿El estilo de las preguntas está definido en la plataforma o lo puede modificar el usuario? Por ejemplo: preguntas inductivas, creativas, etc.
 Absolutamente definidas por la plataforma, no elegible por el usuario.
 
+
+-----
+
+Traceability Analysis.-
 
 
 
