@@ -20,7 +20,9 @@ Coverage Report
 
 Functional Risk
 
-Specification Synthesis
+Specification Synthesis: Description of a behavior which is created from existing tests. A specification defines exactly what the system must do and under which conditions. They must be: testable, deterministic, consistent, traceable, atomic.
+
+Specification: a precise, verifiable, and sufficiently detailed description of the behavior or conditions that the system must meet in order to satisfy a Business Requirement. 
 
 Requirement issues: ambigüities, conflicts among reauirements, contradictions among them or within any of them, circular dependencies.
 
