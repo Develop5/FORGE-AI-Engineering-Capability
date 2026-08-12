@@ -101,9 +101,24 @@ Absolutamente definidas por la plataforma, no elegible por el usuario.
 
 Traceability Analysis.-
 
+- Recibir todos los requerimientos de Clarification, junto con sus referencias y las marcas de riesgo
+- Determinar si todos los business requirements están cubiertos por tests.
+- Determinar si a cada business requirement le corresponde uno, más tests o ninguno.
+- Determinar para cada test, cuál es el business requirement que está probando.
+- Determinar qué business requirements quedan sin test. Registrar como riesgo. Su registro contiene:
+	requirement afectado
+	problema encontrado: "No business requirement"
+	pregunta no respondida: "no question generated"
 
+- Si hay tests que no se pueden relacionar con ningún business requirement, crear specifications para ellos. Que cumplan con la definición en Glossary.md
+- Salida: relación de cada business requirement con tests.
+- Salida adicional: si hubo necesidad de crear specifications, la lista de éstas con los tests que corresponden.
+- Para cada business requirement mantiene todos los datos recibidos de entrada.
 
+---------------
 
+Coverage Analysis.-
 
+Tiene una única responsabilidad central: el cálculo del Business Requirement Coverage tal como se define en Glossary.md
 
 ---------------------
