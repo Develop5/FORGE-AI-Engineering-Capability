@@ -1,5 +1,7 @@
 
+# FORGE
 
+```text
 FORGE
 │
 ├── Evidence Consolidation
@@ -7,19 +9,20 @@ FORGE
 ├── Clarification
 ├── Traceability Analysis
 ├── Coverage Analysis
-└── Coverage Report
+├── Functional Risk
+└── Improvement of Requirement Coverage
         │
         ▼
       MVP
         │
         └── subset / implementation scope
-
-
+````
 
 **Responsabilidades de FORGE**, no del MVP.
 
+---
 
-## 1. Evidence Consolidation
+# 1. Evidence Consolidation
 
 ### Responsabilidades acordadas
 
@@ -161,9 +164,11 @@ Y hemos eliminado la idea anterior del límite de dos iteraciones.
 
 8. **Registrar como riesgo cada Business Requirement sin Test Case**, conservando la trazabilidad correspondiente.
 
-9. **Generar Specifications para los Tests que no puedan relacionarse con ningún Business Requirement**, como salida adicional para análisis posterior.
+9. **Synthesize Functional Specifications when they are required to structure or clarify the relationship between Business Requirements and Test Cases.**
 
-10. **Mantener todos los datos recibidos de los Business Requirements**, incluidas sus referencias y riesgos.
+10. **Maintain the traceability between any synthesized Specification, the relevant Business Requirements, and the Test Cases it helps structure or clarify.**
+
+11. **Mantener todos los datos recibidos de los Business Requirements**, incluidas sus referencias y riesgos.
 
 ### Regla de Coverage establecida
 
@@ -177,14 +182,87 @@ Un Business Requirement está **covered** si tiene **al menos un Test Case relac
 
 > **Calcular Business Requirement Coverage conforme a la definición establecida en `Glossary.md`, utilizando las relaciones de trazabilidad establecidas entre Business Requirements y Test Cases.**
 
-**no vamos a inventarle trabajo adicional simplemente porque sea una fase separada.**
+Coverage Analysis produce el Coverage Result como parte de esta misma responsabilidad.
+
+No existe una etapa separada de Coverage Result.
+
+### Responsabilidades acordadas
+
+1. **Calcular el Current Coverage** utilizando los Business Requirements y las relaciones establecidas con los Test Cases existentes.
+
+2. **Identificar los Business Requirements que tienen cobertura.**
+
+3. **Identificar los Business Requirements que no tienen cobertura identificada.**
+
+4. **Identificar los casos en los que la evidencia disponible es insuficiente para determinar la cobertura.**
+
+5. **Producir el Coverage Result** con la información necesaria para que el usuario pueda entender el estado de la cobertura.
+
+6. **Mantener la distinción entre Current Coverage y Projected Coverage.**
+
+### Punto deliberadamente abierto
+
+**No vamos a inventarle trabajo adicional simplemente porque sea una fase separada.**
 
 ---
 
-# 6. Coverage Report
+# 6. Functional Risk
 
+### Responsabilidad
 
+**Identificar y presentar el functional risk derivado de la información producida durante el análisis.**
+
+El riesgo puede estar asociado, entre otros casos, a:
+
+* Business Requirements sin Test Case relacionado;
+* evidencia insuficiente;
+* conflictos o inconsistencias no resueltos;
+* preguntas de Clarification que el usuario decide dejar sin resolver.
+
+Functional Risk no constituye un sistema genérico de project risk management.
 
 ---
+
+# 7. Improvement of Requirement Coverage
+
+### Responsabilidad
+
+**Mejorar el Business Requirement Coverage mediante la generación de Test Cases adicionales cuando el usuario lo solicite.**
+
+El usuario puede proporcionar un target de coverage.
+
+El target representa el **minimum desired coverage**.
+
+El valor por defecto es **95%**.
+
+FORGE intenta alcanzar **at least** el target solicitado.
+
+### Responsabilidades acordadas
+
+1. **Recibir el Current Coverage y la información de trazabilidad disponible.**
+
+2. **Identificar los Business Requirements que requieren cobertura adicional para alcanzar el target.**
+
+3. **Generar Test Cases adicionales destinados a cubrir esos Business Requirements.**
+
+4. **Establecer la trazabilidad entre los Test Cases generados y los Business Requirements correspondientes.**
+
+5. **Calcular el Projected Coverage resultante de incorporar los Test Cases generados.**
+
+6. **Identificar los Business Requirements que permanecerían sin suficiente cobertura.**
+
+7. **Determinar si el target solicitado ha sido alcanzado.**
+
+8. **Informar explícitamente cuando el target no pueda ser alcanzado.**
+
+### Regla de Projected Coverage
+
+**Projected Coverage no constituye evidencia de Test Coverage ejecutado.**
+
+Los Test Cases generados por FORGE no se consideran ejecutados ni validados por el mero hecho de haber sido generados.
+
+### Punto deliberadamente abierto
+
+Todavía no hemos definido en Architecture cómo se generarán los Test Cases ni cómo se determinará técnicamente la mejor combinación de Test Cases para alcanzar el target solicitado.
 
 

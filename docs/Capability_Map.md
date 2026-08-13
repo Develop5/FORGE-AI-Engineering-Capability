@@ -1,8 +1,8 @@
-
 ## AI Requirements Discovery Platform
 
-Capability 
-Business Requirement Coverage Analysis
+Capability
+
+Business Requirement Coverage Analysis and Improvement
 
 Supported by:
 
@@ -19,3 +19,8 @@ Supported by:
 • Coverage Analysis
 
 • Risk Identification
+
+• Test Case Generation
+
+• Requirement Coverage Improvement
+

@@ -19,9 +19,13 @@ Traceability Analysis
         ↓
 Coverage Analysis
         ↓
-Coverage Result
-        ↓
 Functional Risk
+        ↓
+Improvement of Requirement Coverage (when required)
+        ↓
+Generated Test Cases
+        ↓
+Projected Coverage
 ```
 
 The flow is evidence-driven. Different executions may provide different combinations of Evidence Sources, and the available evidence may be incomplete or insufficient.
@@ -41,7 +45,9 @@ Potential Evidence Sources include:
 * Test Case steps
 * Test Case titles or summaries
 * User Stories
+* Epics
 * Bugs
+* Acceptance Criteria
 * Use Cases
 * Technical documentation
 * Notes and other relevant product documentation
@@ -56,10 +62,12 @@ The absence of an Evidence Source must not be interpreted as evidence that the c
 
 FORGE analyses and consolidates the available evidence.
 
+Business Requirements may be explicitly identified or may be distributed across different Evidence Sources and expressed in different forms.
+
 ### Output
 
-* Business Requirements identified from the available evidence
-* Conflicts between requirements or evidence
+* Business Requirements
+* Conflicts
 * Unresolved Dependencies
 * Clarification Questions
 
@@ -89,6 +97,8 @@ Clarification is performed when the available evidence is insufficient, ambiguou
 
 If sufficient clarification cannot be obtained, FORGE must distinguish between conclusions supported by evidence and cases where the available evidence is insufficient.
 
+Unresolved questions do not prevent FORGE from continuing the analysis. They remain visible as unresolved information and may contribute to functional risk in the final result.
+
 ---
 
 ## Traceability Analysis
@@ -104,6 +114,8 @@ The objective is to determine whether each Business Requirement is covered by th
 Functional Specifications may be synthesized as an intermediate artefact when they are required to establish or clarify traceability.
 
 Specification generation is not a mandatory step of the MVP.
+
+A Functional Specification does not by itself demonstrate Business Requirement Coverage.
 
 ---
 
@@ -121,17 +133,15 @@ FORGE must distinguish between:
 
 The absence of an Evidence Source must not be interpreted as proof that the corresponding requirement or Test Case does not exist.
 
----
+### Coverage Result
 
-## Coverage Result
-
-The primary outcome of the MVP is a Business Requirement Coverage result.
+Coverage Analysis produces the Business Requirement Coverage result.
 
 The result should provide:
 
 * Business Requirements identified
 * Matching Test Cases
-* Coverage percentage, when it can be reliably calculated
+* Current coverage percentage, when it can be reliably calculated
 * Business Requirements without identified Test Case coverage
 * Insufficient or missing evidence
 * Relevant inconsistencies
@@ -143,77 +153,104 @@ The result should provide:
 
 FORGE uses the coverage result and identified evidence gaps or inconsistencies to expose remaining functional risk.
 
-The MVP does not attempt to provide a generic project risk assessment. The risk presented by FORGE is specifically related to the functional coverage evidenced by the available Business Requirements and Test Cases.
+The risk presented by FORGE is specifically related to the functional coverage evidenced by the available Business Requirements and Test Cases.
+
+---
+
+## Improvement of Requirement Coverage
+
+This capability allows FORGE to improve the current Business Requirement Coverage by generating additional Test Cases.
+
+The user may request a target coverage level.
+
+The target represents the **minimum desired coverage**.
+
+The default target is **95%**.
+
+FORGE attempts to achieve **at least** the requested target.
+
+### Input
+
+* Current Business Requirement Coverage
+* Business Requirements without identified Test Case coverage
+* Relevant traceability information
+* User-defined target coverage
+
+### FORGE
+
+* Identifies the Business Requirements that need additional Test Case coverage to reach the target.
+* Generates new Test Cases intended to cover the identified Business Requirements.
+* Establishes traceability between the generated Test Cases and the relevant Business Requirements.
+* Calculates the resulting projected coverage.
+
+### Output
+
+* Generated Test Cases
+* Traceability between generated Test Cases and Business Requirements
+* Projected coverage
+* Business Requirements that remain without sufficient coverage
+* Whether the requested target coverage was achieved
+
+Projected coverage must be clearly distinguished from current coverage because generated Test Cases have not necessarily been executed.
+
+If the requested target cannot be achieved, FORGE must explicitly report that the target was not achieved.
 
 ---
 
 # MVP User Flow
 
+The following capabilities are **part of the MVP**:
 
-The MVP deliberately starts with **existing Test Cases from Jira/XRay** as its primary Evidence Source.
+* Evidence Consolidation
+* Requirements Discovery
+* Clarification
+* Traceability Analysis
+* Coverage Analysis
+* Functional Risk identification
+* Improvement of Requirement Coverage
+* Test Case generation for improving requirement coverage
+* Projected Coverage calculation
 
-Jira Bugs and user-provided CSV notes may optionally supplement the Test Cases when additional evidence is available or required.
+The MVP therefore does not stop after calculating the existing coverage. It also allows the user to request improvement of that coverage by generating additional Test Cases.
 
-The MVP does not require other Evidence Sources such as Confluence Business Requirement pages, User Stories, Use Cases, or Technical documentation.
+---
 
-## 1. Jira/XRay Test Cases
+## 1. Evidence Sources
 
 ### Input
 
-The user provides existing Test Cases from Jira/XRay.
+The user provides available evidence through the platform.
 
-Test Cases may contain:
+Evidence may include:
 
-* Test Case title
-* Test Case description or summary
-* Test Case steps
-* Other available Test Case information
+* Confluence pages
+* Jira Test Cases
+* Jira Bugs
+* Jira User Stories
+* Jira Epics
 
-The MVP must support Test Cases both with and without detailed steps.
+The available content may contain explicit or implicit Business Requirements.
 
-FORGE must use the information that is actually available and must not assume that Test Case steps exist.
-
----
-
-## 2. Optional Jira Bugs
-
-The user may provide Jira Bugs as supplementary evidence.
-
-Bugs may provide additional information about:
-
-* Implemented or observed behaviour
-* Functional areas
-* Known defects
-* Relationships between functionality and existing tests
-
-Jira Bugs are optional and are not required when the Test Cases provide sufficient evidence.
+FORGE must use the information that is actually available and must not assume that a particular structure, title, field, or format exists.
 
 ---
 
-## 3. Optional CSV Notes
-
-When the available Jira evidence is insufficient, the user may provide additional contextual notes through a CSV file.
-
-The CSV is supplementary evidence used to provide additional context for Requirements Discovery and traceability analysis.
-
-The CSV is optional and is not required when the available Jira evidence provides sufficient information.
-
----
-
-## 4. Evidence Consolidation
+## 2. Evidence Consolidation
 
 ### FORGE
 
-* Ingests the available Jira/XRay Test Cases.
+* Ingests the available Confluence pages.
+* Ingests the available Jira Test Cases.
 * Ingests Jira Bugs when provided.
-* Ingests the optional CSV notes when provided.
+* Ingests Jira User Stories when provided.
+* Ingests Jira Epics when provided.
 * Identifies the type and relevance of the available evidence.
-* Consolidates the available information.
+* Consolidates related information across the available sources.
 * Identifies missing or potentially insufficient evidence.
 
 ---
 
-## 5. Requirements Discovery
+## 3. Requirements Discovery
 
 ### FORGE
 
@@ -221,6 +258,7 @@ The CSV is optional and is not required when the available Jira evidence provide
 * Identifies and consolidates Business Requirements.
 * Detects conflicts.
 * Identifies unresolved dependencies.
+* Identifies ambiguities.
 * Produces Clarification Questions when required.
 
 ### Output
@@ -232,7 +270,7 @@ The CSV is optional and is not required when the available Jira evidence provide
 
 ---
 
-## 6. Clarification
+## 4. Clarification
 
 ### FORGE
 
@@ -251,39 +289,94 @@ The CSV is optional and is not required when the available Jira evidence provide
 
 Pending questions remain visible when they cannot be resolved.
 
+Unresolved questions do not prevent FORGE from continuing the analysis. They remain visible as unresolved information and may contribute to functional risk in the final result.
+
 ---
 
-## 7. Traceability Analysis
+## 5. Traceability Analysis
 
 ### FORGE
 
 * Analyses the relationship between Business Requirements and existing Test Cases.
 * Uses available Test Case information, including titles, summaries and steps when available.
-* Uses supplementary CSV notes when provided.
+* Uses relevant supporting evidence from the available sources.
 * Identifies potential coverage gaps and inconsistencies.
+* Determines when an intermediate Functional Specification is useful to establish or clarify traceability.
 
 ### Intermediate Artefact
 
-A Functional Specification may be synthesized when required to establish or clarify traceability.
+A Functional Specification may be synthesized when required to establish or clarify traceability between Business Requirements and Test Cases.
 
 It is not a required output of the MVP.
 
+A Functional Specification does not by itself demonstrate Business Requirement Coverage.
+
 ---
 
-## 8. Coverage Analysis
+## 6. Coverage Analysis
 
 ### FORGE
 
 * Determines which Business Requirements have identified coverage from existing Test Cases.
 * Identifies Business Requirements without identified Test Case coverage.
 * Identifies cases where the available evidence is insufficient to determine coverage.
-* Calculates Business Requirement Coverage when the available evidence supports a reliable calculation.
+* Calculates current Business Requirement Coverage when the available evidence supports a reliable calculation.
+* Produces the Coverage Result.
+
+The calculated coverage represents the **current coverage based on existing Test Cases**.
 
 ---
 
-## 9. Coverage Result
+## 7. Functional Risk
 
-The MVP ends with a Coverage Result that provides the information defined in [First Valuable Outcome](#first-valuable-outcome).
+### FORGE
+
+* Identifies functional risk resulting from uncovered Business Requirements.
+* Identifies risk resulting from insufficient evidence.
+* Identifies relevant functional inconsistencies.
+* Keeps unresolved questions visible as remaining functional risk when applicable.
+
+The MVP does not attempt to provide a generic project risk assessment.
+
+---
+
+## 8. Improvement of Requirement Coverage
+
+**This capability is part of the MVP.**
+
+The user may request improvement of the current coverage by providing a target coverage level.
+
+The default target is **95%**.
+
+The target represents the **minimum desired coverage**.
+
+### Input
+
+* Current Business Requirement Coverage
+* Business Requirements without sufficient Test Case coverage
+* Relevant traceability information
+* User-defined target coverage
+
+### FORGE
+
+* Identifies the Business Requirements that require additional Test Case coverage.
+* Generates new Test Cases intended to cover those Business Requirements.
+* Establishes traceability between the generated Test Cases and the relevant Business Requirements.
+* Determines the projected coverage resulting from the generated Test Cases.
+
+FORGE attempts to achieve **at least** the requested target.
+
+### Output
+
+* Generated Test Cases
+* Traceability between generated Test Cases and Business Requirements
+* Projected coverage
+* Business Requirements that remain without sufficient coverage
+* Whether the requested target coverage was achieved
+
+Projected coverage is distinct from current coverage. Generated Test Cases have not necessarily been executed and therefore do not constitute evidence of executed test coverage.
+
+If the requested target cannot be achieved, FORGE explicitly reports that the target was not achieved.
 
 ---
 
@@ -293,13 +386,12 @@ The first valuable outcome delivered by the MVP is a **Business Requirement Cove
 
 * Business Requirements
 * Matching Test Cases
-* Coverage percentage, when reliably calculable
+* Current coverage percentage, when reliably calculable
 * Business Requirements without identified Test Case coverage
 * Insufficient evidence
 * Functional inconsistencies
 * Remaining functional risk
-* No more content is needed
+
+---
 
 
-
-  

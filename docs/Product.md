@@ -1,130 +1,259 @@
-# Product Definition
+# Product
 
-## Target User
+## Product Purpose
 
-### Primary User
+FORGE is an AI Engineering capability designed to help teams understand, trace, assess, and improve Business Requirement Coverage across heterogeneous project evidence.
 
-**Product Manager**
+FORGE analyses available project evidence to identify Business Requirements, establish traceability with existing Test Cases, calculate current Business Requirement Coverage, identify functional risk, and, when requested, generate additional Test Cases intended to improve coverage towards a user-defined target.
 
-The Product Manager is the primary consumer of the capability because they need visibility of functional risk and Business Requirement Coverage before a release.
+---
 
-### Secondary Stakeholders
+## Problem
 
-* QA Analysts
-* QA Managers
-* Business Analysts
-* Technical Leads
+Business Requirements are frequently distributed across different project artefacts and are not always explicitly identified or consistently structured.
 
-FORGE supports collaboration between these roles without changing their existing responsibilities.
+Relevant information may be found in:
+
+* Confluence pages
+* Jira Epics
+* Jira User Stories
+* Jira Acceptance Criteria
+* Jira Bugs and Expected Results
+* Jira Test Cases
+* Technical Requirements
+* Other relevant project documentation
+
+Teams therefore spend significant time manually reading, comparing, interpreting, and connecting information across these sources.
+
+This makes it difficult to determine:
+
+* Which Business Requirements actually exist
+* Whether different sources contain conflicting information
+* Whether requirements depend on each other
+* Which Test Cases provide evidence of coverage
+* Which Business Requirements remain uncovered
+* Where functional risk remains
+* What additional Test Cases could improve the coverage
 
 ---
 
 ## Product Goal
 
-FORGE provides an AI-assisted capability to determine and justify **Business Requirement Coverage against existing Test Cases**, even when the available evidence is incomplete, dispersed, heterogeneous, or inconsistently documented.
+FORGE aims to provide an evidence-driven way to:
 
-The MVP is explicitly focused on calculating Business Requirement Coverage using existing Test Cases.
+1. Discover and consolidate Business Requirements from heterogeneous project evidence.
+2. Identify conflicts, unresolved dependencies, and ambiguities.
+3. Support clarification of identified issues with the user.
+4. Establish traceability between Business Requirements and existing Test Cases.
+5. Calculate current Business Requirement Coverage.
+6. Identify remaining functional risk.
+7. Generate additional Test Cases when requested to improve Business Requirement Coverage towards a target.
 
 ---
 
-## Evidence Sources
+## Core Product Capabilities
 
-FORGE is designed to operate on heterogeneous Evidence Sources. The available evidence may vary between executions and may be incomplete, inconsistent, or distributed across multiple sources.
+### 1. Evidence Consolidation
 
-Potential Evidence Sources include:
+FORGE accepts heterogeneous project evidence and consolidates relevant information across the available sources.
 
-* Existing Test Cases from Jira/XRay
-* Business Requirement documentation
+The MVP supports:
+
+* Confluence pages
+* Jira Test Cases
+* Jira Bugs
+* Jira User Stories
+* Jira Epics
+
+Business Requirements do not need to be explicitly labelled as such in the source material.
+
+---
+
+### 2. Requirements Discovery
+
+FORGE analyses the available evidence to identify and consolidate Business Requirements.
+
+Business Requirements may be expressed explicitly or implicitly, including within:
+
+* Business Requirements documentation
+* Technical Requirements
 * User Stories
-* Bugs
-* Test Case steps
-* Test Case titles or summaries
-* Use Cases
-* Technical documentation
-* Notes and other relevant product documentation
+* Acceptance Criteria
+* Bug Expected Results
+* Epics
+* Other relevant project evidence
 
-FORGE is intended to support different combinations of these Evidence Sources.
+Requirements Discovery also identifies:
 
-The MVP deliberately starts with **existing Test Cases from Jira/XRay as the primary Evidence Source**, optionally supplemented by **Jira Bugs** and/or user-provided contextual notes through a CSV file.
+* Conflicts
+* Unresolved dependencies
+* Ambiguities
+* Clarification Questions
 
-Jira Test Cases may contain detailed steps or may provide only a title, summary, or other limited information.
-
-Jira Bugs may provide additional evidence about implemented behaviour, known defects, or functional areas relevant to the coverage analysis.
-
-When the available Test Case and Bug information is insufficient, the user may provide additional contextual notes through a CSV input.
-
-Additional Evidence Sources and combinations of sources are future extensions of the FORGE capability and are not required for the MVP.
-
+FORGE does not create or approve Business Requirements on behalf of stakeholders.
 
 ---
 
-## Requirements Discovery
+### 3. Clarification
 
-Requirements Discovery is the process through which FORGE consolidates and analyses the available evidence in order to establish a reliable understanding of the Business Requirements relevant to the coverage analysis.
+FORGE presents questions resulting from conflicts, ambiguities, unresolved dependencies, or insufficient evidence.
 
-Requirements Discovery may produce the following intermediate results:
+The user provides the available clarification.
 
-1. **Business Requirements identified**
+FORGE incorporates the clarification into the analysis and continues processing even when some questions remain unresolved.
 
-   * Business Requirements identified and consolidated from the available evidence.
-
-2. **Conflicts**
-
-   * Contradictions detected between requirements or other evidence sources.
-
-3. **Unresolved Dependencies**
-
-   * Dependencies or relationships that prevent a sufficiently reliable understanding of a requirement.
-
-4. **Clarification Questions**
-
-   * Questions requiring input from relevant stakeholders.
-
-Requirements Discovery does not create or approve Business Requirements. Business Requirements remain the responsibility of the appropriate business stakeholders.
+Unresolved questions remain visible and may contribute to the identified functional risk.
 
 ---
 
-## Specification Synthesis
+### 4. Traceability Analysis
 
-FORGE structures the discovered Business Requirements and their supporting evidence into traceable specifications.
+FORGE establishes and clarifies relationships between:
 
-Specifications provide a structured representation of the relationship between Business Requirements and test evidence. They support human validation and traceability but do not by themselves determine Business Requirement Coverage.
+* Business Requirements
+* Existing Test Cases
+* Relevant supporting evidence
 
----
+The purpose of traceability is to structure and make explicit the relationship between Business Requirements and Test Cases so that Business Requirement Coverage can subsequently be assessed.
 
-## Traceability and Coverage
+Functional Specifications may be synthesized as an intermediate artefact when required to establish or clarify traceability.
 
-FORGE establishes traceability between the Business Requirements identified through Requirements Discovery and the available existing Test Cases.
+Specifications are not themselves evidence of coverage.
 
-This traceability enables the calculation of **Business Requirement Coverage**.
-
-The coverage definition and formula are maintained in `Glossary.md`.
-
-The MVP does not require FORGE to generate new Test Cases in order to calculate coverage.
-
-The primary MVP outcome is the resulting **Business Requirement Coverage and the functional risk identified from the available evidence**.
+Specification generation is not a mandatory MVP output.
 
 ---
 
-## Intermediate Artefacts
+### 5. Coverage Analysis
 
-FORGE may generate or synthesize Functional Specifications when they are required to establish or clarify traceability between Business Requirements and Test Cases.
+FORGE calculates Business Requirement Coverage based on the available Business Requirements, traceability information, and existing Test Cases.
 
-Specifications are intermediate artefacts within the Requirements Discovery and traceability process.
+The coverage definition and calculation are maintained in `Glossary.md`.
 
-They are **not the final product outcome of the MVP**.
+Coverage Analysis produces the Coverage Result as part of the analysis.
+
+Coverage is based on existing Test Cases and must distinguish between:
+
+* Business Requirements with identified coverage
+* Business Requirements without identified coverage
+* Cases where the available evidence is insufficient to determine coverage
+
+The Coverage Result is a core FORGE capability and is not restricted to the MVP.
 
 ---
 
-## Product Principles
+### 6. Functional Risk
 
-* FORGE does not replace Business Analysts.
-* FORGE does not invent Business Requirements.
-* FORGE consolidates available evidence.
-* FORGE performs Requirements Discovery when information is incomplete or ambiguous.
-* FORGE does not assume that all Evidence Sources are available.
-* FORGE does not infer coverage without sufficient supporting evidence.
-* FORGE generates traceable intermediate artefacts when required for the analysis.
-* FORGE calculates Business Requirement Coverage against existing Test Cases.
-* FORGE exposes inconsistencies, evidence gaps, and functional risk.
-* FORGE does not change the responsibilities of the roles involved in the product lifecycle.
+FORGE identifies functional risk associated with:
+
+* Uncovered Business Requirements
+* Insufficient evidence
+* Functional inconsistencies
+* Unresolved clarification questions
+
+The product does not attempt to replace a general project risk-management process.
+
+---
+
+### 7. Improvement of Requirement Coverage
+
+FORGE can improve Business Requirement Coverage by generating additional Test Cases for Business Requirements that are insufficiently covered.
+
+The user may provide a target coverage.
+
+The target represents the minimum desired coverage.
+
+The default target is **95%**.
+
+FORGE attempts to achieve **at least** the requested target.
+
+The generated Test Cases are linked to the Business Requirements they are intended to cover.
+
+FORGE also provides a projected coverage based on the generated Test Cases.
+
+Projected coverage must be distinguished from current coverage because generated Test Cases have not necessarily been executed.
+
+If the requested target cannot be achieved, FORGE must explicitly report that the target was not achieved.
+
+---
+
+## Human Responsibility
+
+FORGE supports human decision-making and does not replace stakeholder ownership.
+
+Humans remain responsible for:
+
+* Validating Business Requirements
+* Resolving questions with stakeholders
+* Deciding how conflicts should be resolved
+* Accepting or rejecting the resulting understanding of requirements
+* Reviewing generated Test Cases
+* Deciding whether generated Test Cases should be adopted
+* Making final decisions regarding product behaviour
+
+FORGE provides analysis, traceability, coverage assessment, risk identification, and proposed improvements.
+
+---
+
+## MVP Scope
+
+The MVP demonstrates the complete core flow from project evidence to current coverage and coverage improvement.
+
+The MVP includes:
+
+* Evidence Consolidation
+* Requirements Discovery
+* Conflict and dependency identification
+* Ambiguity identification
+* Clarification Questions
+* Clarification handling
+* Traceability Analysis
+* Intermediate Functional Specification synthesis when required for traceability
+* Current Business Requirement Coverage calculation
+* Coverage Result
+* Functional Risk identification
+* Improvement of Requirement Coverage
+* Generation of additional Test Cases intended to improve coverage
+* Projected Coverage
+
+The MVP does not require:
+
+* Integration that writes generated Test Cases back into Jira
+* Execution of generated Test Cases
+* Verification of the generated Test Cases through their execution
+* A generic project risk-management system
+
+Generated Test Cases are proposals intended to improve coverage. Their generation does not constitute evidence that they have been executed or validated.
+
+---
+
+## First Valuable Outcome
+
+The first valuable outcome is a **Business Requirement Coverage result** that allows the user to understand:
+
+* Which Business Requirements have been identified
+* Which existing Test Cases are associated with them
+* Current Business Requirement Coverage
+* Which Business Requirements lack identified coverage
+* Where evidence is insufficient
+* What functional inconsistencies remain
+* What functional risk remains
+
+Coverage improvement is subsequently available through the Improvement of Requirement Coverage capability.
+
+---
+
+## Product Boundary
+
+FORGE focuses on the relationship between Business Requirements and Test Cases.
+
+It does not aim to:
+
+* Replace Jira or Confluence
+* Replace stakeholder decision-making
+* Replace Test Case execution platforms
+* Automatically declare requirements approved
+* Treat generated Test Cases as executed evidence
+* Provide generic project management or risk management
+
+-----
