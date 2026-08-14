@@ -154,21 +154,59 @@ Eso es precisamente el material que necesitaremos para construir el **Architectu
 
 ---
 
-# Improvement of Requirement Coverage
+## Improvement of Requirement Coverage
 
-1. Recibir los Test Cases existentes, Specifications, Business Requirements, riesgos y referencias relevantes.
-2. Determinar qué Business Requirements requieren nuevos Test Cases para mejorar el Coverage.
-3. Determinar el target de Business Requirement Coverage aplicable.
-4. Determinar cuántos Test Cases adicionales son necesarios.
-5. Generar los Test Cases adicionales para los Business Requirements identificados.
-6. Calcular el **Projected Coverage** considerando todos los Business Requirements y los Test Cases existentes y generados.
-7. Determinar cuándo finalizar la generación:
+1. **Recibir**:
 
-   * target alcanzado;
-   * usuario interrumpe;
-   * información insuficiente para generar más Test Cases;
-   * **[pendiente de decidir] imposibilidad de mejorar Coverage pese a disponer de información suficiente**.
-8. Entregar los resultados de la mejora, incluyendo los Test Cases generados y el Projected Coverage.
+   * todos los Business Requirements;
+   * todos los Test Cases existentes;
+   * Specifications;
+   * riesgos;
+   * referencias relevantes.
+
+2. **Determinar el target de Business Requirement Coverage** aplicable, utilizando el valor proporcionado por el usuario o el valor por defecto definido por FORGE.
+
+3. **Identificar los Business Requirements que actualmente no tienen ningún Test Case** y que, por tanto, requieren mejora de Coverage.
+
+4. **Estimar cuántos Test Cases serían necesarios para alcanzar el target** y determinar a qué Business Requirement correspondería cada uno.
+
+5. **Determinar si existe información suficiente para generar cada Test Case estimado**.
+
+6. **Identificar los casos en los que se necesita un Test Case para alcanzar el target, pero no existe información suficiente para generarlo.**
+
+7. **Generar los Test Cases para los Business Requirements para los que se haya determinado que existe información suficiente.**
+
+8. **Calcular el Projected Coverage** utilizando todos los Business Requirements y todos los Test Cases existentes y generados.
+
+9. **Determinar cuándo finalizar el proceso de generación**, pudiendo terminar porque:
+
+   * se ha alcanzado el target;
+   * el usuario ha interrumpido el proceso;
+   * no existe información suficiente para generar los Test Cases necesarios restantes.
+
+10. **Entregar el resultado de la mejora**, incluyendo:
+
+    * Test Cases generados;
+    * Business Requirements que pretenden cubrir;
+    * Projected Coverage;
+    * indicación de si se alcanzó el target;
+    * motivo por el que terminó la generación;
+    * necesidades de Test Cases que no pudieron materializarse por falta de información.
+
+### Distinción importante que queda establecida
+
+Esta capacidad **no vuelve a ejecutar Traceability Analysis**.
+
+La relación:
+
+```text
+Generated Test Case → Business Requirement
+```
+
+queda establecida durante la propia generación, porque cada Test Case se genera específicamente para un BR determinado.
+
+Y solo se generan Test Cases para **BRs que actualmente no tienen ningún Test Case**.
+
 
 ---
 
