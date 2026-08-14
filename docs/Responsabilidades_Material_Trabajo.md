@@ -154,6 +154,8 @@ Eso es precisamente el material que necesitaremos para construir el **Architectu
 
 ---
 
+Claro. Esta es la versión consolidada **después de todas las aclaraciones**, incluyendo la relación con `Projected Coverage`.
+
 ## Improvement of Requirement Coverage
 
 1. **Recibir**:
@@ -170,13 +172,18 @@ Eso es precisamente el material que necesitaremos para construir el **Architectu
 
 4. **Estimar cuántos Test Cases serían necesarios para alcanzar el target** y determinar a qué Business Requirement correspondería cada uno.
 
-5. **Determinar si existe información suficiente para generar cada Test Case estimado**.
+5. **Determinar si existe información suficiente para generar cada Test Case estimado.**
 
 6. **Identificar los casos en los que se necesita un Test Case para alcanzar el target, pero no existe información suficiente para generarlo.**
 
 7. **Generar los Test Cases para los Business Requirements para los que se haya determinado que existe información suficiente.**
 
-8. **Calcular el Projected Coverage** utilizando todos los Business Requirements y todos los Test Cases existentes y generados.
+8. **Calcular el Projected Coverage** utilizando:
+
+   * todos los Business Requirements;
+   * todos los Test Cases existentes;
+   * todos los Test Cases generados;
+   * las relaciones de cada Test Case con su Business Requirement correspondiente.
 
 9. **Determinar cuándo finalizar el proceso de generación**, pudiendo terminar porque:
 
@@ -189,26 +196,19 @@ Eso es precisamente el material que necesitaremos para construir el **Architectu
     * Test Cases generados;
     * Business Requirements que pretenden cubrir;
     * Projected Coverage;
+    * Business Requirements covered;
+    * Business Requirements no covered;
+    * target;
     * indicación de si se alcanzó el target;
     * motivo por el que terminó la generación;
     * necesidades de Test Cases que no pudieron materializarse por falta de información.
 
-### Distinción importante que queda establecida
+### Regla importante
 
-Esta capacidad **no vuelve a ejecutar Traceability Analysis**.
+**Improvement of Requirement Coverage no vuelve a ejecutar Traceability Analysis.**
 
-La relación:
-
-```text
-Generated Test Case → Business Requirement
-```
-
-queda establecida durante la propia generación, porque cada Test Case se genera específicamente para un BR determinado.
-
-Y solo se generan Test Cases para **BRs que actualmente no tienen ningún Test Case**.
-
+La relación entre un Test Case generado y el Business Requirement que pretende cubrir queda establecida durante la generación.
 
 ---
-
 
 
