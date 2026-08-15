@@ -1,214 +1,406 @@
-Sí. Te las dejo **como referencia de trabajo**, incorporando las correcciones y matices que fuimos aprobando. No las considero todavía el documento oficial de arquitectura.
 
-## Evidence Consolidation
 
-1. **Aceptar evidencias heterogéneas** de las fuentes soportadas:
 
-   * páginas de Confluence;
-   * tickets de Jira;
-   * ficheros CSV;
-   * ficheros de texto.
+# Architecture Responsibility Map
 
-2. **Extraer y normalizar la información relevante** de cada tipo de evidencia, teniendo en cuenta que una misma información puede aparecer expresada de formas diferentes.
-
-3. **Agrupar evidencias que pertenecen al mismo contexto o tópico**, sin asumir que un grupo equivale necesariamente a un Business Requirement.
-
-4. **Relacionar evidencias que pertenecen a un mismo contexto**, utilizando las características disponibles de cada evidencia.
-
-5. **Mantener la referencia a la fuente original** de cada evidencia.
-
-6. **Entregar la información agrupada y normalizada** a Requirements Discovery, con las referencias correspondientes.
-
-> Punto importante: Evidence Consolidation **no determina que exista un Business Requirement**. Produce agrupaciones de evidencia para que Requirements Discovery pueda hacerlo.
-
----
-
-# Clarification
-
-1. **Recibir los candidatos a Business Requirements**, junto con sus referencias y los problemas/findings detectados.
-
-2. **Analizar los problemas pendientes** de acuerdo con las definiciones del dominio.
-
-3. **Generar preguntas de aclaración**, vinculando cada pregunta con el finding que la originó.
-
-4. **Recibir las respuestas del usuario** y mantener su relación con las preguntas correspondientes.
-
-5. **Determinar si las respuestas son suficientemente aclaratorias**, volviendo a analizar el candidato con la nueva información.
-
-6. **Detectar nuevos problemas** que puedan aparecer como consecuencia de las respuestas.
-
-7. **Generar nuevas preguntas** cuando esos nuevos problemas requieran aclaración.
-
-8. **Incorporar al Business Requirement la información que haya quedado aclarada**, manteniendo la trazabilidad con las preguntas y respuestas originales.
-
-9. **Clasificar las respuestas** como, al menos:
-
-   * respuesta que aporta nueva información;
-   * respuesta vacía;
-   * respuesta que indica que el asunto queda pendiente/debe ignorarse por ahora.
-
-10. **Registrar como riesgo las cuestiones que el usuario decide dejar sin resolver**, conservando:
-
-    * Business Requirement afectado;
-    * problema encontrado;
-    * pregunta no respondida.
-
-11. **Mantener el historial de preguntas y respuestas** para preservar la trazabilidad de la clarificación.
-
-12. **Determinar si existen todavía problemas que requieran otra iteración.**
-
-13. **Permitir que el usuario decida finalizar la clarificación**, incluso cuando existan problemas pendientes; estos quedan entonces registrados como riesgos.
-
-> Corrección importante respecto a una versión anterior: **Clarification no tiene un límite de iteraciones de dos**. El usuario decide cuándo dejar de iterar.
-
----
-
-# Traceability Analysis
-
-1. **Recibir los Business Requirements** procedentes de Clarification, junto con sus referencias y riesgos.
-
-2. **Recibir/analizar los Test Cases existentes** y la información disponible sobre ellos.
-
-3. **Evaluar la información disponible de cada Test Case** según su tipo y completitud, incluyendo cuando estén disponibles:
-
-   * título;
-   * descripción;
-   * steps;
-   * expected result;
-   * referencias explícitas;
-   * otras evidencias relevantes.
-
-4. **Determinar las relaciones entre Test Cases y Business Requirements**.
-
-5. **Establecer todas las relaciones suficientemente claras**, permitiendo una relación N:N entre Business Requirements y Test Cases.
-
-6. **No establecer una relación cuando la correspondencia sea incierta.**
-
-7. **Determinar qué Business Requirements tienen al menos un Test Case relacionado.**
-
-8. **Identificar los Business Requirements que no tienen ningún Test Case relacionado.**
-
-9. **Registrar como riesgo cada Business Requirement sin Test Case.**
-
-10. **Generar Specifications para los Test Cases que no puedan relacionarse con ningún Business Requirement**, como salida adicional para análisis posterior.
-
-11. **Mantener todos los datos recibidos de los Business Requirements**, incluidas referencias y riesgos.
-
-### Regla establecida para Coverage
+Propongo construirlo en **cuatro niveles**, porque así evitamos mezclar responsabilidades.
 
 ```text
-BR → ≥ 1 Test Case relacionado → COVERED
-BR → 0 Test Cases relacionados → NOT COVERED
+                    ┌─────────────────────────┐
+                    │       INTERFACE          │
+                    │   Web / Agent / Skill   │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │  WORKFLOW ORCHESTRATION │
+                    │                         │
+                    │ execution lifecycle     │
+                    │ state                   │
+                    │ transitions             │
+                    │ user decisions          │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+        ┌─────────────────────────────────────────────┐
+        │                 FORGE DOMAIN                 │
+        │                                             │
+        │  Evidence Consolidation                    │
+        │  Requirements Discovery                     │
+        │  Clarification                              │
+        │  Traceability Analysis                      │
+        │  Coverage Analysis                           │
+        │  Coverage Improvement Planning               │
+        │  Test Case Generation                        │
+        │                                             │
+        │  Domain concepts:                           │
+        │  BR / Finding / Question / Risk /            │
+        │  Specification / Test Case / Coverage Result │
+        └──────────────────────┬──────────────────────┘
+                               │
+                               ▼
+                    ┌─────────────────────────┐
+                    │   EXTERNAL SERVICES     │
+                    │                         │
+                    │ LLM                     │
+                    │ Jira                    │
+                    │ Confluence              │
+                    │ File sources             │
+                    └─────────────────────────┘
 ```
 
-Y una relación incierta **no cuenta como relación de trazabilidad**.
+**Pero este dibujo es todavía demasiado abstracto.** Ahora tenemos que asignar responsabilidades.
 
 ---
 
-# Coverage Analysis
+# 1. Interface / Adapters
 
-Aquí hemos sido deliberadamente muy estrictos:
+### Responsabilidad
 
-### Única responsabilidad
+**Interactuar con el exterior de FORGE sin contener lógica de negocio.**
 
-> **Calcular Business Requirement Coverage conforme a la definición establecida en `Glossary.md`, utilizando las relaciones de trazabilidad establecidas entre Business Requirements y Test Cases.**
+Puede:
 
-Es decir:
+* recibir inputs del usuario;
+* presentar preguntas;
+* recoger respuestas;
+* mostrar resultados;
+* permitir decisiones del usuario;
+* adaptar formatos externos al modelo que espera FORGE;
+* representar `Coverage Result`.
+
+No debe:
+
+* decidir si un BR está cubierto;
+* detectar conflictos;
+* generar Questions;
+* decidir cuándo un Finding es Risk;
+* calcular Coverage.
+
+---
+
+# 2. Workflow Orchestrator
+
+Esta es probablemente la pieza que más hemos descubierto durante este ejercicio.
+
+### Responsabilidad
+
+**Controlar la ejecución de FORGE.**
+
+Debe:
+
+* iniciar una ejecución;
+* mantener su estado;
+* invocar capabilities en el orden correspondiente;
+* saber qué fase está ejecutándose;
+* gestionar esperas por interacción del usuario;
+* reanudar una ejecución;
+* recibir decisiones del usuario;
+* decidir qué capability se ejecuta a continuación;
+* controlar iteraciones;
+* determinar cuándo termina el workflow.
+
+No debe:
+
+* analizar Requirements;
+* generar Questions;
+* calcular Coverage;
+* generar Test Cases;
+* construir la lógica funcional del Coverage Result.
+
+En otras palabras:
+
+> **Orchestrator controla el proceso; las capabilities hacen el trabajo de análisis.**
+
+---
+
+# 3. Evidence Consolidation
+
+Responsable de:
+
+* recibir diferentes tipos de evidencia;
+* normalizar la información necesaria;
+* relacionar evidencias;
+* agruparlas por tópico;
+* conservar las referencias.
+
+Entrega:
 
 ```text
-Business Requirements
-        +
-Traceability BR ↔ Test
-        ↓
-Coverage Analysis
-        ↓
-Business Requirement Coverage
+Topic
+├── name
+├── information found
+└── references
 ```
 
-No genera preguntas, no genera Tests, no modifica Requirements y no decide qué hacer con los riesgos.
+No determina todavía que exista un BR.
 
 ---
 
-## Y una observación importante para lo que viene
+# 4. Requirements Discovery
 
-Estas cuatro capacidades ya nos están dando algo muy útil para arquitectura:
+Responsable de:
+
+* transformar Topics en candidatos a BR;
+* separar necesidades distintas;
+* relacionar evidencias;
+* identificar duplicidades;
+* identificar jerarquías/agregaciones;
+* fusionar candidatos duplicados;
+* detectar Findings;
+* conservar referencias.
+
+Entrega:
 
 ```text
-Evidence Consolidation
-        ↓
+Business Requirement Candidate
++
+Findings
+```
+
+---
+
+# 5. Clarification
+
+Responsable de:
+
+* recibir BRs y Findings;
+* generar Questions;
+* procesar respuestas;
+* reevaluar los problemas;
+* determinar si los Findings quedan resueltos;
+* actualizar los BRs con las aclaraciones;
+* convertir Findings no resueltos en Risks al finalizar.
+
+No hace Requirements Discovery.
+
+---
+
+# 6. Traceability Analysis
+
+Responsable de:
+
+* relacionar BRs con Test Cases;
+* determinar relaciones N:N;
+* identificar BRs sin Test Case;
+* registrar esos casos como Risk;
+* identificar Test Cases que no pueden relacionarse con un BR;
+* generar Specifications para esos Tests;
+* conservar referencias y demás información de los BRs.
+
+Y una regla importante:
+
+> **No convierte Specifications en BRs.**
+
+---
+
+# 7. Coverage Analysis
+
+Responsabilidad central:
+
+> **Calcular Business Requirement Coverage.**
+
+Entrada:
+
+```text
+BRs
++
+Test Cases
++
+BR ↔ Test Case relationships
+```
+
+Resultado:
+
+```text
+Current Coverage
+BRs covered
+BRs not covered
+```
+
+Los Risks se conservan pero **no participan en el cálculo**.
+
+---
+
+# 8. Coverage Improvement Planning
+
+Responsable de:
+
+* recibir Current Coverage;
+* recibir target;
+* identificar BRs no covered;
+* determinar cuáles necesitan Tests;
+* estimar cuántos Tests hacen falta;
+* asociar esas necesidades a BRs.
+
+No:
+
+* genera Tests;
+* consulta Specifications;
+* determina si un Test puede generarse.
+
+Entrega:
+
+```text
+Coverage Improvement Plan
+```
+
+---
+
+# 9. Test Case Generation
+
+Responsable de:
+
+* recibir el plan;
+* utilizar BRs;
+* utilizar Acceptance Criteria;
+* utilizar References como contexto disponible;
+* utilizar Risks como contexto;
+* utilizar Specifications **aprobadas**;
+* determinar, individualmente, si existe información suficiente;
+* generar Test Cases;
+* informar qué necesidades no pudieron satisfacerse y por qué.
+
+No:
+
+* recalcula Coverage;
+* modifica BRs;
+* resuelve Clarification;
+* vuelve a ejecutar Traceability.
+
+---
+
+# 10. Projected Coverage
+
+No lo convertimos en capability.
+
+Es una **responsabilidad de cálculo** dentro del Improvement.
+
+Recibe:
+
+```text
+All BRs
++
+Existing TCs
++
+Generated TCs
++
+BR ↔ TC relationships
+```
+
+Produce:
+
+```text
+Projected Coverage
+BRs covered
+BRs not covered
+Target
+```
+
+Y **no utiliza** Risks ni Specifications para determinar coverage.
+
+---
+
+# 11. Coverage Result
+
+Aquí está nuestra decisión arquitectónica nueva.
+
+`Coverage Result` pertenece al **dominio de FORGE**.
+
+No es una capability y no pertenece a la interfaz.
+
+Puede contener:
+
+* Current Coverage;
+* Projected Coverage;
+* Target;
+* BRs covered;
+* BRs not covered;
+* Risks;
+* generated Test Cases;
+* Tests que no pudieron generarse;
+* razones;
+* información necesaria para explicar por qué no se alcanzó el target.
+
+La interfaz decide cómo representarlo.
+
+---
+
+# 12. External Services
+
+Y aquí hay otra frontera que debemos mantener.
+
+FORGE puede utilizar:
+
+* LLM;
+* Jira;
+* Confluence;
+* ficheros;
+* eventualmente otros sistemas.
+
+Pero las capabilities **no deberían estar diseñadas alrededor de una implementación concreta de esos servicios**.
+
+Por ejemplo:
+
+```text
 Requirements Discovery
-        ↓
-Clarification
-        ↓
-Traceability Analysis
-        ↓
-Coverage Analysis
-        ↓
-Improvement of Requirement Coverage
+        │
+        ▼
+   LLM capability
+        │
+        ▼
+   LLM provider
 ```
 
-Y ahora estamos descubriendo que **cada frontera no es simplemente un paso del workflow**: cada una transforma información y tiene responsabilidades propias.
+No:
 
-Eso es precisamente el material que necesitaremos para construir el **Architecture Boundary Map** cuando terminemos de definir las capacidades nuevas.
+```text
+Requirements Discovery
+        │
+        ▼
+   OpenAI GPT-X
+```
 
-
----
-
-Claro. Esta es la versión consolidada **después de todas las aclaraciones**, incluyendo la relación con `Projected Coverage`.
-
-## Improvement of Requirement Coverage
-
-1. **Recibir**:
-
-   * todos los Business Requirements;
-   * todos los Test Cases existentes;
-   * Specifications;
-   * riesgos;
-   * referencias relevantes.
-
-2. **Determinar el target de Business Requirement Coverage** aplicable, utilizando el valor proporcionado por el usuario o el valor por defecto definido por FORGE.
-
-3. **Identificar los Business Requirements que actualmente no tienen ningún Test Case** y que, por tanto, requieren mejora de Coverage.
-
-4. **Estimar cuántos Test Cases serían necesarios para alcanzar el target** y determinar a qué Business Requirement correspondería cada uno.
-
-5. **Determinar si existe información suficiente para generar cada Test Case estimado.**
-
-6. **Identificar los casos en los que se necesita un Test Case para alcanzar el target, pero no existe información suficiente para generarlo.**
-
-7. **Generar los Test Cases para los Business Requirements para los que se haya determinado que existe información suficiente.**
-
-8. **Calcular el Projected Coverage** utilizando:
-
-   * todos los Business Requirements;
-   * todos los Test Cases existentes;
-   * todos los Test Cases generados;
-   * las relaciones de cada Test Case con su Business Requirement correspondiente.
-
-9. **Determinar cuándo finalizar el proceso de generación**, pudiendo terminar porque:
-
-   * se ha alcanzado el target;
-   * el usuario ha interrumpido el proceso;
-   * no existe información suficiente para generar los Test Cases necesarios restantes.
-
-10. **Entregar el resultado de la mejora**, incluyendo:
-
-    * Test Cases generados;
-    * Business Requirements que pretenden cubrir;
-    * Projected Coverage;
-    * Business Requirements covered;
-    * Business Requirements no covered;
-    * target;
-    * indicación de si se alcanzó el target;
-    * motivo por el que terminó la generación;
-    * necesidades de Test Cases que no pudieron materializarse por falta de información.
-
-### Regla importante
-
-**Improvement of Requirement Coverage no vuelve a ejecutar Traceability Analysis.**
-
-La relación entre un Test Case generado y el Business Requirement que pretende cubrir queda establecida durante la generación.
+Esto será especialmente importante para tu objetivo de convertir FORGE posteriormente en una **Skill/capability reutilizable por distintos agentes**.
 
 ---
 
+# El mapa que tenemos ahora
+
+En forma compacta:
+
+```text
+┌──────────────────────────────────────────────┐
+│                 INTERFACE                    │
+│  interaction / presentation / adaptation     │
+└───────────────────────┬──────────────────────┘
+                        │
+                        ▼
+┌──────────────────────────────────────────────┐
+│            WORKFLOW ORCHESTRATOR             │
+│ lifecycle / state / transitions / decisions │
+└───────────────────────┬──────────────────────┘
+                        │
+                        ▼
+┌──────────────────────────────────────────────┐
+│                 FORGE DOMAIN                 │
+│                                              │
+│ Evidence Consolidation                       │
+│ Requirements Discovery                       │
+│ Clarification                                │
+│ Traceability Analysis                        │
+│ Coverage Analysis                            │
+│ Coverage Improvement Planning                │
+│ Test Case Generation                         │
+│                                              │
+│ BR / Finding / Question / Risk               │
+│ Specification / Test Case / Coverage Result  │
+└───────────────────────┬──────────────────────┘
+                        │
+                        ▼
+┌──────────────────────────────────────────────┐
+│             EXTERNAL SERVICES                │
+│ Jira / Confluence / Files / LLM providers    │
+└──────────────────────────────────────────────┘
+```
 
