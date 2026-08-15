@@ -12,30 +12,34 @@ The MVP is a subset of the capabilities and responsibilities defined here.
 
 ## Responsibility
 
-Evidence Consolidation consolidates heterogeneous evidence into structured topics that can be analyzed by Requirements Discovery.
+Evidence Consolidation consolidates heterogeneous Evidence into structured topics that can be analyzed by Requirements Discovery.
 
 ## Responsibilities
 
-1. Receive references to external evidence sources.
+1. Receive references to external Evidence Sources.
 
-2. Obtain the content required for analysis through the appropriate external source mechanism.
+2. Determine what Evidence content is required for analysis.
 
-3. Extract and normalize relevant information from the available evidence.
+3. Obtain the required Evidence through the appropriate external source mechanism.
 
-4. Group evidence that belongs to the same topic or context without assuming that a topic represents a Business Requirement.
+4. Extract and normalize relevant information from the available Evidence.
 
-5. Preserve the reference associated with each piece of evidence.
+5. Group Evidence that belongs to the same topic or context without assuming that a topic represents a Business Requirement.
 
-6. Produce structured topics containing:
+6. Preserve the reference associated with each piece of Evidence.
+
+7. Produce structured topics containing:
    - topic name;
    - information found;
-   - references to the originating evidence.
+   - references to the originating Evidence Sources.
 
-7. Provide the consolidated topics to Requirements Discovery.
+8. Provide the consolidated topics to Requirements Discovery.
 
 ## Boundary
 
-Evidence Consolidation determines what evidence content is required for its analysis, but it does not directly depend on concrete external systems such as Jira or Confluence. External access is provided through the corresponding source abstraction or adapter.
+Evidence Consolidation determines what Evidence content is required for its analysis, but it does not directly depend on concrete external systems such as Jira or Confluence.
+
+External access is provided through the corresponding source abstraction or adapter.
 
 ---
 
@@ -43,48 +47,56 @@ Evidence Consolidation determines what evidence content is required for its anal
 
 ## Responsibility
 
-Requirements Discovery identifies and structures Business Requirement candidates from the consolidated evidence and identifies problems that require clarification.
+Requirements Discovery identifies and structures Business Requirements from consolidated Evidence and identifies Findings affecting those Business Requirements.
 
 ## Responsibilities
 
 1. Receive consolidated topics and their references from Evidence Consolidation.
 
-2. Analyze the available evidence to identify Business Requirement candidates.
+2. Analyze the available Evidence to identify Business Requirements.
 
-3. Relate evidence semantically to determine which evidence contributes to the same Business Requirement candidate.
+3. Relate Evidence semantically to determine which Evidence contributes to the same Business Requirement.
 
-4. Decompose a topic or grouping when it contains multiple distinct needs that should become separate Business Requirement candidates.
+4. Decompose a topic or grouping when it contains multiple distinct needs that should become separate Business Requirements.
 
-5. Identify duplicate Business Requirement candidates.
+5. Identify duplicate Business Requirements.
 
-6. Merge duplicate candidates into a single candidate while preserving all references to the original evidence and candidates.
+6. Merge duplicate Business Requirements into a single Business Requirement while preserving all references to the original Evidence and candidates.
 
 7. Identify relevant relationships between Business Requirements, including:
    - hierarchy;
    - aggregation;
-   - duplication.
+   - duplication;
+   - dependencies.
 
-8. Identify problems affecting Business Requirement candidates, including ambiguities, conflicts, insufficient information, and other relevant inconsistencies.
+8. Identify problems affecting Business Requirements, including:
+   - ambiguities;
+   - conflicts;
+   - insufficient information;
+   - unresolved dependencies;
+   - other relevant inconsistencies.
 
 9. Create a Finding for each identified problem.
 
 10. Associate each Finding with all Business Requirements affected by the problem.
 
-11. Preserve the relevant information of each Business Requirement candidate, including:
-    - identifier;
-    - title;
-    - priority, when available;
-    - acceptance criteria, when available;
-    - dependencies;
-    - references to supporting evidence.
+11. Preserve the relevant information of each Business Requirement, including:
+   - identifier;
+   - title;
+   - priority, when available;
+   - acceptance criteria, when available;
+   - dependencies;
+   - references to supporting Evidence.
 
-12. Preserve Business Requirement candidates even when their information is incomplete or ambiguous.
+12. Preserve Business Requirements even when their information is incomplete or ambiguous.
 
-13. Provide the resulting Business Requirement candidates, Findings, and references to Clarification.
+13. Provide the resulting Business Requirements, Findings, and references to Clarification.
 
 ## LLM Use
 
-Requirements Discovery may use LLM capabilities to support semantic analysis and relationship identification. The capability remains independent of any specific LLM provider or model.
+Requirements Discovery may use LLM capabilities to support semantic analysis and relationship identification.
+
+The capability remains independent of any specific LLM provider or model.
 
 ---
 
@@ -92,7 +104,7 @@ Requirements Discovery may use LLM capabilities to support semantic analysis and
 
 ## Responsibility
 
-Clarification resolves, where possible, problems identified in Business Requirements through interaction with the user.
+Clarification processes Findings and, where possible, resolves the problems identified in Business Requirements through interaction with the user.
 
 ## Responsibilities
 
@@ -118,12 +130,13 @@ Clarification resolves, where possible, problems identified in Business Requirem
 
 11. Generate new Findings and Questions when the new information reveals new problems.
 
-12. When the user leaves a Finding unresolved and clarification ends, convert that unresolved Finding into a Risk.
+12. When clarification ends with an unresolved Finding, convert that unresolved Finding into a Risk.
 
 13. Ensure that each Risk retains traceability to:
-    - the affected Business Requirement;
+    - the affected Business Requirement, when applicable;
     - the unresolved problem;
-    - the unanswered or unresolved Question, when applicable.
+    - the unanswered or unresolved Question, when applicable;
+    - the originating capability.
 
 ## Clarification Lifecycle
 
@@ -131,7 +144,7 @@ A Question exists only while it represents the current Finding being clarified.
 
 When a response resolves the Finding, the Question is no longer required.
 
-When a response reveals a different problem, the original Question is no longer the active question. The newly identified problem becomes a new Finding and may generate a new Question.
+When a response reveals a different problem, the original Question is no longer the active Question. The newly identified problem becomes a new Finding and may generate a new Question.
 
 Clarification does not decide unilaterally when the workflow ends. The decision to continue or stop clarification belongs to the user and is coordinated by the Workflow Orchestrator.
 
@@ -145,19 +158,19 @@ Traceability Analysis determines the relationships between Business Requirements
 
 ## Responsibilities
 
-1. Receive all Business Requirements produced by Clarification, together with their references and Risks.
+1. Receive all Business Requirements produced by Clarification, together with their references and associated Risks.
 
 2. Receive the available Test Cases.
 
-3. Analyze the available evidence associated with each Test Case according to its type and completeness.
+3. Analyze the available Evidence associated with each Test Case according to its type and completeness.
 
-4. Determine whether a Test Case can be related to a Business Requirement using the available evidence, including when applicable:
+4. Determine whether a Test Case can be related to a Business Requirement using the available Evidence, including when applicable:
    - title;
    - description;
    - steps;
    - expected result;
    - explicit references;
-   - other available evidence.
+   - other available Evidence.
 
 5. Establish all Business Requirement ↔ Test Case relationships that are sufficiently clear.
 
@@ -167,28 +180,25 @@ Traceability Analysis determines the relationships between Business Requirements
 
 8. Identify Business Requirements that have no related Test Case.
 
-9. Register a Risk for each Business Requirement without Test Case coverage.
+9. Preserve all Business Requirement information received from Clarification, including references and associated Risks.
 
-   The Risk contains:
-   - affected Business Requirement;
-   - problem: `No business requirement` is not applicable here; the problem is the absence of Test Case coverage;
-   - unanswered question: `no question generated`.
+10. Identify Test Cases that cannot be related to any Business Requirement.
 
-10. Preserve all Business Requirement information received from Clarification, including references and Risks.
+11. Create a Specification for such Test Cases when required.
 
-11. Identify Test Cases that cannot be related to any Business Requirement.
+12. Ensure that each generated Specification complies with the definition established in `Glossary.md`.
 
-12. Create Functional Specifications for such Test Cases when required.
+13. Produce the Business Requirement ↔ Test Case traceability relationships.
 
-13. Ensure that each generated Specification complies with the definition established in `Glossary.md`.
+14. Produce, when applicable, the list of generated Specifications and the Test Cases associated with each Specification.
 
-14. Produce the Business Requirement ↔ Test Case traceability relationships.
+## Coverage Boundary
 
-15. Produce, when applicable, the list of generated Specifications and the Test Cases associated with each Specification.
+Traceability Analysis identifies Business Requirements that have no related Test Case, but does not treat lack of Test Case coverage as a Risk by itself.
 
-## Coverage Rule
+A Business Requirement without a related Test Case is an uncovered Business Requirement.
 
-A Business Requirement is considered covered when it has at least one related Test Case.
+Whether another identified issue constitutes a Risk is determined according to the Risk definition in `Glossary.md`.
 
 ## Specification Boundary
 
@@ -229,7 +239,9 @@ A Business Requirement is covered when it has at least one related Test Case.
 
 Risks received by Coverage Analysis do not participate in the Coverage calculation.
 
-They are preserved so that subsequent reporting can explain relevant weaknesses or unresolved issues affecting the analysis.
+They are preserved so that subsequent reporting can explain relevant weaknesses, unresolved issues, or limitations affecting the analysis.
+
+An uncovered Business Requirement is not automatically converted into a Risk.
 
 ---
 
@@ -237,7 +249,7 @@ They are preserved so that subsequent reporting can explain relevant weaknesses 
 
 ## Responsibility
 
-Improvement of Requirement Coverage improves the Business Requirement Coverage by estimating and, when possible, generating additional Test Cases for Business Requirements that currently have no Test Case coverage.
+Improvement of Requirement Coverage improves Business Requirement Coverage by estimating and, when possible, generating additional Test Cases for Business Requirements that currently have no Test Case coverage.
 
 Improvement of Requirement Coverage is a single FORGE capability containing two internal responsibilities:
 
@@ -248,11 +260,16 @@ Improvement of Requirement Coverage is a single FORGE capability containing two 
 
 The capability receives:
 
-- all Business Requirements;
+- the Business Requirements requiring improvement;
 - existing Test Cases;
 - Specifications;
-- Risks;
+- the requested coverage target;
+- relevant Risks;
 - references associated with the Business Requirements and available information.
+
+Risks and other contextual information may be used to explain generation limitations or why a target cannot be reached, but they do not participate in the Coverage calculation.
+
+---
 
 ## 6.1 Test Case Planning
 
@@ -260,21 +277,21 @@ Test Case Planning estimates the Test Cases required to reach the requested cove
 
 ### Responsibilities
 
-1. Determine the target Business Requirement Coverage.
+1. Receive the coverage target determined by the Workflow Orchestrator.
 
-2. Use the user-provided target when one is supplied.
+2. Identify Business Requirements that currently have no Test Case coverage.
 
-3. Use the FORGE default target when no target is supplied.
+3. Estimate how many additional Test Cases are required to reach the target.
 
-4. Identify Business Requirements that currently have no Test Case coverage.
+4. Identify which Business Requirements the estimated Test Cases would need to cover.
 
-5. Estimate how many additional Test Cases are required to reach the target.
+5. Produce the Test Case Generation plan.
 
-6. Identify which Business Requirements the estimated Test Cases would need to cover.
+6. Do not determine yet whether the planned Test Cases can technically or functionally be generated from the available information.
 
-7. Produce the Test Case Generation plan.
+Planning does not determine where the target originated.
 
-8. Do not determine yet whether the planned Test Cases can technically or functionally be generated from the available information.
+---
 
 ## 6.2 Test Case Generation
 
@@ -314,6 +331,8 @@ Test Case Generation attempts to generate the Test Cases identified by the plan.
     - the user interrupts the generation;
     - or there is insufficient information to generate additional planned Test Cases.
 
+Generation may produce both generated and non-generated planned Test Cases in the same result.
+
 ## Projected Coverage
 
 Projected Coverage is calculated using:
@@ -326,19 +345,9 @@ The same coverage rule applies as in Coverage Analysis:
 
 > A Business Requirement is covered when it has at least one related Test Case.
 
-## Output
+Improvement of Requirement Coverage provides the information required to determine Projected Coverage.
 
-Improvement of Requirement Coverage produces a Coverage Result containing:
-
-- generated Test Cases;
-- Business Requirements covered by the generated Test Cases;
-- Projected Coverage percentage;
-- Business Requirements covered;
-- Business Requirements not covered;
-- the requested target;
-- whether the target was reached;
-- the reason why generation ended;
-- causes explaining why the target was not reached, when applicable.
+The Coverage Result remains the responsibility of Coverage Analysis.
 
 Generated Test Cases are not considered executed or validated merely because FORGE generated them.
 
@@ -362,6 +371,8 @@ The Workflow Orchestrator is responsible for:
 
 Capabilities produce domain results and do not control workflow progression.
 
+---
+
 ## User Interaction
 
 The Interface is responsible for:
@@ -373,17 +384,25 @@ The Interface is responsible for:
 
 Capabilities do not interact directly with users.
 
+---
+
 ## External Source Access
 
 Capabilities determine what information they require but do not directly depend on concrete external systems.
 
-External Source Adapters provide access to systems such as Jira, Confluence, files, or future evidence sources.
+External Source Adapters provide access to systems such as Jira, Confluence, files, or future Evidence Sources.
+
+Capabilities do not depend directly on concrete Jira or Confluence SDKs or APIs.
+
+---
 
 ## LLM Providers
 
 Capabilities may use LLM functionality through an LLM abstraction.
 
 Capabilities and the Workflow Orchestrator do not depend directly on a specific LLM provider or model.
+
+---
 
 ## Infrastructure
 
