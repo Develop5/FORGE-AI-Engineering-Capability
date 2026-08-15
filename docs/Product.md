@@ -6,10 +6,6 @@ FORGE is a platform that analyses heterogeneous project evidence to discover Bus
 
 FORGE is designed for users involved in understanding, validating, and improving Business Requirements and their coverage.
 
-The MVP primarily targets Product Managers as the Primary User.
-
-The Primary User defines the main product audience for the MVP but does not restrict FORGE to Product Managers or any other specific professional role.
-
 ---
 
 ## Problem
@@ -55,7 +51,7 @@ FORGE produces an analysis that allows the user to understand:
 
 The product flow is:
 
-```text id="8p5j3m"
+```text
 Evidence
     ↓
 Evidence Consolidation
