@@ -1,4 +1,3 @@
-
 # Glossary
 
 ## Business Requirement
@@ -9,13 +8,13 @@ A Business Requirement may be explicitly documented or identified from evidence 
 
 ---
 
-## Functional Specification
+## Specification
 
-A precise, verifiable, and sufficiently detailed description of the behavior or conditions that the system must meet in order to satisfy a Business Requirement.
+A precise, verifiable, and sufficiently detailed description of the behavior or conditions that a system must meet in order to satisfy a Business Requirement.
 
-A Functional Specification may be synthesized by FORGE when it is required to structure or clarify the relationship between Business Requirements and Test Cases.
+FORGE may produce a Specification when it is required to structure or clarify the relationship between Business Requirements and Test Cases.
 
-A Functional Specification does not by itself demonstrate that a Business Requirement is covered.
+A Specification does not by itself demonstrate that a Business Requirement is covered.
 
 ---
 
@@ -28,6 +27,14 @@ A description of how a user or another actor interacts with a system to achieve 
 ## Test Case
 
 A defined set of conditions, inputs, steps, and expected results used to verify a specific behavior or outcome of a system.
+
+---
+
+## Evidence
+
+Information obtained from an Evidence Source and made available to FORGE for analysis.
+
+Evidence may include textual content and references to the originating source.
 
 ---
 
@@ -50,7 +57,7 @@ Examples include:
 
 ## Requirements Discovery
 
-The FORGE capability that analyzes available Evidence Sources to identify and consolidate Business Requirements and identify Findings affecting those Business Requirements.
+The FORGE capability that analyzes available Evidence to identify and consolidate Business Requirements and identify Findings affecting those Business Requirements.
 
 Requirements Discovery may identify:
 
@@ -97,8 +104,6 @@ The user may:
 
 Clarification incorporates available answers into the subsequent analysis.
 
-A Question is a presentation of a Finding to the user. A Question is not itself a separate domain problem.
-
 When a Finding is resolved, the corresponding Question no longer exists.
 
 If an answer reveals a new problem, that problem becomes a new Finding and may produce a new Question.
@@ -123,7 +128,7 @@ If a response reveals a new problem, the new problem is represented by a new Fin
 
 ## Traceability
 
-The explicit relationship between Business Requirements and Test Cases, supported by the available evidence.
+The explicit relationship between Business Requirements and Test Cases, supported by the available Evidence.
 
 Traceability allows FORGE to determine which Test Cases provide evidence for each Business Requirement.
 
@@ -153,7 +158,7 @@ Insufficient evidence is not a separate Coverage category.
 
 Coverage calculated from the existing Test Cases available to FORGE.
 
-Current Coverage represents the coverage supported by the Test Cases that already exist in the available evidence.
+Current Coverage represents the coverage supported by the Test Cases that already exist in the available Evidence.
 
 ---
 
@@ -178,7 +183,6 @@ The Coverage Result may include:
 * Current Coverage
 * Business Requirements without identified Test Case coverage
 * Risks
-* Functional inconsistencies
 * Other relevant information required to explain the result
 
 Risks and explanatory information do not participate in the Coverage calculation.
@@ -200,7 +204,7 @@ A Risk may also include:
 * The unanswered or unresolved Question that led to it, when applicable
 * Relevant supporting information or references
 
-All Risks originate from a Finding or from another explicitly identified issue produced by a FORGE capability.
+Every Risk originates from a Finding or from another explicitly identified issue produced by a FORGE capability.
 
 Risks may include:
 
@@ -229,4 +233,4 @@ Requirement Issues include:
 * Contradictions among requirements or within a requirement
 * Circular dependencies
 
-````
+```
