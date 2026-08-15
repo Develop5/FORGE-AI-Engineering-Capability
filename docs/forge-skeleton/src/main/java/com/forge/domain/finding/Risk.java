@@ -10,12 +10,14 @@ public final class Risk {
     private final String description;
     private final List<String> relatedRequirementIds;
     private final String sourceFindingId;
+    private final String identifyingCapability;
 
     public Risk(
             String id,
             String description,
             List<String> relatedRequirementIds,
-            String sourceFindingId) {
+            String sourceFindingId,
+            String identifyingCapability) {
 
         this.id = requireNonBlank(id, "id");
         this.description = requireNonBlank(description, "description");
@@ -24,6 +26,9 @@ public final class Risk {
                         relatedRequirementIds,
                         "relatedRequirementIds must not be null"));
         this.sourceFindingId = sourceFindingId;
+        this.identifyingCapability = requireNonBlank(
+                identifyingCapability,
+                "identifyingCapability");
     }
 
     public String id() {
@@ -40,6 +45,10 @@ public final class Risk {
 
     public Optional<String> sourceFindingId() {
         return Optional.ofNullable(sourceFindingId);
+    }
+
+    public String identifyingCapability() {
+        return identifyingCapability;
     }
 
     // Método privado de esta propia clase; no requiere import.
