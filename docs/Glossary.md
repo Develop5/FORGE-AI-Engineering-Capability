@@ -24,6 +24,24 @@ A description of how a user or another actor interacts with a system to achieve 
 
 ---
 
+## User
+
+A person who interacts with FORGE to provide information, answer Questions, review results, or make decisions.
+
+FORGE is not restricted to a specific professional role or user profile.
+
+---
+
+## Primary User
+
+The user persona that FORGE primarily targets for the MVP.
+
+The primary user for the MVP is the Product Manager.
+
+The Primary User identifies the main product audience for the MVP but does not restrict FORGE to that role.
+
+---
+
 ## Test Case
 
 A defined set of conditions, inputs, steps, and expected results used to verify a specific behavior or outcome of a system.
@@ -232,6 +250,3 @@ Requirement Issues include:
 * Conflicts among requirements
 * Contradictions among requirements or within a requirement
 * Circular dependencies
-
-```
-
