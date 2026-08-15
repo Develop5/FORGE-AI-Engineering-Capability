@@ -1,307 +1,316 @@
-# MVP Scope
+# MVP
 
 ## MVP Objective
 
-Demonstrate that FORGE can:
+The MVP demonstrates that FORGE can analyse heterogeneous project evidence, identify Business Requirements, establish traceability with existing Test Cases, calculate current Business Requirement Coverage, identify and preserve Risks affecting the analysis or its results, and generate additional Test Cases intended to improve coverage towards a user-defined target.
 
-1. identify and consolidate Business Requirements from heterogeneous project Evidence;
-2. identify and clarify Findings affecting those Business Requirements;
-3. establish traceability between Business Requirements and existing Test Cases;
-4. calculate Business Requirement Coverage;
-5. identify weaknesses and Risks affecting the analysis;
-6. plan and generate additional Test Cases intended to improve Business Requirement Coverage.
-
-The MVP therefore demonstrates both **assessment of Current Coverage** and **Improvement of Requirement Coverage**.
-
-The requested coverage target represents the minimum desired coverage for the improvement process and defaults to **95%**.
-
-FORGE attempts to reach at least the requested target, subject to the information available for Test Case Generation.
+The MVP is a functional end-to-end demonstration of the core FORGE capability.
 
 ---
 
-## MVP Evidence Sources
+## MVP Input
 
-The MVP supports heterogeneous Evidence Sources.
+The user provides project evidence through the platform.
 
-The initial MVP Evidence Sources are:
+The MVP supports:
 
 * Confluence pages
-* Jira/XRay Test Cases
+* Jira Test Cases
 * Jira Bugs
 * Jira User Stories
 * Jira Epics
 
-Evidence may be explicit or implicit.
+Business Requirements do not need to be explicitly labelled as such in the source material.
 
-Business Requirements may be identified from information distributed across these sources.
+They may be distributed across the available evidence, including:
 
-Available Evidence may be incomplete, inconsistent, ambiguous, or distributed across multiple sources.
-
-FORGE must preserve references to the Evidence used to identify and analyse Business Requirements.
+* Business Requirements documentation
+* Technical Requirements
+* User Stories
+* Acceptance Criteria
+* Bug Expected Results
+* Epics
+* Other relevant project evidence
 
 ---
 
 ## MVP Flow
 
-The MVP follows the following logical flow:
+The MVP follows this flow:
 
 ```text
-Evidence Sources
-      ↓
+Evidence
+    ↓
 Evidence Consolidation
-      ↓
+    ↓
 Requirements Discovery
-      ↓
+    ↓
 Findings
-      ↓
+    ↓
 Clarification
-      ↓
-Business Requirements + Risks
-      ↓
+    ↓
 Traceability Analysis
-      ↓
+    ↓
 Coverage Analysis
-      ↓
-Current Coverage
-      ↓
+    ↓
+Current Coverage + Risks
+    ↓
 Improvement of Requirement Coverage
-      ├── Test Case Planning
-      └── Test Case Generation
-      ↓
+    ↓
 Generated Test Cases
-      ↓
+    ↓
 Projected Coverage
-````
+```
 
-The Workflow Orchestrator controls the execution flow and determines which capability executes next.
+The Workflow Orchestrator controls the execution flow, maintains execution state, handles user interaction, and decides which capability to invoke next.
 
-The capabilities do not invoke one another directly.
-
-The MVP does not require every execution to follow every step. The Workflow Orchestrator determines the applicable path according to the current execution state and capability results.
+The capabilities themselves produce domain results and do not control workflow progression.
 
 ---
 
-## Requirements Discovery
+## 1. Evidence Consolidation
 
-FORGE analyses the available Evidence to identify and consolidate Business Requirements relevant to the coverage analysis.
+FORGE analyses the available project evidence and consolidates relevant information across the supplied sources.
 
-Requirements Discovery may identify:
+The MVP must be able to work with heterogeneous evidence rather than requiring a predefined document structure.
 
-* Business Requirements;
-* conflicts;
-* ambiguities;
-* unresolved dependencies;
-* insufficient information;
-* other Findings affecting Business Requirements.
+Evidence Consolidation produces structured topics containing:
 
-Requirements Discovery creates Findings for identified problems requiring clarification.
+* Topic name
+* Information found about the topic
+* References to the originating evidence
+
+---
+
+## 2. Requirements Discovery
+
+FORGE identifies and consolidates Business Requirements from the available evidence.
+
+The MVP identifies:
+
+* Business Requirements
+* Findings affecting those Business Requirements
+
+Findings may represent:
+
+* Conflicts
+* Unresolved Dependencies
+* Ambiguities
+* Other problems requiring clarification
+
+FORGE must be able to identify Business Requirements even when they are not explicitly contained in a document or section named "Business Requirements".
+
+A Finding is associated with the Business Requirements affected by the identified problem.
 
 Requirements Discovery does not create Questions.
 
-FORGE does not create or approve Business Requirements on behalf of the business. It identifies and structures Business Requirements from available Evidence.
+---
+
+## 3. Clarification
+
+FORGE receives Business Requirements and Findings from Requirements Discovery.
+
+Each Finding results in one Question presented to the user when clarification is required.
+
+The human may:
+
+* Provide answers to the Questions
+* Decide not to answer the Questions
+* Allow clarification to continue or stop
+
+FORGE incorporates available answers into the subsequent analysis.
+
+When an answer resolves a Finding, the Finding no longer remains unresolved.
+
+If an answer reveals a new problem, the new problem is treated as a new Finding and may result in a new Question.
+
+The Question representing a resolved Finding no longer exists.
+
+When clarification ends with an unresolved Finding, the Finding becomes a Risk.
+
+FORGE does not remain blocked waiting for user answers.
 
 ---
 
-## Clarification
+## 4. Traceability Analysis
 
-Clarification processes Findings that require user input.
+FORGE establishes relationships between Business Requirements and existing Test Cases.
 
-A Finding may be presented to the user as a Question.
+A Business Requirement is not considered covered unless an established relationship with at least one Test Case exists.
 
-The user may:
+Traceability Analysis may produce a Functional Specification for a Test Case that cannot be related to any Business Requirement.
 
-* provide an answer;
-* decide not to answer;
-* decide to continue or stop clarification.
+A Functional Specification is an intermediate analysis artefact.
 
-Clarification incorporates the available responses into the subsequent analysis.
+It does not become a Business Requirement and does not participate directly in Business Requirement Coverage.
 
-When Clarification ends with an unresolved Finding, the Finding becomes a Risk.
-
-If a response reveals a new problem, FORGE creates a new Finding that may result in a new Question.
+Traceability Analysis preserves the relevant Business Requirement references associated with the analysed Test Cases and Specifications.
 
 ---
 
-## Traceability Analysis
+## 5. Coverage Analysis
 
-FORGE establishes traceability between Business Requirements and existing Test Cases.
+FORGE calculates the current Business Requirement Coverage using:
 
-The MVP must support Test Cases with:
+* All Business Requirements
+* Existing Test Cases
+* Established Business Requirement ↔ Test Case relationships
 
-* detailed steps;
-* descriptions or summaries;
-* titles or other available information;
-* incomplete information.
+The coverage definition and calculation are maintained in `Glossary.md`.
 
-Traceability Analysis identifies:
+A Business Requirement is covered when it has at least one established relationship with a Test Case.
 
-* Business Requirements with related Test Cases;
-* Business Requirements without related Test Cases;
-* Test Cases that cannot be related to a Business Requirement.
+Coverage Analysis produces the Coverage Result.
 
-When required, Traceability Analysis may produce Specifications for Test Cases that cannot be related to a Business Requirement.
+Insufficient evidence does not create a separate coverage category and does not change the Coverage calculation.
 
-A Specification is an intermediate analysis artefact and does not become a Business Requirement.
+Insufficient evidence may instead contribute to a Risk or provide an explanation for limitations in the analysis.
 
----
-
-## Coverage Analysis
-
-The MVP calculates **Business Requirement Coverage** using the established Business Requirement ↔ Test Case relationships.
-
-The coverage definition and formula are maintained in `Glossary.md`.
-
-A Business Requirement is covered when it has at least one related Test Case.
-
-The MVP must distinguish between:
-
-* Business Requirements with Test Case coverage;
-* Business Requirements without Test Case coverage.
-
-An uncovered Business Requirement is not automatically a Risk.
-
-Risks and other explanatory information do not participate in the Coverage calculation.
+Coverage Analysis preserves received Risks for subsequent reporting but does not use Risks to calculate Coverage.
 
 ---
 
-## Current Coverage
+## 6. Risks
 
-Current Coverage represents the Business Requirement Coverage supported by the existing Test Cases available to FORGE.
+FORGE identifies and preserves Risks affecting the completeness, reliability, or coverage of the analysis or its results.
 
-Coverage Analysis produces the Coverage Result containing the Current Coverage analysis and the information required to understand the result.
+A Risk may originate from an unresolved Finding or from another FORGE capability.
 
-The Coverage Result may include:
+Every Risk retains, where applicable:
 
-* Business Requirements;
-* related Test Cases;
-* Current Coverage;
-* uncovered Business Requirements;
-* Risks;
-* other relevant explanatory information.
+* The affected Business Requirement
+* The identified problem or issue
+* The originating FORGE capability
+* The unresolved question that led to it, when applicable
+
+Risks are not used in the Coverage calculation.
+
+They are preserved for subsequent reporting so that the Coverage Result can explain weaknesses, unresolved issues, or limitations affecting the analysis.
+
+The MVP does not attempt to provide generic project risk management.
 
 ---
 
-## Improvement of Requirement Coverage
+## 7. Improvement of Requirement Coverage
 
-Improvement of Requirement Coverage is part of the MVP.
+**This capability is part of the MVP.**
 
-It is a single capability containing:
+The user may request improvement of the current Business Requirement Coverage.
 
-* Test Case Planning;
-* Test Case Generation.
+The user may specify a target coverage.
+
+The target represents the **minimum desired coverage**.
+
+The default target is **95%**.
+
+FORGE attempts to achieve **at least** the requested target.
+
+Improvement of Requirement Coverage is a single capability containing two internal responsibilities:
+
+* Test Case Planning
+* Test Case Generation
 
 ### Test Case Planning
 
-Planning receives the requested coverage target and estimates the additional Test Cases required to reach it.
+Planning:
 
-Planning identifies:
+* Identifies Business Requirements requiring additional Test Case coverage.
+* Estimates the Test Cases required to reach the target.
+* Produces the plan for the requested improvement.
 
-* Business Requirements requiring additional coverage;
-* estimated Test Cases required;
-* the generation plan.
+Planning does not determine whether the planned Test Cases are technically generable from the available information.
 
-Planning does not determine whether the planned Test Cases can technically be generated.
+Planning receives the target but does not decide where the target originated.
 
 ### Test Case Generation
 
-Generation attempts to produce the Test Cases identified by Planning.
+Generation:
 
-Generation uses:
+* Receives the planned Test Case targets and the relevant Business Requirements.
+* Uses the available Business Requirement information as its primary context.
+* May use approved Specifications as additional context.
+* Ignores unapproved Specifications.
+* Reports conflicts involving Specifications without generating a Test Case based on the conflicting Specification.
+* Generates a Test Case when sufficient information exists.
+* Reports a planned Test Case as not generated when sufficient information does not exist, together with the reason.
 
-* the Business Requirement;
-* available Evidence and references;
-* approved Specifications, when available.
+Generation may produce both generated and non-generated Test Cases in the same result.
 
-Generation determines whether sufficient information exists to generate each planned Test Case.
+Generated Test Cases are associated with the Business Requirements they are intended to cover.
 
-When sufficient information exists, FORGE generates the Test Case.
+Projected Coverage is calculated using:
 
-When information is insufficient, FORGE reports the planned Test Case and the reason it was not generated.
+* All Business Requirements
+* Existing Test Cases
+* Generated Test Cases
 
-If a Specification conflicts with the Business Requirement or available information, FORGE reports the conflict and does not generate the Test Case based on that Specification.
+The same coverage rule applies to Projected Coverage as to Current Coverage: a Business Requirement is covered when it has at least one related Test Case.
 
-A generation result may therefore contain both:
-
-* generated Test Cases;
-* planned Test Cases that were not generated, together with their reasons.
-
----
-
-## Projected Coverage
-
-Projected Coverage represents the Business Requirement Coverage that would result from adding the Test Cases generated by FORGE to the existing Test Cases.
-
-Projected Coverage uses the same Coverage rule as Current Coverage.
-
-Generated Test Cases are not evidence of executed or validated Test Coverage.
-
-The MVP does not execute generated Test Cases.
+If the requested target cannot be achieved, FORGE explicitly reports that the target was not achieved and provides the relevant causes.
 
 ---
 
-## MVP Outcome
+## Current Coverage vs Projected Coverage
 
-The primary domain outcome of the MVP is the **Coverage Result**, including the information required to understand both Current Coverage and the potential improvement of coverage.
+The MVP must clearly distinguish between:
 
-The MVP may expose:
+**Current Coverage**
 
-* identified Business Requirements;
-* supporting Evidence references;
-* Findings;
-* clarification outcomes;
-* Risks;
-* Business Requirement ↔ Test Case traceability;
-* Current Coverage;
-* uncovered Business Requirements;
-* Test Case Generation plans;
-* generated Test Cases;
-* non-generated planned Test Cases and reasons;
-* Projected Coverage.
+Coverage calculated from the existing Test Cases.
 
-The Interface or reporting layer determines how this information is presented to users.
+**Projected Coverage**
+
+Coverage that would result from adding the Test Cases generated by FORGE.
+
+Generated Test Cases have not necessarily been executed.
+
+Therefore, Projected Coverage must not be presented as evidence of executed Test Coverage.
 
 ---
 
-## Explicitly Out of MVP
+## Human Validation
 
-The MVP does not require:
+The human remains responsible for:
 
-* writing generated Test Cases back to Jira;
-* authentication and identity management as a FORGE domain capability;
-* user management;
-* real-time collaboration;
-* comments;
-* approval workflows;
-* project management;
-* advanced editing;
-* multiple export formats.
+* Reviewing generated Test Cases
+* Deciding whether generated Test Cases should be accepted
+* Making final decisions regarding requirements and product behaviour
 
-The following are outside the scope of FORGE itself, not merely the MVP:
+FORGE does not consider a generated Test Case to be executed or validated merely because it generated it.
 
-* execution of generated Test Cases;
-* validation of generated Test Cases through their execution.
+---
 
-A future integration may allow generated Test Cases to be written back to Jira.
+## MVP Output
 
-FORGE does not become responsible for executing or validating those Test Cases through execution.
+The MVP provides:
+
+* Business Requirements
+* Findings and unresolved issues, where applicable
+* Clarification Questions, where applicable
+* Traceability between Business Requirements and Test Cases
+* Functional Specifications, where applicable
+* Current Business Requirement Coverage
+* Risks
+* Generated Test Cases intended to improve coverage
+* Non-generated planned Test Cases and their reasons, where applicable
+* Traceability between generated Test Cases and Business Requirements
+* Projected Coverage
+* Remaining uncovered Business Requirements
+* Whether the requested coverage target was achieved
+* Relevant reasons when the requested target was not achieved
 
 ---
 
 ## MVP Boundaries
 
-The MVP focuses on Business Requirement Coverage and its improvement.
+The MVP does not require:
 
-It does not:
+* Writing generated Test Cases back to Jira
+* Automatically approving generated Test Cases
+* Replacing stakeholder decision-making
+* Providing generic project management
+* Providing generic project risk management
 
-* replace Business Analysts or Product Managers;
-* approve Business Requirements;
-* make release decisions;
-* act as a generic project risk-management system;
-* treat uncovered Business Requirements as Risks automatically;
-* treat insufficient Evidence as a separate Coverage category;
-* consider generated Test Cases to be executed or validated;
-* execute Test Cases.
+Writing generated Test Cases back to Jira is intentionally outside the MVP. A future integration may allow generated Test Cases to be materialised in Jira without changing the responsibility of the Test Case Generation capability.
 
-The MVP demonstrates the ability of FORGE to identify weaknesses in available Evidence and Requirements and to propose or generate additional Test Cases when sufficient information is available.
-
-```
+Generated Test Cases are proposals for improving requirement coverage. Their generation does not constitute evidence that they have been executed or validated.

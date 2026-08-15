@@ -84,7 +84,7 @@ A Finding may represent:
 * An unresolved dependency
 * Another problem that may affect the understanding or validation of a Business Requirement
 
-A Finding may be presented to the user through one or more Questions during Clarification.
+A Finding may be presented to the user through one Question during Clarification.
 
 A Finding remains unresolved until it is resolved through clarification or Clarification ends without resolving it.
 
@@ -144,7 +144,7 @@ Formula:
 
 ```text
 (# of Business Requirements covered by tests) / (Total Business Requirements)
-````
+```
 
 A Business Requirement is considered covered when it has at least one related Test Case.
 
@@ -234,3 +234,4 @@ Requirement Issues include:
 * Circular dependencies
 
 ```
+
