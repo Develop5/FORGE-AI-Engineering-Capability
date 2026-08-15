@@ -62,3 +62,16 @@ If the retrieved repository content differs from content previously discussed, t
 
 ---
 
+## Repository as Source of Truth
+
+The GitHub repository is the single source of truth for FORGE project documentation.
+
+Whenever a document is reviewed, analyzed, quoted, modified, or used as the basis for a decision, the current version must be read directly from the repository.
+
+The current version must be retrieved from the requested branch, preferably from the Raw file when available.
+
+Previous versions seen in conversation history, model memory, cached context, or previous analysis must never be used as a substitute for the current repository version.
+
+A document must always be re-read before analyzing it, even if it was already read earlier in the same conversation.
+
+If the current repository version cannot be accessed or verified, this must be explicitly stated. The document must not be reconstructed from memory or from previous conversation content.
