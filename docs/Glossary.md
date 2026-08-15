@@ -128,17 +128,26 @@ The Coverage Report may include:
 
 ---
 
-## Functional Risk
+## Risk
 
-Risk related to the functional coverage evidenced by the available Business Requirements and Test Cases.
+A known or unresolved issue identified by FORGE that may affect the completeness, reliability, or coverage of the analysis or its results.
 
-Functional Risk may result from:
+A Risk must identify:
+- the affected Business Requirement, when applicable;
+- the problem or issue identified;
+- the FORGE capability that identified it.
 
-* Business Requirements without identified Test Case coverage
-* Insufficient evidence
-* Unresolved requirement issues
-* Functional inconsistencies
-* Unresolved clarification questions
+A Risk may also include the unanswered or unresolved question that led to it, when applicable.
+
+Risks may result from:
+- Business Requirements without identified Test Case coverage;
+- insufficient evidence;
+- unresolved requirement issues;
+- functional inconsistencies;
+- unresolved clarification questions;
+- insufficient information to generate required Test Cases.
+
+Risks may be identified by different FORGE capabilities and are carried forward to subsequent analysis and reporting.
 
 ---
 
