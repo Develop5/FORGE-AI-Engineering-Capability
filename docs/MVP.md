@@ -8,16 +8,6 @@ The MVP is a functional end-to-end demonstration of the core FORGE capability.
 
 ---
 
-## Primary User
-
-The primary user for the MVP is the Product Manager.
-
-The Primary User defines the main product audience for the MVP but does not restrict FORGE to Product Managers or any other specific professional role.
-
-The MVP flow and capabilities refer to the interacting person as the user.
-
----
-
 ## MVP Input
 
 The user provides project evidence through the platform.
@@ -48,7 +38,7 @@ They may be distributed across the available evidence, including:
 
 The MVP follows this flow:
 
-```text id="j8j7vx"
+```text id="k3x9qf"
 Evidence
     ↓
 Evidence Consolidation
