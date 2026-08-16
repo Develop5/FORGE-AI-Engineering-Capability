@@ -202,6 +202,25 @@ The Orchestrator owns execution state and decides what happens after a capabilit
 
 Capabilities may therefore be invoked independently of the complete FORGE workflow.
 
+
+#### Interaction and Resumption Contract
+
+When a domain capability requires user input to continue its domain processing, it returns a structured domain result containing the information required for that interaction.
+
+For Clarification, this result includes the Questions that require user input.
+
+The Workflow Orchestrator retains ownership of the execution and interaction state while user input is pending. It returns the interaction information to the Interface, which collects the user's response.
+
+The Workflow Orchestrator then resumes the workflow by invoking the capability again with the corresponding user response as domain input.
+
+A domain capability does not remain active while waiting for user input and does not own the execution state required for resumption.
+
+This contract defines the architectural interaction and resumption behaviour without prescribing concrete implementation mechanisms such as programming-language types, classes, DTOs, APIs, persistence technologies, or session mechanisms.
+
+
+
+
+
 ### 4.3 Domain Capabilities ↔ External Sources
 
 Domain capabilities do not access concrete external sources directly.
