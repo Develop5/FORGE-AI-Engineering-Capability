@@ -90,31 +90,26 @@ public final class WorkflowOrchestrator implements ForgeEngine {
 
     @Override
     public Execution start(Execution execution) {
+
         Objects.requireNonNull(
                 execution,
                 "execution must not be null");
 
         execution.start();
 
-        EvidenceConsolidationInput evidenceInput =
-                new EvidenceConsolidationInput(
-                        execution.context().evidence());
-
         EvidenceConsolidationOutput evidenceOutput =
                 evidenceConsolidationCapability.execute(
-                        evidenceInput);
+                        new EvidenceConsolidationInput(
+                                execution.context().evidence()));
 
         evidenceOutput.evidenceTopics()
                 .forEach(
                         execution.context()::addEvidenceTopic);
 
-        RequirementsDiscoveryInput requirementsInput =
-                new RequirementsDiscoveryInput(
-                        execution.context().evidenceTopics());
-
         RequirementsDiscoveryOutput requirementsOutput =
                 requirementsDiscoveryCapability.execute(
-                        requirementsInput);
+                        new RequirementsDiscoveryInput(
+                                execution.context().evidenceTopics()));
 
         requirementsOutput.businessRequirements()
                 .forEach(
@@ -127,18 +122,20 @@ public final class WorkflowOrchestrator implements ForgeEngine {
         execution.moveTo(
                 ExecutionStage.REQUIREMENTS);
 
-        ClarificationInput clarificationInput =
-                new ClarificationInput(
-                        execution.context().findings());
-
         ClarificationOutput clarificationOutput =
                 clarificationCapability.execute(
-                        clarificationInput);
+                        new ClarificationInput(
+                                execution.context()
+                                        .businessRequirements(),
+                                execution.context().findings(),
+                                null,
+                                null));
 
-        if (!clarificationOutput.questions().isEmpty()) {
-            execution.context().setPendingQuestion(
-                    clarificationOutput.questions().get(0));
+        applyClarificationResult(
+                execution,
+                clarificationOutput);
 
+        if (execution.context().pendingQuestion() != null) {
             execution.moveTo(
                     ExecutionStage.CLARIFICATION);
 
@@ -147,32 +144,106 @@ public final class WorkflowOrchestrator implements ForgeEngine {
             return execution;
         }
 
-        TraceabilityAnalysisInput traceabilityInput =
-                new TraceabilityAnalysisInput(
-                        execution.context().businessRequirements(),
-                        execution.context().existingTestCases());
+        return continueAfterClarification(execution);
+    }
+
+    @Override
+    public Execution resume(
+            Execution execution,
+            String response) {
+
+        Objects.requireNonNull(
+                execution,
+                "execution must not be null");
+
+        if (execution.context().pendingQuestion() == null) {
+            throw new IllegalStateException(
+                    "No clarification question is pending");
+        }
+
+        execution.context().setPendingResponse(response);
+
+        ClarificationOutput clarificationOutput =
+                clarificationCapability.execute(
+                        new ClarificationInput(
+                                execution.context()
+                                        .businessRequirements(),
+                                execution.context().findings(),
+                                execution.context().pendingQuestion(),
+                                execution.context().pendingResponse()));
+
+        execution.context().clearPendingResponse();
+
+        applyClarificationResult(
+                execution,
+                clarificationOutput);
+
+        if (execution.context().pendingQuestion() != null) {
+            execution.moveTo(
+                    ExecutionStage.CLARIFICATION);
+
+            execution.waitForClarification();
+
+            return execution;
+        }
+
+        return continueAfterClarification(execution);
+    }
+
+    private void applyClarificationResult(
+            Execution execution,
+            ClarificationOutput output) {
+
+        output.businessRequirements()
+                .forEach(
+                        execution.context()::addBusinessRequirement);
+
+        output.findings()
+                .forEach(
+                        execution.context()::addFinding);
+
+        output.risks()
+                .forEach(
+                        execution.context()::addRisk);
+
+        execution.context().clearPendingQuestion();
+
+        if (!output.questions().isEmpty()) {
+            execution.context().setPendingQuestion(
+                    output.questions().get(0));
+        }
+    }
+
+    private Execution continueAfterClarification(
+            Execution execution) {
 
         TraceabilityAnalysisOutput traceabilityOutput =
                 traceabilityAnalysisCapability.execute(
-                        traceabilityInput);
+                        new TraceabilityAnalysisInput(
+                                execution.context()
+                                        .businessRequirements(),
+                                execution.context()
+                                        .existingTestCases()));
 
         traceabilityOutput.relations()
                 .forEach(
-                        execution.context()::addTraceabilityRelation);
+                        execution.context()
+                                ::addTraceabilityRelation);
 
         execution.moveTo(
                 ExecutionStage.TRACEABILITY);
 
-        CoverageAnalysisInput coverageInput =
-                new CoverageAnalysisInput(
-                        execution.context().businessRequirements(),
-                        execution.context().existingTestCases(),
-                        execution.context().traceabilityRelations(),
-                        execution.context().risks());
-
         CoverageAnalysisOutput coverageOutput =
                 coverageAnalysisCapability.execute(
-                        coverageInput);
+                        new CoverageAnalysisInput(
+                                execution.context()
+                                        .businessRequirements(),
+                                execution.context()
+                                        .existingTestCases(),
+                                execution.context()
+                                        .traceabilityRelations(),
+                                execution.context()
+                                        .risks()));
 
         execution.context().setCoverageResult(
                 coverageOutput.coverageResult());
@@ -180,23 +251,24 @@ public final class WorkflowOrchestrator implements ForgeEngine {
         execution.moveTo(
                 ExecutionStage.COVERAGE);
 
-        ImprovementInput improvementInput =
-                new ImprovementInput(
-                        execution.context().businessRequirements(),
-                        execution.context().existingTestCases(),
-                        execution.context().coverageResult(),
-                        95.0);
+        ImprovementOutput improvementOutput =
+                improvementCapability.execute(
+                        new ImprovementInput(
+                                execution.context()
+                                        .businessRequirements(),
+                                execution.context()
+                                        .existingTestCases(),
+                                execution.context()
+                                        .coverageResult(),
+                                95.0));
 
         execution.moveTo(
                 ExecutionStage.IMPROVEMENT);
 
-        ImprovementOutput improvementOutput =
-                improvementCapability.execute(
-                        improvementInput);
-
         improvementOutput.generatedTestCases()
                 .forEach(
-                        execution.context()::addGeneratedTestCase);
+                        execution.context()
+                                ::addGeneratedTestCase);
 
         execution.context().setProjectedCoverage(
                 improvementOutput.projectedCoverage());

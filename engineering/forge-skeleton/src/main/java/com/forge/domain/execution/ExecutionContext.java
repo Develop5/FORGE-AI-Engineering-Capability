@@ -28,13 +28,13 @@ public final class ExecutionContext {
     private final List<Risk> risks = new ArrayList<>();
 
     private Question pendingQuestion;
+    private String pendingResponse;
 
     private final List<TestCase> existingTestCases = new ArrayList<>();
     private final List<Specification> specifications = new ArrayList<>();
     private final List<RequirementTestCaseRelation> traceabilityRelations =
             new ArrayList<>();
-    private final List<GeneratedTestCase> generatedTestCases =
-            new ArrayList<>();
+    private final List<GeneratedTestCase> generatedTestCases = new ArrayList<>();
 
     private CoverageResult coverageResult;
     private ProjectedCoverage projectedCoverage;
@@ -89,6 +89,18 @@ public final class ExecutionContext {
 
     public void clearPendingQuestion() {
         this.pendingQuestion = null;
+    }
+
+    public String pendingResponse() {
+        return pendingResponse;
+    }
+
+    public void setPendingResponse(String pendingResponse) {
+        this.pendingResponse = pendingResponse;
+    }
+
+    public void clearPendingResponse() {
+        this.pendingResponse = null;
     }
 
     public List<TestCase> existingTestCases() {
