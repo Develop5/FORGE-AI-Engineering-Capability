@@ -30,7 +30,13 @@ class WorkflowOrchestratorTest {
         context.addEvidence(
                 new Evidence(
                         "evidence-1",
-                        "The system must allow users to authenticate and reset their password.",
+                        "The system must allow users to authenticate.",
+                        "local-test"));
+
+        context.addEvidence(
+                new Evidence(
+                        "evidence-2",
+                        "The system must allow users to reset their password.",
                         "local-test"));
 
         context.addExistingTestCase(
@@ -79,10 +85,11 @@ class WorkflowOrchestratorTest {
                         .evidenceTopics()
                         .isEmpty());
 
-        assertFalse(
+        assertEquals(
+                2,
                 result.context()
                         .businessRequirements()
-                        .isEmpty());
+                        .size());
 
         assertEquals(
                 1,
@@ -100,21 +107,23 @@ class WorkflowOrchestratorTest {
                         .pendingQuestion() == null);
 
         assertEquals(
-                0.0,
+                50.0,
                 result.context()
                         .coverageResult()
                         .currentCoverage());
 
-        assertFalse(
+        assertEquals(
+                1,
                 result.context()
                         .coverageResult()
                         .uncoveredRequirementIds()
-                        .isEmpty());
+                        .size());
 
-        assertFalse(
+        assertEquals(
+                1,
                 result.context()
                         .generatedTestCases()
-                        .isEmpty());
+                        .size());
 
         assertEquals(
                 100.0,
