@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-08-16T10:43:35.731Z" hostname="LAPTOP-84FJEUOV" time="0.014">
+<testsuite name="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-08-16T10:55:33.659Z" hostname="LAPTOP-84FJEUOV" time="0.012">
   <properties/>
-  <testcase name="shouldReturnZeroCoverageWhenThereAreNoCoveredRequirements()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.006"/>
-  <testcase name="shouldCalculatePartialCoverageAndReturnUncoveredRequirements()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.002"/>
+  <testcase name="shouldReturnZeroCoverageWhenThereAreNoCoveredRequirements()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.005"/>
+  <testcase name="shouldCalculatePartialCoverageAndReturnUncoveredRequirements()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.001"/>
   <testcase name="shouldReturn100PercentWhenAllRequirementsAreCovered()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.001"/>
-  <testcase name="shouldPreserveRisksWithoutAffectingCoverage()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.002"/>
-  <testcase name="shouldReturnZeroCoverageWhenThereAreNoTestCases()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.001"/>
+  <testcase name="shouldPreserveRisksWithoutAffectingCoverage()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.001"/>
+  <testcase name="shouldReturnZeroCoverageWhenThereAreNoTestCases()" classname="com.forge.capabilities.coverage.LocalCoverageAnalysisTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

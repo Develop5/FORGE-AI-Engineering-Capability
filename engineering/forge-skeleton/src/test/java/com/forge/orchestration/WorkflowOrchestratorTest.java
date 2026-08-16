@@ -4,7 +4,6 @@ import com.forge.capabilities.clarification.LocalClarification;
 import com.forge.capabilities.coverage.LocalCoverageAnalysis;
 import com.forge.capabilities.evidence.LocalEvidenceConsolidation;
 import com.forge.capabilities.improvement.LocalImprovement;
-import com.forge.capabilities.improvement.LocalProjectedCoverage;
 import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
 import com.forge.capabilities.traceability.LocalTraceabilityAnalysis;
 import com.forge.domain.evidence.Evidence;
@@ -64,8 +63,7 @@ class WorkflowOrchestratorTest {
                         new LocalClarification(),
                         new LocalTraceabilityAnalysis(),
                         new LocalCoverageAnalysis(),
-                        new LocalImprovement(),
-                        new LocalProjectedCoverage());
+                        new LocalImprovement());
 
         Execution result =
                 orchestrator.start(execution);
