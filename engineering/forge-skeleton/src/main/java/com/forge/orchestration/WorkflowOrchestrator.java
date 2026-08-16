@@ -79,7 +79,8 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                         evidenceInput);
 
         evidenceOutput.evidenceTopics()
-                .forEach(execution.context()::addEvidenceTopic);
+                .forEach(
+                        execution.context()::addEvidenceTopic);
 
         RequirementsDiscoveryInput requirementsInput =
                 new RequirementsDiscoveryInput(

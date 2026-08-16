@@ -24,7 +24,8 @@ class WorkflowOrchestratorTest {
     @Test
     void shouldProcessEvidenceRequirementsClarificationAndTraceability() {
 
-        ExecutionContext context = new ExecutionContext();
+        ExecutionContext context =
+                new ExecutionContext();
 
         context.addEvidence(
                 new Evidence(
@@ -37,17 +38,21 @@ class WorkflowOrchestratorTest {
                         "test-case-1",
                         "User authentication",
                         "Verify that a user must authenticate before accessing the system.",
-                        List.of("User has access to the system"),
-                        List.of("Valid user credentials"),
-                        List.of("Open the system",
+                        List.of(
+                                "User has access to the system"),
+                        List.of(
+                                "Valid user credentials"),
+                        List.of(
+                                "Open the system",
                                 "Enter valid credentials",
                                 "Submit credentials"),
                         "The user is authenticated and can access the system.",
                         "local-test"));
 
-        Execution execution = new Execution(
-                "execution-1",
-                context);
+        Execution execution =
+                new Execution(
+                        "execution-1",
+                        context);
 
         WorkflowOrchestrator orchestrator =
                 new WorkflowOrchestrator(
@@ -56,33 +61,51 @@ class WorkflowOrchestratorTest {
                         new LocalClarification(),
                         new LocalTraceabilityAnalysis());
 
-        Execution result = orchestrator.start(execution);
+        Execution result =
+                orchestrator.start(execution);
 
         assertEquals(
                 ExecutionStage.TRACEABILITY,
                 result.currentStage());
 
         assertFalse(
-                result.context().evidenceTopics().isEmpty());
+                result.context()
+                        .evidenceTopics()
+                        .isEmpty());
 
         assertFalse(
-                result.context().businessRequirements().isEmpty());
-
-        assertTrue(
-                result.context().findings().isEmpty());
-
-        assertTrue(
-                result.context().pendingQuestion() == null);
+                result.context()
+                        .businessRequirements()
+                        .isEmpty());
 
         assertEquals(
                 1,
-                result.context().traceabilityRelations().size());
+                result.context()
+                        .existingTestCases()
+                        .size());
 
-        RequirementTestCaseRelation relation =
-                result.context().traceabilityRelations().get(0);
+        assertTrue(
+                result.context()
+                        .findings()
+                        .isEmpty());
+
+        assertTrue(
+                result.context()
+                        .pendingQuestion() == null);
 
         assertEquals(
-                result.context().businessRequirements().get(0).id(),
+                1,
+                result.context()
+                        .traceabilityRelations()
+                        .size());
+
+        RequirementTestCaseRelation relation =
+                result.context()
+                        .traceabilityRelations()
+                        .get(0);
+
+        assertEquals(
+                "local-test",
                 relation.requirementId());
 
         assertEquals(
