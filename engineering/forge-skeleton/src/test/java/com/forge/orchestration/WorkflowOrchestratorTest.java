@@ -1,12 +1,12 @@
 package com.forge.orchestration;
 
 import com.forge.capabilities.evidence.LocalEvidenceConsolidation;
+import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
 import com.forge.domain.evidence.Evidence;
 import com.forge.domain.execution.Execution;
 import com.forge.domain.execution.ExecutionContext;
 import com.forge.domain.execution.ExecutionStage;
 import org.junit.jupiter.api.Test;
-import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -41,5 +41,8 @@ class WorkflowOrchestratorTest {
 
         assertFalse(
                 result.context().evidenceTopics().isEmpty());
+
+        assertFalse(
+                result.context().businessRequirements().isEmpty());
     }
 }
