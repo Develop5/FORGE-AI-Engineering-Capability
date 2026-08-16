@@ -12,6 +12,7 @@ import com.forge.capabilities.evidence.EvidenceConsolidationOutput;
 import com.forge.capabilities.improvement.ImprovementCapability;
 import com.forge.capabilities.improvement.ImprovementInput;
 import com.forge.capabilities.improvement.ImprovementOutput;
+import com.forge.capabilities.improvement.LocalProjectedCoverage;
 import com.forge.capabilities.requirements.RequirementsDiscoveryCapability;
 import com.forge.capabilities.requirements.RequirementsDiscoveryInput;
 import com.forge.capabilities.requirements.RequirementsDiscoveryOutput;
@@ -43,6 +44,9 @@ public final class WorkflowOrchestrator implements ForgeEngine {
     private final ImprovementCapability
             improvementCapability;
 
+    private final LocalProjectedCoverage
+            projectedCoverageCalculator;
+
     public WorkflowOrchestrator(
             EvidenceConsolidationCapability
                     evidenceConsolidationCapability,
@@ -55,7 +59,9 @@ public final class WorkflowOrchestrator implements ForgeEngine {
             CoverageAnalysisCapability
                     coverageAnalysisCapability,
             ImprovementCapability
-                    improvementCapability) {
+                    improvementCapability,
+            LocalProjectedCoverage
+                    projectedCoverageCalculator) {
 
         this.evidenceConsolidationCapability =
                 Objects.requireNonNull(
@@ -86,6 +92,11 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                 Objects.requireNonNull(
                         improvementCapability,
                         "improvementCapability must not be null");
+
+        this.projectedCoverageCalculator =
+                Objects.requireNonNull(
+                        projectedCoverageCalculator,
+                        "projectedCoverageCalculator must not be null");
     }
 
     @Override
@@ -200,6 +211,16 @@ public final class WorkflowOrchestrator implements ForgeEngine {
 
         execution.moveTo(
                 ExecutionStage.GENERATION);
+
+        execution.context().setProjectedCoverage(
+                projectedCoverageCalculator.calculate(
+                        execution.context().coverageResult(),
+                        execution.context().generatedTestCases()));
+
+        execution.moveTo(
+                ExecutionStage.PROJECTED_COVERAGE);
+
+        execution.complete();
 
         return execution;
     }

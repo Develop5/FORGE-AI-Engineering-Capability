@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.forge.capabilities.improvement.LocalProjectedCoverageTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-08-16T09:17:09.100Z" hostname="LAPTOP-84FJEUOV" time="0.006">
+  <properties/>
+  <testcase name="shouldIncludeGeneratedTestCasesInProjectedCoverage()" classname="com.forge.capabilities.improvement.LocalProjectedCoverageTest" time="0.004"/>
+  <testcase name="shouldPreserveUncoveredRequirementsWithoutGeneratedTests()" classname="com.forge.capabilities.improvement.LocalProjectedCoverageTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.forge.capabilities.traceability.LocalTraceabilityAnalysisTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-08-16T09:06:00.036Z" hostname="LAPTOP-84FJEUOV" time="0.005">
+<testsuite name="com.forge.capabilities.traceability.LocalTraceabilityAnalysisTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-08-16T09:17:09.108Z" hostname="LAPTOP-84FJEUOV" time="0.004">
   <properties/>
   <testcase name="shouldCreateCoversRelationWhenTestCaseExplicitlyReferencesRequirement()" classname="com.forge.capabilities.traceability.LocalTraceabilityAnalysisTest" time="0.002"/>
-  <testcase name="shouldNotCreateRelationsWhenThereAreNoTestCases()" classname="com.forge.capabilities.traceability.LocalTraceabilityAnalysisTest" time="0.001"/>
-  <testcase name="shouldNotCreateRelationWhenTestCaseDoesNotReferenceRequirement()" classname="com.forge.capabilities.traceability.LocalTraceabilityAnalysisTest" time="0.001"/>
+  <testcase name="shouldNotCreateRelationsWhenThereAreNoTestCases()" classname="com.forge.capabilities.traceability.LocalTraceabilityAnalysisTest" time="0.0"/>
+  <testcase name="shouldNotCreateRelationWhenTestCaseDoesNotReferenceRequirement()" classname="com.forge.capabilities.traceability.LocalTraceabilityAnalysisTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

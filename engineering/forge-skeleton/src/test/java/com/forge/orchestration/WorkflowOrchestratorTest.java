@@ -4,6 +4,7 @@ import com.forge.capabilities.clarification.LocalClarification;
 import com.forge.capabilities.coverage.LocalCoverageAnalysis;
 import com.forge.capabilities.evidence.LocalEvidenceConsolidation;
 import com.forge.capabilities.improvement.LocalImprovement;
+import com.forge.capabilities.improvement.LocalProjectedCoverage;
 import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
 import com.forge.capabilities.traceability.LocalTraceabilityAnalysis;
 import com.forge.domain.evidence.Evidence;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class WorkflowOrchestratorTest {
 
     @Test
-    void shouldProcessEvidenceRequirementsClarificationTraceabilityCoverageAndImprovement() {
+    void shouldProcessCompleteWorkflowThroughProjectedCoverage() {
 
         ExecutionContext context =
                 new ExecutionContext();
@@ -63,14 +64,19 @@ class WorkflowOrchestratorTest {
                         new LocalClarification(),
                         new LocalTraceabilityAnalysis(),
                         new LocalCoverageAnalysis(),
-                        new LocalImprovement());
+                        new LocalImprovement(),
+                        new LocalProjectedCoverage());
 
         Execution result =
                 orchestrator.start(execution);
 
         assertEquals(
-                ExecutionStage.GENERATION,
+                ExecutionStage.PROJECTED_COVERAGE,
                 result.currentStage());
+
+        assertEquals(
+                "COMPLETED",
+                result.status().name());
 
         assertFalse(
                 result.context()
@@ -135,6 +141,18 @@ class WorkflowOrchestratorTest {
         assertTrue(
                 result.context()
                         .generatedTestCases()
+                        .isEmpty());
+
+        assertEquals(
+                100.0,
+                result.context()
+                        .projectedCoverage()
+                        .coveragePercentage());
+
+        assertTrue(
+                result.context()
+                        .projectedCoverage()
+                        .uncoveredRequirementIds()
                         .isEmpty());
     }
 }
