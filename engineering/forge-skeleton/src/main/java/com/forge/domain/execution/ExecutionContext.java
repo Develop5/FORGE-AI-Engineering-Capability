@@ -27,7 +27,9 @@ public final class ExecutionContext {
     private final List<Finding> findings = new ArrayList<>();
     private final List<Risk> risks = new ArrayList<>();
 
-    private Question pendingQuestion;
+    private final List<Question> pendingQuestions =
+            new ArrayList<>();
+
     private String pendingResponse;
 
     private final List<TestCase> existingTestCases = new ArrayList<>();
@@ -92,16 +94,37 @@ public final class ExecutionContext {
         risks.add(value);
     }
 
+    public List<Question> pendingQuestions() {
+        return List.copyOf(pendingQuestions);
+    }
+
     public Question pendingQuestion() {
-        return pendingQuestion;
+        if (pendingQuestions.isEmpty()) {
+            return null;
+        }
+
+        return pendingQuestions.get(0);
     }
 
-    public void setPendingQuestion(Question pendingQuestion) {
-        this.pendingQuestion = pendingQuestion;
+    public void setPendingQuestions(
+            List<Question> questions) {
+
+        pendingQuestions.clear();
+        pendingQuestions.addAll(questions);
     }
 
-    public void clearPendingQuestion() {
-        this.pendingQuestion = null;
+    public void addPendingQuestion(Question question) {
+        pendingQuestions.add(question);
+    }
+
+    public void removePendingQuestion() {
+        if (!pendingQuestions.isEmpty()) {
+            pendingQuestions.remove(0);
+        }
+    }
+
+    public void clearPendingQuestions() {
+        pendingQuestions.clear();
     }
 
     public String pendingResponse() {

@@ -18,9 +18,11 @@ import com.forge.capabilities.requirements.RequirementsDiscoveryOutput;
 import com.forge.capabilities.traceability.TraceabilityAnalysisCapability;
 import com.forge.capabilities.traceability.TraceabilityAnalysisInput;
 import com.forge.capabilities.traceability.TraceabilityAnalysisOutput;
+import com.forge.domain.clarification.Question;
 import com.forge.domain.execution.Execution;
 import com.forge.domain.execution.ExecutionStage;
 
+import java.util.List;
 import java.util.Objects;
 
 public final class WorkflowOrchestrator implements ForgeEngine {
@@ -127,15 +129,19 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                         new ClarificationInput(
                                 execution.context()
                                         .businessRequirements(),
-                                execution.context().findings(),
+                                execution.context()
+                                        .findings(),
                                 null,
                                 null));
 
-        applyClarificationResult(
+        applyInitialClarificationResult(
                 execution,
                 clarificationOutput);
 
-        if (execution.context().pendingQuestion() != null) {
+        if (!execution.context()
+                .pendingQuestions()
+                .isEmpty()) {
+
             execution.moveTo(
                     ExecutionStage.CLARIFICATION);
 
@@ -156,7 +162,10 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                 execution,
                 "execution must not be null");
 
-        if (execution.context().pendingQuestion() == null) {
+        Question question =
+                execution.context().pendingQuestion();
+
+        if (question == null) {
             throw new IllegalStateException(
                     "No clarification question is pending");
         }
@@ -168,17 +177,23 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                         new ClarificationInput(
                                 execution.context()
                                         .businessRequirements(),
-                                execution.context().findings(),
-                                execution.context().pendingQuestion(),
-                                execution.context().pendingResponse()));
+                                execution.context()
+                                        .findings(),
+                                question,
+                                execution.context()
+                                        .pendingResponse()));
 
         execution.context().clearPendingResponse();
+        execution.context().removePendingQuestion();
 
         applyClarificationResult(
                 execution,
                 clarificationOutput);
 
-        if (execution.context().pendingQuestion() != null) {
+        if (!execution.context()
+                .pendingQuestions()
+                .isEmpty()) {
+
             execution.moveTo(
                     ExecutionStage.CLARIFICATION);
 
@@ -188,6 +203,24 @@ public final class WorkflowOrchestrator implements ForgeEngine {
         }
 
         return continueAfterClarification(execution);
+    }
+
+    private void applyInitialClarificationResult(
+            Execution execution,
+            ClarificationOutput output) {
+
+        execution.context().replaceBusinessRequirements(
+                output.businessRequirements());
+
+        execution.context().replaceFindings(
+                output.findings());
+
+        output.risks()
+                .forEach(
+                        execution.context()::addRisk);
+
+        execution.context().setPendingQuestions(
+                output.questions());
     }
 
     private void applyClarificationResult(
@@ -204,12 +237,11 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                 .forEach(
                         execution.context()::addRisk);
 
-        execution.context().clearPendingQuestion();
+        List<Question> newQuestions =
+                output.questions();
 
-        if (!output.questions().isEmpty()) {
-            execution.context().setPendingQuestion(
-                    output.questions().get(0));
-        }
+        newQuestions.forEach(
+                execution.context()::addPendingQuestion);
     }
 
     private Execution continueAfterClarification(

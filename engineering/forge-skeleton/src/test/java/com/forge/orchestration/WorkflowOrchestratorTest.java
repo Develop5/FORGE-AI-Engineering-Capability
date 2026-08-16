@@ -104,7 +104,8 @@ class WorkflowOrchestratorTest {
 
         assertTrue(
                 result.context()
-                        .pendingQuestion() == null);
+                        .pendingQuestions()
+                        .isEmpty());
 
         assertEquals(
                 50.0,
@@ -182,9 +183,17 @@ class WorkflowOrchestratorTest {
                 "WAITING_FOR_CLARIFICATION",
                 waiting.status().name());
 
-        assertTrue(
+        assertEquals(
+                1,
                 waiting.context()
-                        .pendingQuestion() != null);
+                        .pendingQuestions()
+                        .size());
+
+        assertEquals(
+                "question-1",
+                waiting.context()
+                        .pendingQuestion()
+                        .id());
 
         Execution resumed =
                 orchestrator.resume(
@@ -197,7 +206,8 @@ class WorkflowOrchestratorTest {
 
         assertTrue(
                 resumed.context()
-                        .pendingQuestion() == null);
+                        .pendingQuestions()
+                        .isEmpty());
 
         assertTrue(
                 resumed.context()
@@ -224,5 +234,113 @@ class WorkflowOrchestratorTest {
                                                 .acceptanceCriteria()
                                                 .contains(
                                                         "Users must authenticate with valid credentials.")));
+    }
+
+    @Test
+    void shouldPreserveRemainingQuestionsWhileClarificationIsWaiting() {
+
+        ExecutionContext context =
+                new ExecutionContext();
+
+        context.addEvidence(
+                new Evidence(
+                        "evidence-1",
+                        "The system must allow users to authenticate.",
+                        "local-test"));
+
+        context.addFinding(
+                new Finding(
+                        "finding-1",
+                        "AMBIGUITY",
+                        "The authentication requirement is unclear.",
+                        List.of("BR-evidence-1")));
+
+        context.addFinding(
+                new Finding(
+                        "finding-2",
+                        "AMBIGUITY",
+                        "The authentication credential rules are unclear.",
+                        List.of("BR-evidence-1")));
+
+        Execution execution =
+                new Execution(
+                        "execution-multiple-questions",
+                        context);
+
+        WorkflowOrchestrator orchestrator =
+                new WorkflowOrchestrator(
+                        new LocalEvidenceConsolidation(),
+                        new LocalRequirementsDiscovery(),
+                        new LocalClarification(),
+                        new LocalTraceabilityAnalysis(),
+                        new LocalCoverageAnalysis(),
+                        new LocalImprovement());
+
+        Execution waiting =
+                orchestrator.start(execution);
+
+        assertEquals(
+                ExecutionStage.CLARIFICATION,
+                waiting.currentStage());
+
+        assertEquals(
+                "WAITING_FOR_CLARIFICATION",
+                waiting.status().name());
+
+        assertEquals(
+                2,
+                waiting.context()
+                        .pendingQuestions()
+                        .size());
+
+        assertEquals(
+                "finding-1",
+                waiting.context()
+                        .pendingQuestion()
+                        .findingId());
+
+        Execution stillWaiting =
+                orchestrator.resume(
+                        waiting,
+                        "Users must authenticate with valid credentials.");
+
+        assertEquals(
+                ExecutionStage.CLARIFICATION,
+                stillWaiting.currentStage());
+
+        assertEquals(
+                "WAITING_FOR_CLARIFICATION",
+                stillWaiting.status().name());
+
+        assertEquals(
+                1,
+                stillWaiting.context()
+                        .pendingQuestions()
+                        .size());
+
+        assertEquals(
+                "finding-2",
+                stillWaiting.context()
+                        .pendingQuestion()
+                        .findingId());
+
+        Execution completed =
+                orchestrator.resume(
+                        stillWaiting,
+                        "Authentication requires valid credential rules.");
+
+        assertEquals(
+                "COMPLETED",
+                completed.status().name());
+
+        assertTrue(
+                completed.context()
+                        .pendingQuestions()
+                        .isEmpty());
+
+        assertTrue(
+                completed.context()
+                        .findings()
+                        .isEmpty());
     }
 }
