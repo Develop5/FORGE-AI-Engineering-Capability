@@ -1,5 +1,6 @@
 package com.forge.orchestration;
 
+import com.forge.capabilities.clarification.LocalClarification;
 import com.forge.capabilities.evidence.LocalEvidenceConsolidation;
 import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
 import com.forge.domain.evidence.Evidence;
@@ -10,11 +11,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WorkflowOrchestratorTest {
 
     @Test
-    void shouldProcessEvidenceAndAdvanceToRequirements() {
+    void shouldProcessEvidenceRequirementsAndClarification() {
 
         ExecutionContext context = new ExecutionContext();
 
@@ -31,12 +33,13 @@ class WorkflowOrchestratorTest {
         WorkflowOrchestrator orchestrator =
                 new WorkflowOrchestrator(
                         new LocalEvidenceConsolidation(),
-                        new LocalRequirementsDiscovery());
+                        new LocalRequirementsDiscovery(),
+                        new LocalClarification());
 
         Execution result = orchestrator.start(execution);
 
         assertEquals(
-                ExecutionStage.REQUIREMENTS,
+                ExecutionStage.TRACEABILITY,
                 result.currentStage());
 
         assertFalse(
@@ -44,5 +47,11 @@ class WorkflowOrchestratorTest {
 
         assertFalse(
                 result.context().businessRequirements().isEmpty());
+
+        assertTrue(
+                result.context().findings().isEmpty());
+
+        assertTrue(
+                result.context().pendingQuestion() == null);
     }
 }

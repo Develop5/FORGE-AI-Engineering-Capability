@@ -1,5 +1,8 @@
 package com.forge.orchestration;
 
+import com.forge.capabilities.clarification.ClarificationCapability;
+import com.forge.capabilities.clarification.ClarificationInput;
+import com.forge.capabilities.clarification.ClarificationOutput;
 import com.forge.capabilities.evidence.EvidenceConsolidationCapability;
 import com.forge.capabilities.evidence.EvidenceConsolidationInput;
 import com.forge.capabilities.evidence.EvidenceConsolidationOutput;
@@ -7,6 +10,7 @@ import com.forge.capabilities.requirements.RequirementsDiscoveryCapability;
 import com.forge.capabilities.requirements.RequirementsDiscoveryInput;
 import com.forge.capabilities.requirements.RequirementsDiscoveryOutput;
 import com.forge.domain.execution.Execution;
+import com.forge.domain.execution.ExecutionStage;
 
 import java.util.Objects;
 
@@ -18,11 +22,16 @@ public final class WorkflowOrchestrator implements ForgeEngine {
     private final RequirementsDiscoveryCapability
             requirementsDiscoveryCapability;
 
+    private final ClarificationCapability
+            clarificationCapability;
+
     public WorkflowOrchestrator(
             EvidenceConsolidationCapability
                     evidenceConsolidationCapability,
             RequirementsDiscoveryCapability
-                    requirementsDiscoveryCapability) {
+                    requirementsDiscoveryCapability,
+            ClarificationCapability
+                    clarificationCapability) {
 
         this.evidenceConsolidationCapability =
                 Objects.requireNonNull(
@@ -33,6 +42,11 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                 Objects.requireNonNull(
                         requirementsDiscoveryCapability,
                         "requirementsDiscoveryCapability must not be null");
+
+        this.clarificationCapability =
+                Objects.requireNonNull(
+                        clarificationCapability,
+                        "clarificationCapability must not be null");
     }
 
     @Override
@@ -58,16 +72,42 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                         execution.context().evidenceTopics());
 
         RequirementsDiscoveryOutput requirementsOutput =
-                requirementsDiscoveryCapability.execute(requirementsInput);
+                requirementsDiscoveryCapability.execute(
+                        requirementsInput);
 
         requirementsOutput.businessRequirements()
-                .forEach(execution.context()::addBusinessRequirement);
+                .forEach(
+                        execution.context()::addBusinessRequirement);
 
         requirementsOutput.findings()
-                .forEach(execution.context()::addFinding);
+                .forEach(
+                        execution.context()::addFinding);
 
         execution.moveTo(
-                com.forge.domain.execution.ExecutionStage.REQUIREMENTS);
+                ExecutionStage.REQUIREMENTS);
+
+        ClarificationInput clarificationInput =
+                new ClarificationInput(
+                        execution.context().findings());
+
+        ClarificationOutput clarificationOutput =
+                clarificationCapability.execute(
+                        clarificationInput);
+
+        if (!clarificationOutput.questions().isEmpty()) {
+            execution.context().setPendingQuestion(
+                    clarificationOutput.questions().get(0));
+
+            execution.moveTo(
+                    ExecutionStage.CLARIFICATION);
+
+            execution.waitForClarification();
+
+            return execution;
+        }
+
+        execution.moveTo(
+                ExecutionStage.TRACEABILITY);
 
         return execution;
     }
