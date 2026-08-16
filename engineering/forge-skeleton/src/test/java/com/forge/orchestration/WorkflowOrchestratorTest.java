@@ -6,6 +6,7 @@ import com.forge.domain.execution.Execution;
 import com.forge.domain.execution.ExecutionContext;
 import com.forge.domain.execution.ExecutionStage;
 import org.junit.jupiter.api.Test;
+import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -29,7 +30,8 @@ class WorkflowOrchestratorTest {
 
         WorkflowOrchestrator orchestrator =
                 new WorkflowOrchestrator(
-                        new LocalEvidenceConsolidation());
+                        new LocalEvidenceConsolidation(),
+                        new LocalRequirementsDiscovery());
 
         Execution result = orchestrator.start(execution);
 

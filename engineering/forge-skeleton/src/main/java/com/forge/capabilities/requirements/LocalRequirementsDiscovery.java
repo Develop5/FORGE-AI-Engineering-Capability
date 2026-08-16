@@ -28,9 +28,9 @@ public final class LocalRequirementsDiscovery
 
         return new BusinessRequirement(
                 topic.name(),
+                topic.name(),
                 topic.information(),
-                topic.evidenceReferences().get(0),
                 "LOCAL",
-                "LOCAL");
+                List.of());
     }
 }
