@@ -9,6 +9,9 @@ import com.forge.capabilities.evidence.EvidenceConsolidationOutput;
 import com.forge.capabilities.requirements.RequirementsDiscoveryCapability;
 import com.forge.capabilities.requirements.RequirementsDiscoveryInput;
 import com.forge.capabilities.requirements.RequirementsDiscoveryOutput;
+import com.forge.capabilities.traceability.TraceabilityAnalysisCapability;
+import com.forge.capabilities.traceability.TraceabilityAnalysisInput;
+import com.forge.capabilities.traceability.TraceabilityAnalysisOutput;
 import com.forge.domain.execution.Execution;
 import com.forge.domain.execution.ExecutionStage;
 
@@ -25,13 +28,18 @@ public final class WorkflowOrchestrator implements ForgeEngine {
     private final ClarificationCapability
             clarificationCapability;
 
+    private final TraceabilityAnalysisCapability
+            traceabilityAnalysisCapability;
+
     public WorkflowOrchestrator(
             EvidenceConsolidationCapability
                     evidenceConsolidationCapability,
             RequirementsDiscoveryCapability
                     requirementsDiscoveryCapability,
             ClarificationCapability
-                    clarificationCapability) {
+                    clarificationCapability,
+            TraceabilityAnalysisCapability
+                    traceabilityAnalysisCapability) {
 
         this.evidenceConsolidationCapability =
                 Objects.requireNonNull(
@@ -47,6 +55,11 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                 Objects.requireNonNull(
                         clarificationCapability,
                         "clarificationCapability must not be null");
+
+        this.traceabilityAnalysisCapability =
+                Objects.requireNonNull(
+                        traceabilityAnalysisCapability,
+                        "traceabilityAnalysisCapability must not be null");
     }
 
     @Override
@@ -62,7 +75,8 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                         execution.context().evidence());
 
         EvidenceConsolidationOutput evidenceOutput =
-                evidenceConsolidationCapability.execute(evidenceInput);
+                evidenceConsolidationCapability.execute(
+                        evidenceInput);
 
         evidenceOutput.evidenceTopics()
                 .forEach(execution.context()::addEvidenceTopic);
@@ -105,6 +119,19 @@ public final class WorkflowOrchestrator implements ForgeEngine {
 
             return execution;
         }
+
+        TraceabilityAnalysisInput traceabilityInput =
+                new TraceabilityAnalysisInput(
+                        execution.context().businessRequirements(),
+                        execution.context().existingTestCases());
+
+        TraceabilityAnalysisOutput traceabilityOutput =
+                traceabilityAnalysisCapability.execute(
+                        traceabilityInput);
+
+        traceabilityOutput.relations()
+                .forEach(
+                        execution.context()::addTraceabilityRelation);
 
         execution.moveTo(
                 ExecutionStage.TRACEABILITY);
