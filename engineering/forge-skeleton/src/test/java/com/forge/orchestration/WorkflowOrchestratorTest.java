@@ -155,7 +155,7 @@ class WorkflowOrchestratorTest {
                         "finding-1",
                         "AMBIGUITY",
                         "The authentication requirement is unclear.",
-                        List.of("requirement-1")));
+                        List.of("BR-evidence-1")));
 
         Execution execution =
                 new Execution(
@@ -218,7 +218,10 @@ class WorkflowOrchestratorTest {
                         .stream()
                         .anyMatch(
                                 requirement ->
-                                        requirement.acceptanceCriteria()
+                                        requirement.id()
+                                                .equals("BR-evidence-1")
+                                                && requirement
+                                                .acceptanceCriteria()
                                                 .contains(
                                                         "Users must authenticate with valid credentials.")));
     }

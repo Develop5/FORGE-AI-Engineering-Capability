@@ -34,7 +34,8 @@ public final class ExecutionContext {
     private final List<Specification> specifications = new ArrayList<>();
     private final List<RequirementTestCaseRelation> traceabilityRelations =
             new ArrayList<>();
-    private final List<GeneratedTestCase> generatedTestCases = new ArrayList<>();
+    private final List<GeneratedTestCase> generatedTestCases =
+            new ArrayList<>();
 
     private CoverageResult coverageResult;
     private ProjectedCoverage projectedCoverage;
@@ -63,12 +64,24 @@ public final class ExecutionContext {
         businessRequirements.add(value);
     }
 
+    public void replaceBusinessRequirements(
+            List<BusinessRequirement> values) {
+
+        businessRequirements.clear();
+        businessRequirements.addAll(values);
+    }
+
     public List<Finding> findings() {
         return List.copyOf(findings);
     }
 
     public void addFinding(Finding value) {
         findings.add(value);
+    }
+
+    public void replaceFindings(List<Finding> values) {
+        findings.clear();
+        findings.addAll(values);
     }
 
     public List<Risk> risks() {

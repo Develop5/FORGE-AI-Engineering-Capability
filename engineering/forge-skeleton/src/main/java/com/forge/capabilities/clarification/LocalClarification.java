@@ -78,7 +78,11 @@ public final class LocalClarification
 
             return new ClarificationOutput(
                     input.businessRequirements(),
-                    input.findings(),
+                    input.findings().stream()
+                            .filter(candidate ->
+                                    !candidate.id().equals(
+                                            finding.id()))
+                            .toList(),
                     List.of(),
                     List.of(risk));
         }
@@ -114,7 +118,8 @@ public final class LocalClarification
         List<Finding> remainingFindings =
                 input.findings().stream()
                         .filter(candidate ->
-                                !candidate.id().equals(finding.id()))
+                                !candidate.id().equals(
+                                        finding.id()))
                         .toList();
 
         return new ClarificationOutput(

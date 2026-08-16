@@ -194,13 +194,11 @@ public final class WorkflowOrchestrator implements ForgeEngine {
             Execution execution,
             ClarificationOutput output) {
 
-        output.businessRequirements()
-                .forEach(
-                        execution.context()::addBusinessRequirement);
+        execution.context().replaceBusinessRequirements(
+                output.businessRequirements());
 
-        output.findings()
-                .forEach(
-                        execution.context()::addFinding);
+        execution.context().replaceFindings(
+                output.findings());
 
         output.risks()
                 .forEach(
