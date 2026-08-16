@@ -10,13 +10,13 @@ import com.forge.domain.evidence.Evidence;
 import com.forge.domain.execution.Execution;
 import com.forge.domain.execution.ExecutionContext;
 import com.forge.domain.execution.ExecutionStage;
+import com.forge.domain.finding.Finding;
 import com.forge.domain.testcase.TestCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WorkflowOrchestratorTest {
@@ -80,10 +80,10 @@ class WorkflowOrchestratorTest {
                 "COMPLETED",
                 result.status().name());
 
-        assertFalse(
+        assertTrue(
                 result.context()
                         .evidenceTopics()
-                        .isEmpty());
+                        .size() > 0);
 
         assertEquals(
                 2,
@@ -136,5 +136,90 @@ class WorkflowOrchestratorTest {
                         .projectedCoverage()
                         .uncoveredRequirementIds()
                         .isEmpty());
+    }
+
+    @Test
+    void shouldPauseForClarificationAndResumeWithUserResponse() {
+
+        ExecutionContext context =
+                new ExecutionContext();
+
+        context.addEvidence(
+                new Evidence(
+                        "evidence-1",
+                        "The system must allow users to authenticate.",
+                        "local-test"));
+
+        context.addFinding(
+                new Finding(
+                        "finding-1",
+                        "AMBIGUITY",
+                        "The authentication requirement is unclear.",
+                        List.of("requirement-1")));
+
+        Execution execution =
+                new Execution(
+                        "execution-clarification",
+                        context);
+
+        WorkflowOrchestrator orchestrator =
+                new WorkflowOrchestrator(
+                        new LocalEvidenceConsolidation(),
+                        new LocalRequirementsDiscovery(),
+                        new LocalClarification(),
+                        new LocalTraceabilityAnalysis(),
+                        new LocalCoverageAnalysis(),
+                        new LocalImprovement());
+
+        Execution waiting =
+                orchestrator.start(execution);
+
+        assertEquals(
+                ExecutionStage.CLARIFICATION,
+                waiting.currentStage());
+
+        assertEquals(
+                "WAITING_FOR_CLARIFICATION",
+                waiting.status().name());
+
+        assertTrue(
+                waiting.context()
+                        .pendingQuestion() != null);
+
+        Execution resumed =
+                orchestrator.resume(
+                        waiting,
+                        "Users must authenticate with valid credentials.");
+
+        assertEquals(
+                "COMPLETED",
+                resumed.status().name());
+
+        assertTrue(
+                resumed.context()
+                        .pendingQuestion() == null);
+
+        assertTrue(
+                resumed.context()
+                        .pendingResponse() == null);
+
+        assertTrue(
+                resumed.context()
+                        .findings()
+                        .stream()
+                        .noneMatch(
+                                finding ->
+                                        finding.id()
+                                                .equals("finding-1")));
+
+        assertTrue(
+                resumed.context()
+                        .businessRequirements()
+                        .stream()
+                        .anyMatch(
+                                requirement ->
+                                        requirement.acceptanceCriteria()
+                                                .contains(
+                                                        "Users must authenticate with valid credentials.")));
     }
 }
