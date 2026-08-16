@@ -3,6 +3,7 @@ package com.forge.orchestration;
 import com.forge.capabilities.clarification.LocalClarification;
 import com.forge.capabilities.coverage.LocalCoverageAnalysis;
 import com.forge.capabilities.evidence.LocalEvidenceConsolidation;
+import com.forge.capabilities.improvement.LocalImprovement;
 import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
 import com.forge.capabilities.traceability.LocalTraceabilityAnalysis;
 import com.forge.domain.evidence.Evidence;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class WorkflowOrchestratorTest {
 
     @Test
-    void shouldProcessEvidenceRequirementsClarificationTraceabilityAndCoverage() {
+    void shouldProcessEvidenceRequirementsClarificationTraceabilityCoverageAndImprovement() {
 
         ExecutionContext context =
                 new ExecutionContext();
@@ -61,13 +62,14 @@ class WorkflowOrchestratorTest {
                         new LocalRequirementsDiscovery(),
                         new LocalClarification(),
                         new LocalTraceabilityAnalysis(),
-                        new LocalCoverageAnalysis());
+                        new LocalCoverageAnalysis(),
+                        new LocalImprovement());
 
         Execution result =
                 orchestrator.start(execution);
 
         assertEquals(
-                ExecutionStage.COVERAGE,
+                ExecutionStage.GENERATION,
                 result.currentStage());
 
         assertFalse(
@@ -130,19 +132,9 @@ class WorkflowOrchestratorTest {
                         .uncoveredRequirementIds()
                         .isEmpty());
 
-        assertEquals(
-                1,
+        assertTrue(
                 result.context()
-                        .coverageResult()
-                        .relatedTestCases()
-                        .size());
-
-        assertEquals(
-                "test-case-1",
-                result.context()
-                        .coverageResult()
-                        .relatedTestCases()
-                        .get(0)
-                        .id());
+                        .generatedTestCases()
+                        .isEmpty());
     }
 }

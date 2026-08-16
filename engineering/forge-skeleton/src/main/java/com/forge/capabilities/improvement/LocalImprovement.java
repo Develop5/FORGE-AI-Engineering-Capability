@@ -6,8 +6,9 @@ import com.forge.domain.testcase.GeneratedTestCase;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class LocalImprovement {
+public final class LocalImprovement implements ImprovementCapability {
 
+    @Override
     public ImprovementOutput execute(ImprovementInput input) {
         List<GeneratedTestCase> generatedTestCases = new ArrayList<>();
 

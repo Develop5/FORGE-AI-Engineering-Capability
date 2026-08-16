@@ -9,6 +9,9 @@ import com.forge.capabilities.coverage.CoverageAnalysisOutput;
 import com.forge.capabilities.evidence.EvidenceConsolidationCapability;
 import com.forge.capabilities.evidence.EvidenceConsolidationInput;
 import com.forge.capabilities.evidence.EvidenceConsolidationOutput;
+import com.forge.capabilities.improvement.ImprovementCapability;
+import com.forge.capabilities.improvement.ImprovementInput;
+import com.forge.capabilities.improvement.ImprovementOutput;
 import com.forge.capabilities.requirements.RequirementsDiscoveryCapability;
 import com.forge.capabilities.requirements.RequirementsDiscoveryInput;
 import com.forge.capabilities.requirements.RequirementsDiscoveryOutput;
@@ -37,6 +40,9 @@ public final class WorkflowOrchestrator implements ForgeEngine {
     private final CoverageAnalysisCapability
             coverageAnalysisCapability;
 
+    private final ImprovementCapability
+            improvementCapability;
+
     public WorkflowOrchestrator(
             EvidenceConsolidationCapability
                     evidenceConsolidationCapability,
@@ -47,7 +53,9 @@ public final class WorkflowOrchestrator implements ForgeEngine {
             TraceabilityAnalysisCapability
                     traceabilityAnalysisCapability,
             CoverageAnalysisCapability
-                    coverageAnalysisCapability) {
+                    coverageAnalysisCapability,
+            ImprovementCapability
+                    improvementCapability) {
 
         this.evidenceConsolidationCapability =
                 Objects.requireNonNull(
@@ -73,6 +81,11 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                 Objects.requireNonNull(
                         coverageAnalysisCapability,
                         "coverageAnalysisCapability must not be null");
+
+        this.improvementCapability =
+                Objects.requireNonNull(
+                        improvementCapability,
+                        "improvementCapability must not be null");
     }
 
     @Override
@@ -166,6 +179,27 @@ public final class WorkflowOrchestrator implements ForgeEngine {
 
         execution.moveTo(
                 ExecutionStage.COVERAGE);
+
+        ImprovementInput improvementInput =
+                new ImprovementInput(
+                        execution.context().businessRequirements(),
+                        execution.context().existingTestCases(),
+                        execution.context().coverageResult(),
+                        95.0);
+
+        execution.moveTo(
+                ExecutionStage.IMPROVEMENT);
+
+        ImprovementOutput improvementOutput =
+                improvementCapability.execute(
+                        improvementInput);
+
+        improvementOutput.generatedTestCases()
+                .forEach(
+                        execution.context()::addGeneratedTestCase);
+
+        execution.moveTo(
+                ExecutionStage.GENERATION);
 
         return execution;
     }
