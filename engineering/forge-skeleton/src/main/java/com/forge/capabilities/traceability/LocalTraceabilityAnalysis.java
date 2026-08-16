@@ -23,20 +23,34 @@ public final class LocalTraceabilityAnalysis
         List<RequirementTestCaseRelation> relations =
                 new ArrayList<>();
 
-        for (BusinessRequirement requirement :
-                input.businessRequirements()) {
+        for (BusinessRequirement requirement
+                : input.businessRequirements()) {
 
-            for (TestCase testCase :
-                    input.testCases()) {
+            for (TestCase testCase
+                    : input.testCases()) {
 
-                relations.add(
-                        new RequirementTestCaseRelation(
-                                requirement.id(),
-                                testCase.id(),
-                                RelationType.COVERS));
+                if (covers(requirement, testCase)) {
+                    relations.add(
+                            new RequirementTestCaseRelation(
+                                    requirement.id(),
+                                    testCase.id(),
+                                    RelationType.COVERS));
+                }
             }
         }
 
         return new TraceabilityAnalysisOutput(relations);
+    }
+
+    private boolean covers(
+            BusinessRequirement requirement,
+            TestCase testCase) {
+
+        if (testCase.sourceReference() == null) {
+            return false;
+        }
+
+        return testCase.sourceReference()
+                .equals(requirement.id());
     }
 }

@@ -9,34 +9,39 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LocalTraceabilityAnalysisTest {
 
+    private final LocalTraceabilityAnalysis analysis =
+            new LocalTraceabilityAnalysis();
+
     @Test
-    void shouldCreateCoverageRelationBetweenRequirementAndTestCase() {
+    void shouldCreateCoversRelationWhenTestCaseExplicitlyReferencesRequirement() {
 
         BusinessRequirement requirement =
                 new BusinessRequirement(
-                        "requirement-1",
+                        "BR-001",
                         "User authentication",
-                        "The user must authenticate.",
+                        "The user must authenticate before accessing the system.",
                         "HIGH",
-                        List.of("Authentication is required."));
+                        List.of(
+                                "The user must provide valid credentials."));
 
         TestCase testCase =
                 new TestCase(
-                        "testcase-1",
+                        "TC-001",
                         "Verify user authentication",
-                        "Verify that the user can authenticate.",
-                        List.of("User exists."),
-                        List.of("Valid credentials."),
-                        List.of("Enter credentials.", "Submit login."),
-                        "User is authenticated.",
-                        "local-test");
-
-        LocalTraceabilityAnalysis analysis =
-                new LocalTraceabilityAnalysis();
+                        "Verify that a user must authenticate before accessing the system.",
+                        List.of(
+                                "User has access to the system."),
+                        List.of(
+                                "Valid user credentials."),
+                        List.of(
+                                "Open the system.",
+                                "Enter valid credentials.",
+                                "Submit credentials."),
+                        "The user is authenticated and can access the system.",
+                        "BR-001");
 
         TraceabilityAnalysisOutput output =
                 analysis.execute(
@@ -52,11 +57,11 @@ class LocalTraceabilityAnalysisTest {
                 output.relations().get(0);
 
         assertEquals(
-                "requirement-1",
+                "BR-001",
                 relation.requirementId());
 
         assertEquals(
-                "testcase-1",
+                "TC-001",
                 relation.testCaseId());
 
         assertEquals(
@@ -65,18 +70,55 @@ class LocalTraceabilityAnalysisTest {
     }
 
     @Test
-    void shouldReturnNoRelationsWhenThereAreNoTestCases() {
+    void shouldNotCreateRelationWhenTestCaseDoesNotReferenceRequirement() {
 
         BusinessRequirement requirement =
                 new BusinessRequirement(
-                        "requirement-1",
+                        "BR-001",
                         "User authentication",
-                        "The user must authenticate.",
+                        "The user must authenticate before accessing the system.",
                         "HIGH",
-                        List.of("Authentication is required."));
+                        List.of(
+                                "The user must provide valid credentials."));
 
-        LocalTraceabilityAnalysis analysis =
-                new LocalTraceabilityAnalysis();
+        TestCase testCase =
+                new TestCase(
+                        "TC-001",
+                        "Verify user authentication",
+                        "Verify that a user must authenticate before accessing the system.",
+                        List.of(
+                                "User has access to the system."),
+                        List.of(
+                                "Valid user credentials."),
+                        List.of(
+                                "Open the system.",
+                                "Enter valid credentials.",
+                                "Submit credentials."),
+                        "The user is authenticated and can access the system.",
+                        "OTHER-REQUIREMENT");
+
+        TraceabilityAnalysisOutput output =
+                analysis.execute(
+                        new TraceabilityAnalysisInput(
+                                List.of(requirement),
+                                List.of(testCase)));
+
+        assertEquals(
+                0,
+                output.relations().size());
+    }
+
+    @Test
+    void shouldNotCreateRelationsWhenThereAreNoTestCases() {
+
+        BusinessRequirement requirement =
+                new BusinessRequirement(
+                        "BR-001",
+                        "User authentication",
+                        "The user must authenticate before accessing the system.",
+                        "HIGH",
+                        List.of(
+                                "The user must provide valid credentials."));
 
         TraceabilityAnalysisOutput output =
                 analysis.execute(
@@ -84,7 +126,8 @@ class LocalTraceabilityAnalysisTest {
                                 List.of(requirement),
                                 List.of()));
 
-        assertTrue(
-                output.relations().isEmpty());
+        assertEquals(
+                0,
+                output.relations().size());
     }
 }
