@@ -3,6 +3,9 @@ package com.forge.orchestration;
 import com.forge.capabilities.clarification.ClarificationCapability;
 import com.forge.capabilities.clarification.ClarificationInput;
 import com.forge.capabilities.clarification.ClarificationOutput;
+import com.forge.capabilities.coverage.CoverageAnalysisCapability;
+import com.forge.capabilities.coverage.CoverageAnalysisInput;
+import com.forge.capabilities.coverage.CoverageAnalysisOutput;
 import com.forge.capabilities.evidence.EvidenceConsolidationCapability;
 import com.forge.capabilities.evidence.EvidenceConsolidationInput;
 import com.forge.capabilities.evidence.EvidenceConsolidationOutput;
@@ -31,6 +34,9 @@ public final class WorkflowOrchestrator implements ForgeEngine {
     private final TraceabilityAnalysisCapability
             traceabilityAnalysisCapability;
 
+    private final CoverageAnalysisCapability
+            coverageAnalysisCapability;
+
     public WorkflowOrchestrator(
             EvidenceConsolidationCapability
                     evidenceConsolidationCapability,
@@ -39,7 +45,9 @@ public final class WorkflowOrchestrator implements ForgeEngine {
             ClarificationCapability
                     clarificationCapability,
             TraceabilityAnalysisCapability
-                    traceabilityAnalysisCapability) {
+                    traceabilityAnalysisCapability,
+            CoverageAnalysisCapability
+                    coverageAnalysisCapability) {
 
         this.evidenceConsolidationCapability =
                 Objects.requireNonNull(
@@ -60,6 +68,11 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                 Objects.requireNonNull(
                         traceabilityAnalysisCapability,
                         "traceabilityAnalysisCapability must not be null");
+
+        this.coverageAnalysisCapability =
+                Objects.requireNonNull(
+                        coverageAnalysisCapability,
+                        "coverageAnalysisCapability must not be null");
     }
 
     @Override
@@ -136,6 +149,23 @@ public final class WorkflowOrchestrator implements ForgeEngine {
 
         execution.moveTo(
                 ExecutionStage.TRACEABILITY);
+
+        CoverageAnalysisInput coverageInput =
+                new CoverageAnalysisInput(
+                        execution.context().businessRequirements(),
+                        execution.context().existingTestCases(),
+                        execution.context().traceabilityRelations(),
+                        execution.context().risks());
+
+        CoverageAnalysisOutput coverageOutput =
+                coverageAnalysisCapability.execute(
+                        coverageInput);
+
+        execution.context().setCoverageResult(
+                coverageOutput.coverageResult());
+
+        execution.moveTo(
+                ExecutionStage.COVERAGE);
 
         return execution;
     }

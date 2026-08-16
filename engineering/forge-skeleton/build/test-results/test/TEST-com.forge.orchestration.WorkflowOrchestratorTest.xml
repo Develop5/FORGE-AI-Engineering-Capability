@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.forge.orchestration.WorkflowOrchestratorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-08-16T07:15:53.973Z" hostname="LAPTOP-84FJEUOV" time="0.009">
+<testsuite name="com.forge.orchestration.WorkflowOrchestratorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-08-16T07:28:15.678Z" hostname="LAPTOP-84FJEUOV" time="0.01">
   <properties/>
-  <testcase name="shouldProcessEvidenceRequirementsClarificationAndTraceability()" classname="com.forge.orchestration.WorkflowOrchestratorTest" time="0.008"/>
+  <testcase name="shouldProcessEvidenceRequirementsClarificationTraceabilityAndCoverage()" classname="com.forge.orchestration.WorkflowOrchestratorTest" time="0.009"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

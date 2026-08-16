@@ -1,6 +1,7 @@
 package com.forge.orchestration;
 
 import com.forge.capabilities.clarification.LocalClarification;
+import com.forge.capabilities.coverage.LocalCoverageAnalysis;
 import com.forge.capabilities.evidence.LocalEvidenceConsolidation;
 import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
 import com.forge.capabilities.traceability.LocalTraceabilityAnalysis;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class WorkflowOrchestratorTest {
 
     @Test
-    void shouldProcessEvidenceRequirementsClarificationAndTraceability() {
+    void shouldProcessEvidenceRequirementsClarificationTraceabilityAndCoverage() {
 
         ExecutionContext context =
                 new ExecutionContext();
@@ -59,13 +60,14 @@ class WorkflowOrchestratorTest {
                         new LocalEvidenceConsolidation(),
                         new LocalRequirementsDiscovery(),
                         new LocalClarification(),
-                        new LocalTraceabilityAnalysis());
+                        new LocalTraceabilityAnalysis(),
+                        new LocalCoverageAnalysis());
 
         Execution result =
                 orchestrator.start(execution);
 
         assertEquals(
-                ExecutionStage.TRACEABILITY,
+                ExecutionStage.COVERAGE,
                 result.currentStage());
 
         assertFalse(
@@ -115,5 +117,32 @@ class WorkflowOrchestratorTest {
         assertEquals(
                 RelationType.COVERS,
                 relation.relationType());
+
+        assertEquals(
+                100.0,
+                result.context()
+                        .coverageResult()
+                        .currentCoverage());
+
+        assertTrue(
+                result.context()
+                        .coverageResult()
+                        .uncoveredRequirementIds()
+                        .isEmpty());
+
+        assertEquals(
+                1,
+                result.context()
+                        .coverageResult()
+                        .relatedTestCases()
+                        .size());
+
+        assertEquals(
+                "test-case-1",
+                result.context()
+                        .coverageResult()
+                        .relatedTestCases()
+                        .get(0)
+                        .id());
     }
 }
