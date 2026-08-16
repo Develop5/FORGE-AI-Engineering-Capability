@@ -12,7 +12,6 @@ public record ImprovementInput(
         List<TestCase> existingTestCases,
         CoverageResult coverageResult,
         double requestedCoverageTarget) {
-
     public ImprovementInput {
         Objects.requireNonNull(
                 businessRequirements,
