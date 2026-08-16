@@ -19,14 +19,21 @@ class LocalTraceabilityAnalysisTest {
         BusinessRequirement requirement =
                 new BusinessRequirement(
                         "requirement-1",
+                        "User authentication",
                         "The user must authenticate.",
-                        List.of());
+                        "HIGH",
+                        List.of("Authentication is required."));
 
         TestCase testCase =
                 new TestCase(
                         "testcase-1",
-                        "Verify user authentication.",
-                        List.of());
+                        "Verify user authentication",
+                        "Verify that the user can authenticate.",
+                        List.of("User exists."),
+                        List.of("Valid credentials."),
+                        List.of("Enter credentials.", "Submit login."),
+                        "User is authenticated.",
+                        "local-test");
 
         LocalTraceabilityAnalysis analysis =
                 new LocalTraceabilityAnalysis();
@@ -63,8 +70,10 @@ class LocalTraceabilityAnalysisTest {
         BusinessRequirement requirement =
                 new BusinessRequirement(
                         "requirement-1",
+                        "User authentication",
                         "The user must authenticate.",
-                        List.of());
+                        "HIGH",
+                        List.of("Authentication is required."));
 
         LocalTraceabilityAnalysis analysis =
                 new LocalTraceabilityAnalysis();
