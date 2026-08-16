@@ -26,8 +26,11 @@ public final class LocalRequirementsDiscovery
     private BusinessRequirement toRequirement(
             EvidenceTopic topic) {
 
+        String requirementId =
+                "BR-" + topic.evidenceReferences().get(0);
+
         return new BusinessRequirement(
-                topic.name(),
+                requirementId,
                 topic.name(),
                 topic.information(),
                 "LOCAL",

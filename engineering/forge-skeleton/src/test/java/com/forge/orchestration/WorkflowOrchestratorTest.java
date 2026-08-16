@@ -53,7 +53,7 @@ class WorkflowOrchestratorTest {
                                 "Enter valid credentials",
                                 "Submit credentials"),
                         "The user is authenticated and can access the system.",
-                        "local-test"));
+                        "BR-evidence-1"));
 
         Execution execution =
                 new Execution(

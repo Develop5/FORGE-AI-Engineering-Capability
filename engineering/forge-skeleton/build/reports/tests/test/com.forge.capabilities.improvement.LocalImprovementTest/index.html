@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="x-ua-compatible" content="IE=edge"/>
-<title>Test results - com.forge.orchestration.WorkflowOrchestratorTest</title>
+<title>Test results - com.forge.capabilities.improvement.LocalImprovementTest</title>
 <link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
 <link href="../css/style.css" rel="stylesheet" type="text/css"/>
 <script src="../js/report.js" type="text/javascript"></script>
@@ -12,7 +12,7 @@
 <div id="content">
 <div class="breadcrumbs">
 <a class="breadcrumb" href="../index.html">all</a> &gt; 
-<span class="breadcrumb">com.forge.orchestration.WorkflowOrchestratorTest</span>
+<span class="breadcrumb">com.forge.capabilities.improvement.LocalImprovementTest</span>
 </div>
 <div class="tab-container">
 <ul class="tabLinks">
@@ -22,7 +22,7 @@
 </ul>
 <div class="tab">
 <h2>Gradle Test Run :test</h2>
-<h1>WorkflowOrchestratorTest</h1>
+<h1>LocalImprovementTest</h1>
 <div class="tab-container">
 <ul class="tabLinks">
 <li>
@@ -41,7 +41,7 @@
 <tr>
 <td>
 <div class="infoBox">
-<div class="counter">1</div>
+<div class="counter">3</div>
 <p>tests</p>
 </div>
 </td>
@@ -59,7 +59,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.010s</div>
+<div class="counter">0.016s</div>
 <p>duration</p>
 </div>
 </td>
@@ -90,12 +90,30 @@
 </thead>
 <tbody>
 <tr>
-<td class="success">shouldProcessCompleteWorkflowAndImproveCoverage()</td>
-<td class="path" hidden="">shouldProcessCompleteWorkflowAndImproveCoverage()</td>
+<td class="success">shouldNotGenerateTestsWhenTargetAlreadyAchieved()</td>
+<td class="path" hidden="">shouldNotGenerateTestsWhenTargetAlreadyAchieved()</td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td data-sort-value="9">0.009s</td>
+<td data-sort-value="0">0s</td>
+<td class="success" data-sort-value="100">100%</td>
+</tr>
+<tr>
+<td class="success">shouldPlanAndGenerateTestCasesForUncoveredRequirements()</td>
+<td class="path" hidden="">shouldPlanAndGenerateTestCasesForUncoveredRequirements()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td data-sort-value="7">0.007s</td>
+<td class="success" data-sort-value="100">100%</td>
+</tr>
+<tr>
+<td class="success">shouldReportFailureWhenTargetCannotBeReached()</td>
+<td class="path" hidden="">shouldReportFailureWhenTargetCannotBeReached()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td data-sort-value="7">0.007s</td>
 <td class="success" data-sort-value="100">100%</td>
 </tr>
 </tbody>

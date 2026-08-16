@@ -1,0 +1,64 @@
+package com.forge.capabilities.requirements;
+
+import com.forge.domain.evidence.EvidenceTopic;
+import com.forge.domain.requirement.BusinessRequirement;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class LocalRequirementsDiscoveryTest {
+
+    private final LocalRequirementsDiscovery discovery =
+            new LocalRequirementsDiscovery();
+
+    @Test
+    void shouldCreateUniqueRequirementsFromDistinctEvidenceReferences() {
+
+        EvidenceTopic authenticationTopic =
+                new EvidenceTopic(
+                        "local-test",
+                        "The system must allow users to authenticate.",
+                        List.of("evidence-1"));
+
+        EvidenceTopic passwordResetTopic =
+                new EvidenceTopic(
+                        "local-test",
+                        "The system must allow users to reset their password.",
+                        List.of("evidence-2"));
+
+        RequirementsDiscoveryOutput output =
+                discovery.execute(
+                        new RequirementsDiscoveryInput(
+                                List.of(
+                                        authenticationTopic,
+                                        passwordResetTopic)));
+
+        assertEquals(
+                2,
+                output.businessRequirements().size());
+
+        BusinessRequirement authenticationRequirement =
+                output.businessRequirements().get(0);
+
+        BusinessRequirement passwordResetRequirement =
+                output.businessRequirements().get(1);
+
+        assertEquals(
+                "BR-evidence-1",
+                authenticationRequirement.id());
+
+        assertEquals(
+                "BR-evidence-2",
+                passwordResetRequirement.id());
+
+        assertEquals(
+                "The system must allow users to authenticate.",
+                authenticationRequirement.description());
+
+        assertEquals(
+                "The system must allow users to reset their password.",
+                passwordResetRequirement.description());
+    }
+}
