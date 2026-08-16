@@ -10,7 +10,8 @@ import java.util.Objects;
 public record ImprovementInput(
         List<BusinessRequirement> businessRequirements,
         List<TestCase> existingTestCases,
-        CoverageResult coverageResult) {
+        CoverageResult coverageResult,
+        double requestedCoverageTarget) {
 
     public ImprovementInput {
         Objects.requireNonNull(
@@ -24,6 +25,12 @@ public record ImprovementInput(
         Objects.requireNonNull(
                 coverageResult,
                 "coverageResult must not be null");
+
+        if (requestedCoverageTarget < 0.0
+                || requestedCoverageTarget > 100.0) {
+            throw new IllegalArgumentException(
+                    "requestedCoverageTarget must be between 0 and 100");
+        }
 
         businessRequirements = List.copyOf(businessRequirements);
         existingTestCases = List.copyOf(existingTestCases);
