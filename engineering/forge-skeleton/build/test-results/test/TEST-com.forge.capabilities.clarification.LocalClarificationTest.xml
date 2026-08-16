@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.forge.capabilities.clarification.LocalClarificationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-08-16T10:55:33.613Z" hostname="LAPTOP-84FJEUOV" time="0.042">
-  <properties/>
-  <testcase name="shouldGenerateQuestionForEachFinding()" classname="com.forge.capabilities.clarification.LocalClarificationTest" time="0.026"/>
-  <testcase name="shouldReturnNoQuestionsWhenThereAreNoFindings()" classname="com.forge.capabilities.clarification.LocalClarificationTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

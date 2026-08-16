@@ -11,8 +11,6 @@ import com.forge.domain.execution.Execution;
 import com.forge.domain.execution.ExecutionContext;
 import com.forge.domain.execution.ExecutionStage;
 import com.forge.domain.testcase.TestCase;
-import com.forge.domain.traceability.RelationType;
-import com.forge.domain.traceability.RequirementTestCaseRelation;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -24,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class WorkflowOrchestratorTest {
 
     @Test
-    void shouldProcessCompleteWorkflowThroughProjectedCoverage() {
+    void shouldProcessCompleteWorkflowAndImproveCoverage() {
 
         ExecutionContext context =
                 new ExecutionContext();
@@ -32,14 +30,14 @@ class WorkflowOrchestratorTest {
         context.addEvidence(
                 new Evidence(
                         "evidence-1",
-                        "User must authenticate before accessing the system.",
+                        "The system must allow users to authenticate and reset their password.",
                         "local-test"));
 
         context.addExistingTestCase(
                 new TestCase(
                         "test-case-1",
                         "User authentication",
-                        "Verify that a user must authenticate before accessing the system.",
+                        "Verify that a user can authenticate successfully.",
                         List.of(
                                 "User has access to the system"),
                         List.of(
@@ -102,41 +100,18 @@ class WorkflowOrchestratorTest {
                         .pendingQuestion() == null);
 
         assertEquals(
-                1,
-                result.context()
-                        .traceabilityRelations()
-                        .size());
-
-        RequirementTestCaseRelation relation =
-                result.context()
-                        .traceabilityRelations()
-                        .get(0);
-
-        assertEquals(
-                "local-test",
-                relation.requirementId());
-
-        assertEquals(
-                "test-case-1",
-                relation.testCaseId());
-
-        assertEquals(
-                RelationType.COVERS,
-                relation.relationType());
-
-        assertEquals(
-                100.0,
+                0.0,
                 result.context()
                         .coverageResult()
                         .currentCoverage());
 
-        assertTrue(
+        assertFalse(
                 result.context()
                         .coverageResult()
                         .uncoveredRequirementIds()
                         .isEmpty());
 
-        assertTrue(
+        assertFalse(
                 result.context()
                         .generatedTestCases()
                         .isEmpty());

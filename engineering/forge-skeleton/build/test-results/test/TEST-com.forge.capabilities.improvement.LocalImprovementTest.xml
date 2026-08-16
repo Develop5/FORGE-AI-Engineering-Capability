@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.forge.capabilities.improvement.LocalImprovementTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-08-16T10:55:33.672Z" hostname="LAPTOP-84FJEUOV" time="0.017">
-  <properties/>
-  <testcase name="shouldPlanAndGenerateTestCasesForUncoveredRequirements()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.006"/>
-  <testcase name="shouldNotGenerateTestsWhenTargetAlreadyAchieved()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.0"/>
-  <testcase name="shouldReportFailureWhenTargetCannotBeReached()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.008"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

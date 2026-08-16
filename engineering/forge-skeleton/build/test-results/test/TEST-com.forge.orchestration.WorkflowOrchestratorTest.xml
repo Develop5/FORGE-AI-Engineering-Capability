@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.forge.orchestration.WorkflowOrchestratorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-08-16T10:55:33.698Z" hostname="LAPTOP-84FJEUOV" time="0.015">
+<testsuite name="com.forge.orchestration.WorkflowOrchestratorTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2026-08-16T11:04:25.020Z" hostname="LAPTOP-84FJEUOV" time="0.072">
   <properties/>
-  <testcase name="shouldProcessCompleteWorkflowThroughProjectedCoverage()" classname="com.forge.orchestration.WorkflowOrchestratorTest" time="0.014"/>
+  <testcase name="shouldProcessCompleteWorkflowAndImproveCoverage()" classname="com.forge.orchestration.WorkflowOrchestratorTest" time="0.056">
+    <failure message="org.opentest4j.AssertionFailedError: expected: &lt;0.0&gt; but was: &lt;100.0&gt;" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: expected: &lt;0.0&gt; but was: &lt;100.0&gt;
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:70)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:65)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:889)
+	at com.forge.orchestration.WorkflowOrchestratorTest.shouldProcessCompleteWorkflowAndImproveCoverage(WorkflowOrchestratorTest.java:102)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+  </testcase>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
