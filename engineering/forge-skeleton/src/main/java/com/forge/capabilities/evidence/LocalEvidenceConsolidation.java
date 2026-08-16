@@ -22,8 +22,8 @@ public final class LocalEvidenceConsolidation
 
     private EvidenceTopic toTopic(Evidence evidence) {
         return new EvidenceTopic(
-                evidence.id(),
-                evidence.title(),
-                evidence.content());
+                evidence.sourceReference(),
+                evidence.content(),
+                List.of(evidence.id()));
     }
 }
