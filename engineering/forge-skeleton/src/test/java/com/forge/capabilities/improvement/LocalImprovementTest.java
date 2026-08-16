@@ -1,7 +1,6 @@
 package com.forge.capabilities.improvement;
 
 import com.forge.domain.coverage.CoverageResult;
-import com.forge.domain.finding.Risk;
 import com.forge.domain.requirement.BusinessRequirement;
 import com.forge.domain.testcase.GeneratedTestCase;
 import com.forge.domain.testcase.TestCase;
@@ -10,108 +9,190 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LocalImprovementTest {
 
     @Test
-    void generatesOneTestCaseForEachUncoveredRequirement() {
-        BusinessRequirement requirement1 = requirement("BR-001");
-        BusinessRequirement requirement2 = requirement("BR-002");
+    void shouldPlanAndGenerateTestCasesForUncoveredRequirements() {
 
-        CoverageResult coverageResult = new CoverageResult(
-                List.of(requirement1, requirement2),
-                List.of(),
-                0.0,
-                List.of("BR-001", "BR-002"),
-                List.of());
+        BusinessRequirement requirement =
+                requirement("BR-001");
 
-        ImprovementInput input = new ImprovementInput(
-                List.of(requirement1, requirement2),
-                List.<TestCase>of(),
-                coverageResult,
-                100.0);
+        ImprovementInput input =
+                input(
+                        List.of(requirement),
+                        List.of("BR-001"),
+                        95.0);
 
-        ImprovementOutput output = new LocalImprovement().execute(input);
-
-        assertEquals(2, output.generatedTestCases().size());
+        ImprovementOutput output =
+                new LocalImprovement().execute(input);
 
         assertEquals(
-                List.of("BR-001"),
+                1,
+                output.plannedTestCases().size());
+
+        assertEquals(
+                "PLAN-BR-001",
+                output.plannedTestCases()
+                        .get(0)
+                        .id());
+
+        assertEquals(
+                1,
+                output.generatedTestCases().size());
+
+        assertEquals(
+                "GEN-BR-001",
                 output.generatedTestCases()
                         .get(0)
-                        .targetRequirementIds());
+                        .id());
+
+        assertTrue(
+                output.nonGeneratedTestCases()
+                        .isEmpty());
 
         assertEquals(
-                List.of("BR-002"),
-                output.generatedTestCases()
-                        .get(1)
-                        .targetRequirementIds());
-    }
-
-    @Test
-    void returnsEmptyOutputWhenThereAreNoUncoveredRequirements() {
-        BusinessRequirement requirement = requirement("BR-001");
-
-        CoverageResult coverageResult = new CoverageResult(
-                List.of(requirement),
-                List.of(),
                 100.0,
-                List.of(),
-                List.of());
+                output.projectedCoverage()
+                        .coveragePercentage());
 
-        ImprovementInput input = new ImprovementInput(
-                List.of(requirement),
-                List.<TestCase>of(),
-                coverageResult,
-                100.0);
+        assertTrue(
+                output.targetAchieved());
 
-        ImprovementOutput output = new LocalImprovement().execute(input);
-
-        assertTrue(output.generatedTestCases().isEmpty());
+        assertTrue(
+                output.targetFailureReasons()
+                        .isEmpty());
     }
 
     @Test
-    void generationIsDeterministic() {
-        BusinessRequirement requirement = requirement("BR-001");
+    void shouldNotGenerateTestsWhenTargetAlreadyAchieved() {
 
-        CoverageResult coverageResult = new CoverageResult(
-                List.of(requirement),
-                List.of(),
-                0.0,
-                List.of("BR-001"),
-                List.of());
+        BusinessRequirement requirement =
+                requirement("BR-001");
 
-        ImprovementInput input = new ImprovementInput(
-                List.of(requirement),
-                List.<TestCase>of(),
-                coverageResult,
-                100.0);
+        CoverageResult coverageResult =
+                new CoverageResult(
+                        List.of(requirement),
+                        List.of(),
+                        100.0,
+                        List.of(),
+                        List.of());
 
-        LocalImprovement improvement = new LocalImprovement();
+        ImprovementInput targetAlreadyAchieved =
+                new ImprovementInput(
+                        List.of(requirement),
+                        List.of(),
+                        coverageResult,
+                        95.0);
 
-        GeneratedTestCase first =
-                improvement.execute(input).generatedTestCases().get(0);
+        ImprovementOutput output =
+                new LocalImprovement()
+                        .execute(targetAlreadyAchieved);
 
-        GeneratedTestCase second =
-                improvement.execute(input).generatedTestCases().get(0);
+        assertTrue(
+                output.plannedTestCases()
+                        .isEmpty());
 
-        assertEquals(first.id(), second.id());
-        assertEquals(first.title(), second.title());
-        assertEquals(first.description(), second.description());
-        assertEquals(first.steps(), second.steps());
-        assertEquals(first.expectedResult(), second.expectedResult());
+        assertTrue(
+                output.generatedTestCases()
+                        .isEmpty());
+
+        assertTrue(
+                output.nonGeneratedTestCases()
+                        .isEmpty());
+
         assertEquals(
-                first.targetRequirementIds(),
-                second.targetRequirementIds());
+                100.0,
+                output.projectedCoverage()
+                        .coveragePercentage());
+
+        assertTrue(
+                output.targetAchieved());
+
+        assertTrue(
+                output.targetFailureReasons()
+                        .isEmpty());
     }
 
-    private static BusinessRequirement requirement(String id) {
+
+    @Test
+    void shouldReportFailureWhenTargetCannotBeReached() {
+
+        BusinessRequirement requirement =
+                requirement("BR-001");
+
+        CoverageResult coverageResult =
+                new CoverageResult(
+                        List.of(requirement),
+                        List.of(),
+                        0.0,
+                        List.of("BR-001"),
+                        List.of());
+
+        ImprovementInput input =
+                new ImprovementInput(
+                        List.of(),
+                        List.of(),
+                        coverageResult,
+                        95.0);
+
+        ImprovementOutput output =
+                new LocalImprovement().execute(input);
+
+        assertFalse(
+                output.targetAchieved());
+
+        assertFalse(
+                output.targetFailureReasons()
+                        .isEmpty());
+
+        assertEquals(
+                0.0,
+                output.projectedCoverage()
+                        .coveragePercentage());
+
+        assertEquals(
+                List.of("BR-001"),
+                output.projectedCoverage()
+                        .uncoveredRequirementIds());
+    }
+
+    private static ImprovementInput input(
+            List<BusinessRequirement> requirements,
+            List<String> uncoveredRequirementIds,
+            double target) {
+
+        CoverageResult coverageResult =
+                new CoverageResult(
+                        requirements,
+                        List.of(),
+                        uncoveredRequirementIds.isEmpty()
+                                ? 100.0
+                                : 0.0,
+                        uncoveredRequirementIds,
+                        List.of());
+
+        List<TestCase> existingTestCases =
+                List.of();
+
+        return new ImprovementInput(
+                requirements,
+                existingTestCases,
+                coverageResult,
+                target);
+    }
+
+    private static BusinessRequirement requirement(
+            String id) {
+
         return new BusinessRequirement(
                 id,
                 "Requirement " + id,
-                "Description for " + id,
+                "Description " + id,
                 "HIGH",
-                List.of("The requirement is satisfied"));
+                List.of(
+                        "Requirement is satisfied"));
     }
 }

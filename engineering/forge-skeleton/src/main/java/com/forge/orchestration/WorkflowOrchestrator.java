@@ -209,13 +209,11 @@ public final class WorkflowOrchestrator implements ForgeEngine {
                 .forEach(
                         execution.context()::addGeneratedTestCase);
 
+        execution.context().setProjectedCoverage(
+                improvementOutput.projectedCoverage());
+
         execution.moveTo(
                 ExecutionStage.GENERATION);
-
-        execution.context().setProjectedCoverage(
-                projectedCoverageCalculator.calculate(
-                        execution.context().coverageResult(),
-                        execution.context().generatedTestCases()));
 
         execution.moveTo(
                 ExecutionStage.PROJECTED_COVERAGE);
@@ -223,5 +221,6 @@ public final class WorkflowOrchestrator implements ForgeEngine {
         execution.complete();
 
         return execution;
+
     }
 }

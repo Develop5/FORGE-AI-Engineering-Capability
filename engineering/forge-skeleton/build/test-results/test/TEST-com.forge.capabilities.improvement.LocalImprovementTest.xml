@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.forge.capabilities.improvement.LocalImprovementTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-08-16T09:17:09.091Z" hostname="LAPTOP-84FJEUOV" time="0.008">
+<testsuite name="com.forge.capabilities.improvement.LocalImprovementTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-08-16T10:43:35.746Z" hostname="LAPTOP-84FJEUOV" time="0.018">
   <properties/>
-  <testcase name="generationIsDeterministic()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.005"/>
-  <testcase name="returnsEmptyOutputWhenThereAreNoUncoveredRequirements()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.001"/>
-  <testcase name="generatesOneTestCaseForEachUncoveredRequirement()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.001"/>
+  <testcase name="shouldPlanAndGenerateTestCasesForUncoveredRequirements()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.007"/>
+  <testcase name="shouldNotGenerateTestsWhenTargetAlreadyAchieved()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.001"/>
+  <testcase name="shouldReportFailureWhenTargetCannotBeReached()" classname="com.forge.capabilities.improvement.LocalImprovementTest" time="0.008"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
