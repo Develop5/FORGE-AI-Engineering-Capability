@@ -232,6 +232,99 @@ class WorkflowOrchestratorTest {
     }
 
     @Test
+    void shouldPauseForClarificationWhenRequirementsDiscoveryFindsConflict() {
+
+        ExecutionContext context =
+                new ExecutionContext();
+
+        context.addEvidence(
+                new Evidence(
+                        "evidence-conflict-required",
+                        "The system must allow password authentication.",
+                        "local-test"));
+
+        context.addEvidence(
+                new Evidence(
+                        "evidence-conflict-forbidden",
+                        "The system must not allow password authentication.",
+                        "local-test"));
+
+        Execution execution =
+                new Execution(
+                        "execution-conflict",
+                        context);
+
+        WorkflowOrchestrator orchestrator =
+                new WorkflowOrchestrator(
+                        new LocalEvidenceConsolidation(),
+                        new LocalRequirementsDiscovery(),
+                        new LocalClarification(),
+                        new LocalTraceabilityAnalysis(),
+                        new LocalCoverageAnalysis(),
+                        new LocalImprovement());
+
+        Execution waiting =
+                orchestrator.start(execution);
+
+        assertEquals(
+                ExecutionStage.CLARIFICATION,
+                waiting.currentStage());
+
+        assertEquals(
+                "WAITING_FOR_CLARIFICATION",
+                waiting.status().name());
+
+        assertEquals(
+                2,
+                waiting.context()
+                        .businessRequirements()
+                        .size());
+
+        assertEquals(
+                1,
+                waiting.context()
+                        .findings()
+                        .size());
+
+        Finding finding =
+                waiting.context()
+                        .findings()
+                        .get(0);
+
+        assertEquals(
+                "FINDING-CONFLICT-BR-evidence-conflict-required-BR-evidence-conflict-forbidden",
+                finding.id());
+
+        assertEquals(
+                "CONFLICT",
+                finding.type());
+
+        assertEquals(
+                List.of(
+                        "BR-evidence-conflict-required",
+                        "BR-evidence-conflict-forbidden"),
+                finding.relatedRequirementIds());
+
+        assertEquals(
+                1,
+                waiting.context()
+                        .pendingQuestions()
+                        .size());
+
+        assertEquals(
+                "question-1",
+                waiting.context()
+                        .pendingQuestion()
+                        .id());
+
+        assertEquals(
+                finding.id(),
+                waiting.context()
+                        .pendingQuestion()
+                        .findingId());
+    }
+
+    @Test
     void shouldPauseForClarificationAndResumeWithUserResponse() {
 
         ExecutionContext context =

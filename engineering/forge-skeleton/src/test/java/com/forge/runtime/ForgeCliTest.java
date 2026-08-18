@@ -136,6 +136,62 @@ class ForgeCliTest {
                         "Status: COMPLETED"));
     }
 
+    @Test
+    void shouldRunRealConflictWorkflowThroughClarificationAndResumeFromCli() {
+
+        ForgeEngine engine =
+                new WorkflowOrchestrator(
+                        new LocalEvidenceConsolidation(),
+                        new LocalRequirementsDiscovery(),
+                        new LocalClarification(),
+                        new LocalTraceabilityAnalysis(),
+                        new LocalCoverageAnalysis(),
+                        new LocalImprovement());
+
+        ForgeCli cli =
+                new ForgeCli(engine);
+
+        ByteArrayOutputStream output =
+                new ByteArrayOutputStream();
+
+        String input =
+                "The system must allow password authentication.\n"
+                        + "The system must not allow password authentication.\n"
+                        + "\n"
+                        + "Password authentication is allowed only when explicitly required by the business.\n";
+
+        cli.run(
+                new ByteArrayInputStream(
+                        input.getBytes(StandardCharsets.UTF_8)),
+                new PrintStream(
+                        output,
+                        true,
+                        StandardCharsets.UTF_8));
+
+        String renderedOutput =
+                output.toString(StandardCharsets.UTF_8);
+
+        assertTrue(
+                renderedOutput.contains(
+                        "Question:"));
+
+        assertTrue(
+                renderedOutput.contains(
+                        "The requirements contain conflicting statements."));
+
+        assertTrue(
+                renderedOutput.contains(
+                        "> "));
+
+        assertTrue(
+                renderedOutput.contains(
+                        "FORGE execution finished."));
+
+        assertTrue(
+                renderedOutput.contains(
+                        "Status: COMPLETED"));
+    }
+
     private static final class TestForgeEngine
             implements ForgeEngine {
 
