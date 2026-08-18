@@ -6,7 +6,5 @@ public enum ExecutionStage {
     CLARIFICATION,
     TRACEABILITY,
     COVERAGE,
-    IMPROVEMENT,
-    GENERATION,
-    PROJECTED_COVERAGE
+    IMPROVEMENT
 }

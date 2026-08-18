@@ -76,7 +76,11 @@ public final class LocalTraceabilityAnalysis
                                 + " "
                                 + String.join(
                                 " ",
-                                testCase.preconditions())
+                                testCase.conditions())
+                                + " "
+                                + String.join(
+                                " ",
+                                testCase.inputs())
                                 + " "
                                 + String.join(
                                 " ",
