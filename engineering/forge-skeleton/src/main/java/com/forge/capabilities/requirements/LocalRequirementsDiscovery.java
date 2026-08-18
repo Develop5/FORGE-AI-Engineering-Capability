@@ -160,7 +160,11 @@ public final class LocalRequirementsDiscovery
             String description =
                     requirement.description().toLowerCase();
 
-            if (hasUnresolvedDependency(description)) {
+            if (hasUnresolvedDependency(
+                    description,
+                    requirements,
+                    requirement)) {
+
                 findings.add(
                         new Finding(
                                 "FINDING-DEPENDENCY-"
@@ -175,13 +179,47 @@ public final class LocalRequirementsDiscovery
     }
 
     private boolean hasUnresolvedDependency(
-            String description) {
+            String description,
+            List<BusinessRequirement> requirements,
+            BusinessRequirement currentRequirement) {
 
-        return description.contains("depends on")
-                || description.contains("dependent on")
-                || description.contains("not defined")
+        if (description.contains("not defined")
                 || description.contains("undefined")
-                || description.contains("unspecified");
+                || description.contains("unspecified")) {
+            return true;
+        }
+
+        String dependencyTarget =
+                extractDependencyTarget(description);
+
+        if (dependencyTarget == null) {
+            return false;
+        }
+
+        return !isDependencyDefined(
+                dependencyTarget,
+                requirements,
+                currentRequirement);
+    }
+
+    private boolean isDependencyDefined(
+            String dependencyTarget,
+            List<BusinessRequirement> requirements,
+            BusinessRequirement currentRequirement) {
+
+        for (BusinessRequirement requirement : requirements) {
+            if (requirement.id().equals(currentRequirement.id())) {
+                continue;
+            }
+
+            if (refersTo(
+                    dependencyTarget,
+                    requirement.description().toLowerCase())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private List<Finding> detectCircularDependencies(
