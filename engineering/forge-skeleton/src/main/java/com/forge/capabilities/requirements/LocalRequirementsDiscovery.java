@@ -34,6 +34,9 @@ public final class LocalRequirementsDiscovery
             }
         }
 
+        findings.addAll(
+                detectConflicts(requirements));
+
         return new RequirementsDiscoveryOutput(
                 requirements,
                 findings);
@@ -64,5 +67,90 @@ public final class LocalRequirementsDiscovery
                 || description.contains("suitable")
                 || description.contains("as needed")
                 || description.contains("etc.");
+    }
+
+    private List<Finding> detectConflicts(
+            List<BusinessRequirement> requirements) {
+
+        List<Finding> findings =
+                new ArrayList<>();
+
+        for (int i = 0; i < requirements.size(); i++) {
+            BusinessRequirement first =
+                    requirements.get(i);
+
+            for (int j = i + 1; j < requirements.size(); j++) {
+                BusinessRequirement second =
+                        requirements.get(j);
+
+                if (isConflict(first, second)) {
+                    findings.add(
+                            new Finding(
+                                    "FINDING-CONFLICT-"
+                                            + first.id()
+                                            + "-"
+                                            + second.id(),
+                                    "CONFLICT",
+                                    "The requirements contain conflicting statements.",
+                                    List.of(
+                                            first.id(),
+                                            second.id())));
+                }
+            }
+        }
+
+        return findings;
+    }
+
+    private boolean isConflict(
+            BusinessRequirement first,
+            BusinessRequirement second) {
+
+        String firstDescription =
+                first.description().toLowerCase();
+
+        String secondDescription =
+                second.description().toLowerCase();
+
+        return hasSameSubjectWithOppositeConstraint(
+                firstDescription,
+                secondDescription);
+    }
+
+    private boolean hasSameSubjectWithOppositeConstraint(
+            String first,
+            String second) {
+
+        if (first.contains("must ")
+                && second.contains("must not ")) {
+
+            return normalizeSubject(
+                    first.replace("must not ", "must "))
+                    .equals(
+                            normalizeSubject(second));
+        }
+
+        if (first.contains("must not ")
+                && second.contains("must ")) {
+
+            return normalizeSubject(
+                    first)
+                    .equals(
+                            normalizeSubject(
+                                    second.replace(
+                                            "must not ",
+                                            "must ")));
+        }
+
+        return false;
+    }
+
+    private String normalizeSubject(
+            String description) {
+
+        return description
+                .replace("must not ", "must ")
+                .replaceAll("\\s+", " ")
+                .trim();
     }
 }

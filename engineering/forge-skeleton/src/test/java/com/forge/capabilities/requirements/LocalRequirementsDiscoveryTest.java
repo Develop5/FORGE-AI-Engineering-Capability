@@ -108,4 +108,56 @@ class LocalRequirementsDiscoveryTest {
                 List.of("BR-evidence-3"),
                 finding.relatedRequirementIds());
     }
+
+    @Test
+    void shouldCreateConflictFindingForOppositeRequirements() {
+
+        EvidenceTopic authenticationRequired =
+                new EvidenceTopic(
+                        "local-test",
+                        "The system must allow password authentication.",
+                        List.of("evidence-4"));
+
+        EvidenceTopic authenticationForbidden =
+                new EvidenceTopic(
+                        "local-test",
+                        "The system must not allow password authentication.",
+                        List.of("evidence-5"));
+
+        RequirementsDiscoveryOutput output =
+                discovery.execute(
+                        new RequirementsDiscoveryInput(
+                                List.of(
+                                        authenticationRequired,
+                                        authenticationForbidden)));
+
+        assertEquals(
+                2,
+                output.businessRequirements().size());
+
+        assertEquals(
+                1,
+                output.findings().size());
+
+        Finding finding =
+                output.findings().get(0);
+
+        assertEquals(
+                "FINDING-CONFLICT-BR-evidence-4-BR-evidence-5",
+                finding.id());
+
+        assertEquals(
+                "CONFLICT",
+                finding.type());
+
+        assertEquals(
+                "The requirements contain conflicting statements.",
+                finding.description());
+
+        assertEquals(
+                List.of(
+                        "BR-evidence-4",
+                        "BR-evidence-5"),
+                finding.relatedRequirementIds());
+    }
 }
