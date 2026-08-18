@@ -160,4 +160,46 @@ class LocalRequirementsDiscoveryTest {
                         "BR-evidence-5"),
                 finding.relatedRequirementIds());
     }
+
+    @Test
+    void shouldCreateUnresolvedDependencyFinding() {
+
+        EvidenceTopic dependentRequirement =
+                new EvidenceTopic(
+                        "local-test",
+                        "The system must authorize payments using the fraud detection service, which is not defined.",
+                        List.of("evidence-6"));
+
+        RequirementsDiscoveryOutput output =
+                discovery.execute(
+                        new RequirementsDiscoveryInput(
+                                List.of(dependentRequirement)));
+
+        assertEquals(
+                1,
+                output.businessRequirements().size());
+
+        assertEquals(
+                1,
+                output.findings().size());
+
+        Finding finding =
+                output.findings().get(0);
+
+        assertEquals(
+                "FINDING-DEPENDENCY-BR-evidence-6",
+                finding.id());
+
+        assertEquals(
+                "UNRESOLVED_DEPENDENCY",
+                finding.type());
+
+        assertEquals(
+                "The requirement depends on another capability or condition that has not been defined.",
+                finding.description());
+
+        assertEquals(
+                List.of("BR-evidence-6"),
+                finding.relatedRequirementIds());
+    }
 }

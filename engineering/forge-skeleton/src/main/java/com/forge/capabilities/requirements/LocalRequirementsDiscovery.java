@@ -37,6 +37,9 @@ public final class LocalRequirementsDiscovery
         findings.addAll(
                 detectConflicts(requirements));
 
+        findings.addAll(
+                detectUnresolvedDependencies(requirements));
+
         return new RequirementsDiscoveryOutput(
                 requirements,
                 findings);
@@ -133,8 +136,7 @@ public final class LocalRequirementsDiscovery
         if (first.contains("must not ")
                 && second.contains("must ")) {
 
-            return normalizeSubject(
-                    first)
+            return normalizeSubject(first)
                     .equals(
                             normalizeSubject(
                                     second.replace(
@@ -143,6 +145,43 @@ public final class LocalRequirementsDiscovery
         }
 
         return false;
+    }
+
+    private List<Finding> detectUnresolvedDependencies(
+            List<BusinessRequirement> requirements) {
+
+        List<Finding> findings =
+                new ArrayList<>();
+
+        for (BusinessRequirement requirement : requirements) {
+            String description =
+                    requirement.description().toLowerCase();
+
+            if (hasUnresolvedDependency(description)) {
+                findings.add(
+                        new Finding(
+                                "FINDING-DEPENDENCY-"
+                                        + requirement.id(),
+                                "UNRESOLVED_DEPENDENCY",
+                                "The requirement depends on another capability or condition that has not been defined.",
+                                List.of(requirement.id())));
+            }
+        }
+
+        return findings;
+    }
+
+    private boolean hasUnresolvedDependency(
+            String description) {
+
+        return description.contains("depends on")
+                || description.contains("dependent on")
+                || description.contains("requires ")
+                && description.contains("which is not defined")
+                || description.contains("requires ")
+                && description.contains("not defined")
+                || description.contains("requires ")
+                && description.contains("unspecified");
     }
 
     private String normalizeSubject(
