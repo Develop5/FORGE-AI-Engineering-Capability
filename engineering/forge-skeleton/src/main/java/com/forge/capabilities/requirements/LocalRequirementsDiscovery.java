@@ -176,12 +176,9 @@ public final class LocalRequirementsDiscovery
 
         return description.contains("depends on")
                 || description.contains("dependent on")
-                || description.contains("requires ")
-                && description.contains("which is not defined")
-                || description.contains("requires ")
-                && description.contains("not defined")
-                || description.contains("requires ")
-                && description.contains("unspecified");
+                || description.contains("not defined")
+                || description.contains("undefined")
+                || description.contains("unspecified");
     }
 
     private String normalizeSubject(
