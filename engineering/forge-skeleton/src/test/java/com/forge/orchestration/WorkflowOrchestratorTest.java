@@ -140,6 +140,98 @@ class WorkflowOrchestratorTest {
     }
 
     @Test
+    void shouldPauseForClarificationWhenRequirementsDiscoveryFindsAmbiguity() {
+
+        ExecutionContext context =
+                new ExecutionContext();
+
+        context.addEvidence(
+                new Evidence(
+                        "evidence-ambiguity",
+                        "The system must provide appropriate authentication methods.",
+                        "local-test"));
+
+        Execution execution =
+                new Execution(
+                        "execution-generated-finding",
+                        context);
+
+        WorkflowOrchestrator orchestrator =
+                new WorkflowOrchestrator(
+                        new LocalEvidenceConsolidation(),
+                        new LocalRequirementsDiscovery(),
+                        new LocalClarification(),
+                        new LocalTraceabilityAnalysis(),
+                        new LocalCoverageAnalysis(),
+                        new LocalImprovement());
+
+        Execution waiting =
+                orchestrator.start(execution);
+
+        assertEquals(
+                ExecutionStage.CLARIFICATION,
+                waiting.currentStage());
+
+        assertEquals(
+                "WAITING_FOR_CLARIFICATION",
+                waiting.status().name());
+
+        assertEquals(
+                1,
+                waiting.context()
+                        .businessRequirements()
+                        .size());
+
+        assertEquals(
+                "BR-evidence-ambiguity",
+                waiting.context()
+                        .businessRequirements()
+                        .get(0)
+                        .id());
+
+        assertEquals(
+                1,
+                waiting.context()
+                        .findings()
+                        .size());
+
+        Finding finding =
+                waiting.context()
+                        .findings()
+                        .get(0);
+
+        assertEquals(
+                "FINDING-BR-evidence-ambiguity",
+                finding.id());
+
+        assertEquals(
+                "AMBIGUITY",
+                finding.type());
+
+        assertEquals(
+                List.of("BR-evidence-ambiguity"),
+                finding.relatedRequirementIds());
+
+        assertEquals(
+                1,
+                waiting.context()
+                        .pendingQuestions()
+                        .size());
+
+        assertEquals(
+                "question-1",
+                waiting.context()
+                        .pendingQuestion()
+                        .id());
+
+        assertEquals(
+                "FINDING-BR-evidence-ambiguity",
+                waiting.context()
+                        .pendingQuestion()
+                        .findingId());
+    }
+
+    @Test
     void shouldPauseForClarificationAndResumeWithUserResponse() {
 
         ExecutionContext context =
