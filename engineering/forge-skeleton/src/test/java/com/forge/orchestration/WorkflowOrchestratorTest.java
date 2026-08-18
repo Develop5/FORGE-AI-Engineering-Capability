@@ -73,7 +73,7 @@ class WorkflowOrchestratorTest {
                 orchestrator.start(execution);
 
         assertEquals(
-                ExecutionStage.PROJECTED_COVERAGE,
+                ExecutionStage.IMPROVEMENT,
                 result.currentStage());
 
         assertEquals(
