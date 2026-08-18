@@ -1,11 +1,18 @@
 package com.forge.runtime.cli;
 
+import com.forge.capabilities.clarification.LocalClarification;
+import com.forge.capabilities.coverage.LocalCoverageAnalysis;
+import com.forge.capabilities.evidence.LocalEvidenceConsolidation;
+import com.forge.capabilities.improvement.LocalImprovement;
+import com.forge.capabilities.requirements.LocalRequirementsDiscovery;
+import com.forge.capabilities.traceability.LocalTraceabilityAnalysis;
 import com.forge.domain.clarification.Question;
 import com.forge.domain.execution.Execution;
 import com.forge.domain.execution.ExecutionContext;
 import com.forge.domain.execution.ExecutionStage;
 import com.forge.domain.execution.ExecutionStatus;
 import com.forge.orchestration.ForgeEngine;
+import com.forge.orchestration.WorkflowOrchestrator;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -41,7 +48,7 @@ class ForgeCliTest {
         cli.executeWorkflow(
                 execution,
                 new java.util.Scanner(
-                        new java.io.ByteArrayInputStream(
+                        new ByteArrayInputStream(
                                 "The requirement is clear now.\n"
                                         .getBytes(StandardCharsets.UTF_8)),
                         StandardCharsets.UTF_8),
@@ -72,6 +79,61 @@ class ForgeCliTest {
         assertEquals(
                 ExecutionStatus.COMPLETED,
                 execution.status());
+    }
+
+    @Test
+    void shouldRunRealWorkflowThroughClarificationAndResumeFromCli() {
+
+        ForgeEngine engine =
+                new WorkflowOrchestrator(
+                        new LocalEvidenceConsolidation(),
+                        new LocalRequirementsDiscovery(),
+                        new LocalClarification(),
+                        new LocalTraceabilityAnalysis(),
+                        new LocalCoverageAnalysis(),
+                        new LocalImprovement());
+
+        ForgeCli cli =
+                new ForgeCli(engine);
+
+        ByteArrayOutputStream output =
+                new ByteArrayOutputStream();
+
+        String input =
+                "The system must provide appropriate authentication methods.\n"
+                        + "\n"
+                        + "Users must authenticate with valid credentials.\n";
+
+        cli.run(
+                new ByteArrayInputStream(
+                        input.getBytes(StandardCharsets.UTF_8)),
+                new PrintStream(
+                        output,
+                        true,
+                        StandardCharsets.UTF_8));
+
+        String renderedOutput =
+                output.toString(StandardCharsets.UTF_8);
+
+        assertTrue(
+                renderedOutput.contains(
+                        "Question:"));
+
+        assertTrue(
+                renderedOutput.contains(
+                        "The requirement is ambiguous and requires clarification."));
+
+        assertTrue(
+                renderedOutput.contains(
+                        "> "));
+
+        assertTrue(
+                renderedOutput.contains(
+                        "FORGE execution finished."));
+
+        assertTrue(
+                renderedOutput.contains(
+                        "Status: COMPLETED"));
     }
 
     private static final class TestForgeEngine
