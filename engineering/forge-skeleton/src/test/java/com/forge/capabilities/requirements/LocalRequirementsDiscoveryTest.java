@@ -202,4 +202,56 @@ class LocalRequirementsDiscoveryTest {
                 List.of("BR-evidence-6"),
                 finding.relatedRequirementIds());
     }
+
+    @Test
+    void shouldCreateCircularDependencyFinding() {
+
+        EvidenceTopic authenticationRequirement =
+                new EvidenceTopic(
+                        "local-test",
+                        "Authentication depends on authorization.",
+                        List.of("evidence-7"));
+
+        EvidenceTopic authorizationRequirement =
+                new EvidenceTopic(
+                        "local-test",
+                        "Authorization depends on authentication.",
+                        List.of("evidence-8"));
+
+        RequirementsDiscoveryOutput output =
+                discovery.execute(
+                        new RequirementsDiscoveryInput(
+                                List.of(
+                                        authenticationRequirement,
+                                        authorizationRequirement)));
+
+        assertEquals(
+                2,
+                output.businessRequirements().size());
+
+        assertEquals(
+                1,
+                output.findings().size());
+
+        Finding finding =
+                output.findings().get(0);
+
+        assertEquals(
+                "FINDING-CIRCULAR-BR-evidence-7-BR-evidence-8",
+                finding.id());
+
+        assertEquals(
+                "CIRCULAR_DEPENDENCY",
+                finding.type());
+
+        assertEquals(
+                "The requirements contain a circular dependency.",
+                finding.description());
+
+        assertEquals(
+                List.of(
+                        "BR-evidence-7",
+                        "BR-evidence-8"),
+                finding.relatedRequirementIds());
+    }
 }

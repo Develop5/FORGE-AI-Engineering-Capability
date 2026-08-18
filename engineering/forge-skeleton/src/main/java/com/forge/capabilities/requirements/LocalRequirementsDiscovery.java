@@ -40,6 +40,9 @@ public final class LocalRequirementsDiscovery
         findings.addAll(
                 detectUnresolvedDependencies(requirements));
 
+        findings.addAll(
+                detectCircularDependencies(requirements));
+
         return new RequirementsDiscoveryOutput(
                 requirements,
                 findings);
@@ -179,6 +182,111 @@ public final class LocalRequirementsDiscovery
                 || description.contains("not defined")
                 || description.contains("undefined")
                 || description.contains("unspecified");
+    }
+
+    private List<Finding> detectCircularDependencies(
+            List<BusinessRequirement> requirements) {
+
+        List<Finding> findings =
+                new ArrayList<>();
+
+        for (int i = 0; i < requirements.size(); i++) {
+            BusinessRequirement first =
+                    requirements.get(i);
+
+            for (int j = i + 1; j < requirements.size(); j++) {
+                BusinessRequirement second =
+                        requirements.get(j);
+
+                if (isCircularDependency(first, second)) {
+                    findings.add(
+                            new Finding(
+                                    "FINDING-CIRCULAR-"
+                                            + first.id()
+                                            + "-"
+                                            + second.id(),
+                                    "CIRCULAR_DEPENDENCY",
+                                    "The requirements contain a circular dependency.",
+                                    List.of(
+                                            first.id(),
+                                            second.id())));
+                }
+            }
+        }
+
+        return findings;
+    }
+
+    private boolean isCircularDependency(
+            BusinessRequirement first,
+            BusinessRequirement second) {
+
+        String firstDescription =
+                first.description().toLowerCase();
+
+        String secondDescription =
+                second.description().toLowerCase();
+
+        String firstDependency =
+                extractDependencyTarget(firstDescription);
+
+        String secondDependency =
+                extractDependencyTarget(secondDescription);
+
+        return firstDependency != null
+                && secondDependency != null
+                && refersTo(
+                firstDependency,
+                secondDescription)
+                && refersTo(
+                secondDependency,
+                firstDescription);
+    }
+
+    private String extractDependencyTarget(
+            String description) {
+
+        int dependsOnIndex =
+                description.indexOf("depends on");
+
+        if (dependsOnIndex >= 0) {
+            return description.substring(
+                            dependsOnIndex + "depends on".length())
+                    .trim()
+                    .replace(".", "");
+        }
+
+        int dependentOnIndex =
+                description.indexOf("dependent on");
+
+        if (dependentOnIndex >= 0) {
+            return description.substring(
+                            dependentOnIndex + "dependent on".length())
+                    .trim()
+                    .replace(".", "");
+        }
+
+        return null;
+    }
+
+    private boolean refersTo(
+            String dependency,
+            String description) {
+
+        String normalizedDependency =
+                dependency
+                        .replaceAll("[^a-z0-9 ]", " ")
+                        .replaceAll("\\s+", " ")
+                        .trim();
+
+        String normalizedDescription =
+                description
+                        .replaceAll("[^a-z0-9 ]", " ")
+                        .replaceAll("\\s+", " ")
+                        .trim();
+
+        return normalizedDescription.contains(
+                normalizedDependency);
     }
 
     private String normalizeSubject(
