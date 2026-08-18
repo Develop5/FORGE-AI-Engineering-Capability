@@ -1,6 +1,7 @@
 package com.forge.capabilities.requirements;
 
 import com.forge.domain.evidence.EvidenceTopic;
+import com.forge.domain.finding.Finding;
 import com.forge.domain.requirement.BusinessRequirement;
 import org.junit.jupiter.api.Test;
 
@@ -60,5 +61,51 @@ class LocalRequirementsDiscoveryTest {
         assertEquals(
                 "The system must allow users to reset their password.",
                 passwordResetRequirement.description());
+
+        assertEquals(
+                0,
+                output.findings().size());
+    }
+
+    @Test
+    void shouldCreateAmbiguityFindingForAmbiguousRequirement() {
+
+        EvidenceTopic ambiguousTopic =
+                new EvidenceTopic(
+                        "local-test",
+                        "The system must provide appropriate authentication methods.",
+                        List.of("evidence-3"));
+
+        RequirementsDiscoveryOutput output =
+                discovery.execute(
+                        new RequirementsDiscoveryInput(
+                                List.of(ambiguousTopic)));
+
+        assertEquals(
+                1,
+                output.businessRequirements().size());
+
+        assertEquals(
+                1,
+                output.findings().size());
+
+        Finding finding =
+                output.findings().get(0);
+
+        assertEquals(
+                "FINDING-BR-evidence-3",
+                finding.id());
+
+        assertEquals(
+                "AMBIGUITY",
+                finding.type());
+
+        assertEquals(
+                "The requirement is ambiguous and requires clarification.",
+                finding.description());
+
+        assertEquals(
+                List.of("BR-evidence-3"),
+                finding.relatedRequirementIds());
     }
 }

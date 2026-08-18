@@ -1,8 +1,10 @@
 package com.forge.capabilities.requirements;
 
 import com.forge.domain.evidence.EvidenceTopic;
+import com.forge.domain.finding.Finding;
 import com.forge.domain.requirement.BusinessRequirement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class LocalRequirementsDiscovery
@@ -18,9 +20,23 @@ public final class LocalRequirementsDiscovery
                         .map(this::toRequirement)
                         .toList();
 
+        List<Finding> findings =
+                new ArrayList<>();
+
+        for (BusinessRequirement requirement : requirements) {
+            if (isAmbiguous(requirement)) {
+                findings.add(
+                        new Finding(
+                                "FINDING-" + requirement.id(),
+                                "AMBIGUITY",
+                                "The requirement is ambiguous and requires clarification.",
+                                List.of(requirement.id())));
+            }
+        }
+
         return new RequirementsDiscoveryOutput(
                 requirements,
-                List.of());
+                findings);
     }
 
     private BusinessRequirement toRequirement(
@@ -35,5 +51,18 @@ public final class LocalRequirementsDiscovery
                 topic.information(),
                 "LOCAL",
                 List.of());
+    }
+
+    private boolean isAmbiguous(
+            BusinessRequirement requirement) {
+
+        String description =
+                requirement.description().toLowerCase();
+
+        return description.contains("some")
+                || description.contains("appropriate")
+                || description.contains("suitable")
+                || description.contains("as needed")
+                || description.contains("etc.");
     }
 }
